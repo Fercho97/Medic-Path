@@ -1,5 +1,7 @@
 {
   "name": "mobileMedicPath",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
