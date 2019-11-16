@@ -1,10 +1,18 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button slot="start" color="tertiary" routerLink="" >Logout</ion-button>
+      <ion-button slot="start" color="tertiary" routerLink="" >Logout</ion-button>
     <ion-title class="ion-text-center">{{username}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <h2>This is under Construction</h2>
 </ion-content>
+
+<ion-footer>
+    <ion-toolbar color="light">
+        <ion-button size="medium" color="success" size="medium" color="tertiary" expand="block" slot="start" (click)="underConstruction()">Consulta</ion-button>
+      
+        <ion-button size="medium" color="success" expand="block" slot="end" routerLink="/profile">Perfil</ion-button>
+    </ion-toolbar>
+</ion-footer>

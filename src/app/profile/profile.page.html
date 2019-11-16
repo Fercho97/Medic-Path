@@ -1,9 +1,45 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button text="Volver"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Mis Datos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    
+    <ion-item>
+        <ion-label color="success">Nickname</ion-label>
+        <ion-input type="text" value="{{usuario.nickname}}" disabled></ion-input>
+    </ion-item>
 
+    <ion-item>
+        <ion-label color="success">Nombre(s)</ion-label>
+        <ion-input type="text" value="{{usuario.nombres}}" disabled></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label color="success">Apellidos(s)</ion-label>
+        <ion-input type="text" value="{{usuario.apellidos}}" disabled></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label color="success">Email</ion-label>
+        <ion-input type="text" value="{{usuario.email}}" disabled></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label color="success">Fecha Nacimiento</ion-label>
+        <ion-input type="text" value="{{usuario.fecha_nacimiento}}" disabled></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label color="success">Sexo</ion-label>
+        <ion-input type="text" value="{{usuario.sexo}}" disabled></ion-input>
+    </ion-item>
+   
+    <div class="ion-padding">
+      <ion-button size="medium" color="success" expand="block" (click)="underConstruction()">Editar</ion-button>
+    </div>
 </ion-content>
