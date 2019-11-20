@@ -3,8 +3,10 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 export class ProfileService{
     _urlIndividual : string = '';
+    _urlEditar : string = '';
     constructor(private _http: HttpClient) {
         this._urlIndividual = 'http://localhost:3000/usuarios/'
+        this._urlEditar = 'http://localhost:3000/usuarios/update/'
     }
 
 
@@ -15,6 +17,17 @@ export class ProfileService{
               .set('Content-Type', 'application/x-www-form-urlencoded'),
               observe : 'response'
             },
+        )
+    }
+
+    updateUser(id : any,valores : HttpParams){
+        return this._http.put(this._urlEditar + id,
+            valores.toString(),
+            {
+                headers: new HttpHeaders()
+                .set('Content-Type', 'application/x-www-form-urlencoded'),
+                observe : 'response' 
+            }
         )
     }
 }

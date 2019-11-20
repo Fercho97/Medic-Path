@@ -9,7 +9,9 @@ const routes: Routes = [
   { path: 'register', component: RegisterPage },
   { path: 'passReset', component: PassResetPage},
   { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
-  { path: 'landing', loadChildren: './landing/landing.module#LandingPageModule' }
+  { path: 'landing', loadChildren: './landing/landing.module#LandingPageModule' },
+  { path: 'history-list', loadChildren: './history-list/history-list.module#HistoryListPageModule' },
+  { path: 'history-detail', loadChildren: './history-detail/history-detail.module#HistoryDetailPageModule' },
 ];
 @NgModule({
   imports: [
