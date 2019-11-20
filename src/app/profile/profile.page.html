@@ -8,20 +8,20 @@
 </ion-header>
 
 <ion-content>
-    
+    <form #form="ngForm" (ngSubmit)="actualizarDatos(form)">
     <ion-item>
         <ion-label color="success">Nickname</ion-label>
-        <ion-input type="text" value="{{usuario.nickname}}" disabled></ion-input>
+        <ion-input name="nickname" type="text" ngModel value="{{usuario.nickname}}" disabled="{{soloVista}}" ></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-label color="success">Nombre(s)</ion-label>
-        <ion-input type="text" value="{{usuario.nombres}}" disabled></ion-input>
+        <ion-input name="nombres" type="text" value="{{usuario.nombres}}" disabled="{{soloVista}}" ngModel ></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-label color="success">Apellidos(s)</ion-label>
-        <ion-input type="text" value="{{usuario.apellidos}}" disabled></ion-input>
+        <ion-input name="apellidos" type="text" value="{{usuario.apellidos}}" disabled="{{soloVista}}" ngModel></ion-input>
     </ion-item>
 
     <ion-item>
@@ -40,6 +40,15 @@
     </ion-item>
    
     <div class="ion-padding">
-      <ion-button size="medium" color="success" expand="block" (click)="underConstruction()">Editar</ion-button>
+      <ion-button disabled="{{!soloVista}}" size="medium" color="success" expand="block" (click)="comenzarEdicion()">Editar</ion-button>
     </div>
+
+    <div  class="ion-padding" [hidden]="soloVista">
+      <ion-button size="medium" color="success" expand="block" type="submit" [disabled]="form.invalid">Guardar</ion-button>
+    </div>
+
+    <div  class="ion-padding" [hidden]="soloVista">
+        <ion-button size="medium" color="success" expand="block" (click)="cancelar()">Cancelar</ion-button>
+    </div>
+    </form>
 </ion-content>
