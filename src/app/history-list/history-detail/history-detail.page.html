@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button text="Volver"></ion-back-button>
+        </ion-buttons>
+    <ion-title>Detalles de la consulta de {{historial.fecha_consulta}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+        <ion-label>Con resultado de {{padecimientoInfo.nombre_pad}}</ion-label>
+    </ion-item>
+    <ion-card-content>
+      {{padecimientoInfo.descripcion}}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

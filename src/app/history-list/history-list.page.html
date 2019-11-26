@@ -1,9 +1,17 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>historyList</ion-title>
+    <ion-title>Mi historial</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-item-sliding *ngFor="let hist of historiales">
+  <ion-item routerLink="/history-detail/{{hist.hashId}}">
+  <ion-card>
+      <ion-label>Consulta del día de</ion-label>
+      <ion-card-content>{{hist.fecha_consulta}}</ion-card-content>
+  </ion-card>
+  </ion-item>
+  </ion-item-sliding>
 
 </ion-content>
