@@ -11,7 +11,8 @@ const routes: Routes = [
   { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
   { path: 'landing', loadChildren: './landing/landing.module#LandingPageModule' },
   { path: 'history-list', loadChildren: './history-list/history-list.module#HistoryListPageModule' },
-  { path: 'history-detail/:id', loadChildren: './history-list/history-detail/history-detail.module#HistoryDetailPageModule' },
+  { path: 'history-detail/:id', loadChildren: './history-list/history-detail/history-detail.module#HistoryDetailPageModule' },  { path: 'diagnostic', loadChildren: './diagnostic/diagnostic.module#DiagnosticPageModule' },
+
 ];
 @NgModule({
   imports: [

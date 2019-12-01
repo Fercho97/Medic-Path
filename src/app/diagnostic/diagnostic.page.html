@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-button slot="start" color="secondary" routerLink="/landing" >Volver</ion-button>
+    <ion-title class="ion-text-center">Consulta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div  *ngIf="!hasPregunta">
+      <ion-card>
+          <ion-item>
+              <p>Bienvenido a la herramienta de diagnostico. 
+                 Para comenzar simplemente haga click en el siguiente botón</p>
+          </ion-item>
+          <ion-card-content>
+              <ion-button size="medium" color="success" expand="block" slot="end" (click)="iniciarDiagnostico()">Comenzar</ion-button>              
+          </ion-card-content>
+        </ion-card>
+
+</div>
+
+<div [hidden]="!hasPregunta">
+    <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Sus sintomas: {{breadcrumb}}</ion-card-subtitle>
+          <ion-card-title>{{message}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-button size="medium" slot="end" expand="block" color="success" [hidden]="hasResult" (click)="responder('Si')">Si</ion-button>
+            
+            <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>
+        
+            <ion-label [hidden]="!hasResult">¿Desea guardar su resultado?</ion-label>
+            <br>
+            <ion-button expand="block" slot="end" color="success" [hidden]="!hasResult" (click)="guardar('true')">Si</ion-button>
+            
+            <ion-button expand="block" slot="start" color="danger" [hidden]="!hasResult" (click)="guardar('false')">No</ion-button>
+
+        </ion-card-content>
+      </ion-card>
+ 
+</div>
+</ion-content>

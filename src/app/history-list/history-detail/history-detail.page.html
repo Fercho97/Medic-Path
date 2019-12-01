@@ -3,7 +3,7 @@
       <ion-buttons slot="start">
           <ion-back-button text="Volver"></ion-back-button>
         </ion-buttons>
-    <ion-title>Detalles de la consulta de {{historial.fecha_consulta}}</ion-title>
+    <ion-title class="ion-text-center">Consulta de {{historial.fecha_consulta}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,6 +14,8 @@
     </ion-item>
     <ion-card-content>
       {{padecimientoInfo.descripcion}}
+      <br>
+      <ion-label><span>Con los sintomas:</span> {{historial.detalles}}</ion-label>
     </ion-card-content>
   </ion-card>
 </ion-content>
