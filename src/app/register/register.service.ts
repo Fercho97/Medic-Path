@@ -9,7 +9,8 @@ export class RegisterService{
     _url : string = '';
     private router: Router;
     constructor(private _http: HttpClient) {
-        this._url = 'http://localhost:3000/usuarios/create';
+        this._url = "https://medicpath.herokuapp.com/usuarios/create";
+        //'http://localhost:3000/usuarios/create';
     }
 
     checkRegister(valores : HttpParams){

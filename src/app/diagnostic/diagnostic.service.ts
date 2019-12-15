@@ -6,8 +6,10 @@ export class DiagnosticService{
     _saveUrl : string = '';
 
     constructor(private _http : HttpClient){
-        this._url = "http://localhost:3000/consulta/getReglas";
-        this._saveUrl = "http://localhost:3000/historial/create"
+        this._url = "https://medicpath.herokuapp.com/consulta/getReglas"
+        //"http://localhost:3000/consulta/getReglas";
+        this._saveUrl = "https://medicpath.herokuapp.com/historial/create"
+        //"http://localhost:3000/historial/create"
     }
 
     consulta(mira : any){

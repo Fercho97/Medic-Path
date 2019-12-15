@@ -10,7 +10,8 @@ export class ResetService{
     _url : string = '';
     private router: Router;
     constructor(private _http: HttpClient) {
-        this._url = 'http://localhost:3000/usuarios/resetPassword';
+        this._url = "https://medicpath.herokuapp.com/usuarios/resetPassword"
+        //'http://localhost:3000/usuarios/resetPassword';
     }
 
     resetRequest(valores : HttpParams){

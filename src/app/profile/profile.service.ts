@@ -5,8 +5,10 @@ export class ProfileService{
     _urlIndividual : string = '';
     _urlEditar : string = '';
     constructor(private _http: HttpClient) {
-        this._urlIndividual = 'http://localhost:3000/usuarios/'
-        this._urlEditar = 'http://localhost:3000/usuarios/update/'
+        this._urlIndividual = "https://medicpath.herokuapp.com/usuarios/";
+        //'http://localhost:3000/usuarios/'
+        this._urlEditar = "https://medicpath.herokuapp.com/usuarios/update/";
+        //'http://localhost:3000/usuarios/update/'
     }
 
 
