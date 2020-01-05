@@ -7,6 +7,25 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LandingPage {
   username : string = "";
+
+  pages = [
+    {
+      title: "Mi Historial",
+      url: "/history-list"
+    },
+    {
+      title: "Consulta",
+      url: "/diagnostic"
+    },
+    {
+      title: "Perfil",
+      url: "/profile"
+    },
+    {
+      title: "Logout",
+      url: ""
+    }
+]
   constructor(private toast : ToastrService) { }
   ionViewWillEnter(){
     console.log(window.localStorage.getItem('username'));

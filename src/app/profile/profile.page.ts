@@ -51,6 +51,7 @@ export class ProfilePage{
         .set('apellidos', form.value.apellidos)
         this.profileServ.updateUser(this.id, this.values).subscribe( (res: any) =>{
           this.soloVista=true;
+          window.localStorage.setItem('username',form.value.nickname);
           this.toast.success('Datos Modificados con éxito', 'Modificación Exitosa!');
         },
       error =>{
