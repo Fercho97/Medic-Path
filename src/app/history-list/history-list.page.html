@@ -9,7 +9,7 @@
   <ion-item-sliding *ngFor="let hist of historiales">
   <ion-item routerLink="/history-detail/{{hist.hashId}}">
   <ion-card style="width:100%">
-      <ion-label>Consulta del día de {{hist.fecha_consulta}}</ion-label>
+      <ion-label>Consulta del día {{hist.fecha_consulta}}</ion-label>
       <ion-card-content>{{hist.detalles}}</ion-card-content>
   </ion-card>
   </ion-item>

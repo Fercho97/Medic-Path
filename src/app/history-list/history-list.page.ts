@@ -7,14 +7,17 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./history-list.page.scss'],
   providers: [ConsultService]
 })
-export class HistoryListPage implements OnInit {
+export class HistoryListPage{
   id = window.localStorage.getItem('id');
   historiales =[] as any;
+  
   constructor(private consultServ : ConsultService, private toast : ToastrService ) { }
 
-  ngOnInit() {
+  ionViewWillEnter(){
+    //console.log(this.id);
     this.consultServ.historyList(this.id).subscribe( (res: any) =>{
       this.historiales = res.body;
+      //console.log(this.historiales);
     },
   error =>{
       console.log(error);
