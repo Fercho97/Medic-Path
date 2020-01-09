@@ -11,12 +11,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HistoryDetailPage {
   historial = {} as any;
   padecimientoInfo = {} as any;
+  public url : string = "";
   constructor(private consultServ : ConsultService, private toast : ToastrService, private route : ActivatedRoute) { }
 
   ionViewWillEnter() {
     this.consultServ.getHistory(this.route.snapshot.params.id).subscribe( (res: any) =>{
       this.historial = res.body[0];
       this.padecimientoInfo = res.body[1];
+
+      if(this.padecimientoInfo.url_imagen_pad!= null){
+      this.url = this.padecimientoInfo.url_imagen_pad.toString();
+      }
       console.log(res.body);
     },
   error =>{
