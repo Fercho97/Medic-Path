@@ -16,7 +16,7 @@ import { LoginPage } from './login/login.page';
 import { RegisterPage } from './register/register.page';
 import { FormsModule} from '@angular/forms';
 import { PassResetPage } from './pass-reset/pass-reset.page'
-
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [AppComponent,LoginPage,RegisterPage,PassResetPage],
   entryComponents: [],
@@ -24,6 +24,7 @@ import { PassResetPage } from './pass-reset/pass-reset.page'
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     FormsModule,
+    ReactiveFormsModule,
     IonicStorageModule.forRoot()
     ],
   providers: [

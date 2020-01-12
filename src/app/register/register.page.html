@@ -1,48 +1,112 @@
 <ion-header>
   <ion-toolbar>
-      <ion-button slot="start" color="tertiary" routerLink="" >Back</ion-button>
+      <ion-button slot="start" color="tertiary" routerLink="" ><ion-icon name="arrow-back"></ion-icon></ion-button>
     <ion-title class="ion-text-center">Registro</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <form #form="ngForm" (ngSubmit)="registry(form)">
+<ion-content padding class="form-content">
+  <form [formGroup]="datos_registro" (ngSubmit)="registry()">
     <ion-grid>
       <ion-row color="primary" class="ion-justify-content-center">
       <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
       <div class="ion-padding">
           <ion-item>
               <ion-label color="tertiary" position="floating">Nickname</ion-label>
-              <ion-input name="nickname" type="text" ngModel required></ion-input>
+              <ion-input type="text" formControlName="nickname" ></ion-input>
           </ion-item>
+
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of mensajes_error.nickname">
+              <div class="error-message" *ngIf="datos_registro.get('nickname').hasError(validation.type) && (datos_registro.get('nickname').dirty || datos_registro.get('nickname').touched)">
+                <ion-icon name="alert"></ion-icon>{{validation.message}}
+              </div>
+            </ng-container>
+          </div>
+
           <ion-item>
               <ion-label color="tertiary" position="floating">Nombre(s)</ion-label>
-              <ion-input name="nombres" type="text" ngModel required></ion-input>
+              <ion-input formControlName="nombres" type="text" ></ion-input>
           </ion-item>
+
+          <div class="validation-errors">
+              <ng-container *ngFor="let validation of mensajes_error.nombres">
+                <div class="error-message" *ngIf="datos_registro.get('nombres').hasError(validation.type) && (datos_registro.get('nombres').dirty || datos_registro.get('nombres').touched)">
+                  {{validation.message}}
+                </div>
+              </ng-container>
+          </div>
+
         <ion-item>
             <ion-label color="tertiary" position="floating">Apellido(s)</ion-label>
-          <ion-input name="apellidos" type="text"  ngModel required></ion-input>
+          <ion-input formControlName="apellidos" type="text" ></ion-input>
         </ion-item>
+        
+        <div class="validation-errors">
+            <ng-container *ngFor="let validation of mensajes_error.apellidos">
+              <div class="error-message" *ngIf="datos_registro.get('apellidos').hasError(validation.type) && (datos_registro.get('apellidos').dirty || datos_registro.get('apellidos').touched)">
+                {{validation.message}}
+              </div>
+            </ng-container>
+        </div>
+
         <ion-item >
             <ion-label color="tertiary" position="floating">Correo</ion-label>
-            <ion-input name="email" type="email" ngModel required></ion-input>
+            <ion-input formControlName="email" type="email" ></ion-input>
             <ion-icon name="mail" color="tertiary" slot="end"></ion-icon>
         </ion-item>
+
+        <div class="validation-errors">
+            <ng-container *ngFor="let validation of mensajes_error.email">
+              <div class="error-message" *ngIf="datos_registro.get('email').hasError(validation.type) && (datos_registro.get('email').dirty || datos_registro.get('email').touched)">
+                {{validation.message}}
+              </div>
+            </ng-container>
+        </div>
+
+      <div formGroupName="password_validations">
         <ion-item >
             <ion-label color="tertiary" position="floating">Contraseña</ion-label>
-            <ion-input name="password" type="password"  ngModel required></ion-input>
+            <ion-input formControlName="password" type="password" ></ion-input>
             <ion-icon name="key" color="tertiary" slot="end"></ion-icon>
         </ion-item>
-       
-      <ion-item >
-          <ion-label color="danger" position="floating" [hidden]="samePass">Contraseñas no son iguales</ion-label>
+
+        <div class="validation-errors">
+            <ng-container *ngFor="let validation of mensajes_error.password">
+              <div class="error-message" *ngIf="datos_registro.get('password_validations').get('password').hasError(validation.type) 
+                && (datos_registro.get('password_validations').get('password').dirty || datos_registro.get('password_validations').get('password').touched)">
+                {{validation.message}}
+              </div>
+            </ng-container>
+        </div>
+
+      <ion-item>
           <ion-label color="tertiary" position="floating">Repetir Contraseña</ion-label>
-          <ion-input name="passwordVerif" type="password"  ngModel required (ionBlur)="comparePass(form)"></ion-input>
+          <ion-input formControlName="passwordVerif" type="password" ></ion-input>
           <ion-icon name="key" color="tertiary" slot="end"></ion-icon>
       </ion-item>
       
-      <ion-radio-group (ionChange)="radioSelection($event)">
-            <label>Sexo</label>
+      <div class="validation-errors">
+          <ng-container *ngFor="let validation of mensajes_error.passwordVerif">
+            <div class="error-message" *ngIf="datos_registro.get('password_validations').get('passwordVerif').hasError(validation.type) 
+             && (datos_registro.get('password_validations').get('passwordVerif').dirty || datos_registro.get('password_validations').get('passwordVerif').touched)">
+              {{validation.message}}
+            </div>
+          </ng-container>
+      </div>
+    </div>
+
+    <div class="validation-errors">
+        <ng-container *ngFor="let validation of mensajes_error.same_password">
+          <div class="error-message" *ngIf="datos_registro.get('password_validations').hasError(validation.type) 
+           && (datos_registro.get('password_validations').get('passwordVerif').dirty || datos_registro.get('password_validations').get('passwordVerif').touched)">
+            {{validation.message}}
+          </div>
+        </ng-container>
+    </div>
+
+      <ion-radio-group formControlName="genero">
+          <ion-label color="tertiary">Sexo</ion-label>
           <ion-item>
               <ion-label color="tertiary">Hombre</ion-label>
               <ion-radio name="genero" color="primary"
@@ -57,13 +121,21 @@
 
         <ion-item>
           <ion-label color="tertiary" position="floating">Fecha Nacimiento</ion-label>
-          <ion-input name="fecha" type="date" ngModel></ion-input>
+          <ion-input formControlName="fecha_nacimiento" type="date"></ion-input>
           <ion-icon name="calendar" color="tertiary" slot="end"></ion-icon>
         </ion-item>
 
+        <div class="validation-errors">
+            <ng-container *ngFor="let validation of mensajes_error.fecha_nacimiento">
+              <div class="error-message" *ngIf="datos_registro.get('fecha_nacimiento').hasError(validation.type) 
+                   && (datos_registro.get('fecha_nacimiento').dirty || datos_registro.get('fecha_nacimiento').touched)">
+                {{validation.message}}
+              </div>
+            </ng-container>
+        </div>
       </div>
       <div class="ion-padding">
-        <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">Register</ion-button>
+        <ion-button shape="round" class="round-button" expand="full" type="submit" [disabled]="!datos_registro.valid">Registrarse</ion-button>
       </div>
       </ion-col>
       </ion-row>
