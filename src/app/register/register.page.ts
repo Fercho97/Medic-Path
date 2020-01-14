@@ -6,6 +6,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { RegisterService } from './register.service';
 import {Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ErrorMsg } from '../utils/error_msg.const';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -15,40 +16,7 @@ export class RegisterPage implements OnInit {
 
   datos_registro : FormGroup;
 
-  mensajes_error = {
-    'nickname' : [
-      {type: 'required', message: 'El campo de nickname es requerido'},
-      {type: 'minlength', message: 'El nickname debe ser mayor a 3 caracteres'},
-      {type: 'maxlength', message: 'El nickname debe ser menor a 20 caracteres'}
-    ],
-    'nombres' : [
-      {type: 'required', message: 'El nombre no se puede quedar vacio'},
-      {type: 'minlength', message: 'La longitud debe ser mayor a 3 caracteres'},
-      {type: 'maxlength', message: 'La longitud debe ser menor a 50 caracteres'}
-    ],
-    'apellidos' : [
-      {type: 'required', message: 'Los apellidos no pueden quedar vacios'},
-      {type: 'minlength', message: 'La longitud debe ser mayor a 3 caracteres'},
-      {type: 'maxlength', message: 'La longitud debe ser menor a 50 caracteres'}
-    ],
-    'email' : [
-      {type: 'required', message: 'Es necesario ingresar un correo'},
-      {type: 'pattern', message: 'El texto ingresado no representa un correo'}
-    ],
-    'fecha_nacimiento' : [
-      {type: 'required', message: 'Debe seleccionar una fecha'}
-    ],
-    'password' : [
-      {type: 'required', message: 'Debe ingresar una contraseña'},
-      {type: 'minlength', message: 'La contraseña debe tener más de 5 caracteres'}
-    ],
-    'passwordVerif' : [
-      {type: 'required', message: 'Valide su contraseña'}
-    ],
-    'same_password' : [
-      {type: 'equalPasswords', message: 'Las contraseñas no son iguales'}
-    ]
-  }
+  mensajes_error = ErrorMsg.ERROR_MSG_REGISTER;
   sexo : string = "";
   private values : HttpParams;
   public samePass : boolean = true;
@@ -71,7 +39,7 @@ export class RegisterPage implements OnInit {
       ]),
       nickname : new FormControl('', [
         Validators.required,
-        Validators.minLength(4),
+        Validators.minLength(3),
         Validators.maxLength(20)
       ]),
 

@@ -32,7 +32,7 @@
           <div class="validation-errors">
               <ng-container *ngFor="let validation of mensajes_error.nombres">
                 <div class="error-message" *ngIf="datos_registro.get('nombres').hasError(validation.type) && (datos_registro.get('nombres').dirty || datos_registro.get('nombres').touched)">
-                  {{validation.message}}
+                  <ion-icon name="alert"></ion-icon>{{validation.message}}
                 </div>
               </ng-container>
           </div>
@@ -45,7 +45,7 @@
         <div class="validation-errors">
             <ng-container *ngFor="let validation of mensajes_error.apellidos">
               <div class="error-message" *ngIf="datos_registro.get('apellidos').hasError(validation.type) && (datos_registro.get('apellidos').dirty || datos_registro.get('apellidos').touched)">
-                {{validation.message}}
+                <ion-icon name="alert"></ion-icon>{{validation.message}}
               </div>
             </ng-container>
         </div>
@@ -59,7 +59,7 @@
         <div class="validation-errors">
             <ng-container *ngFor="let validation of mensajes_error.email">
               <div class="error-message" *ngIf="datos_registro.get('email').hasError(validation.type) && (datos_registro.get('email').dirty || datos_registro.get('email').touched)">
-                {{validation.message}}
+                <ion-icon name="alert"></ion-icon>{{validation.message}}
               </div>
             </ng-container>
         </div>
@@ -75,7 +75,7 @@
             <ng-container *ngFor="let validation of mensajes_error.password">
               <div class="error-message" *ngIf="datos_registro.get('password_validations').get('password').hasError(validation.type) 
                 && (datos_registro.get('password_validations').get('password').dirty || datos_registro.get('password_validations').get('password').touched)">
-                {{validation.message}}
+                <ion-icon name="alert"></ion-icon>{{validation.message}}
               </div>
             </ng-container>
         </div>
@@ -90,7 +90,7 @@
           <ng-container *ngFor="let validation of mensajes_error.passwordVerif">
             <div class="error-message" *ngIf="datos_registro.get('password_validations').get('passwordVerif').hasError(validation.type) 
              && (datos_registro.get('password_validations').get('passwordVerif').dirty || datos_registro.get('password_validations').get('passwordVerif').touched)">
-              {{validation.message}}
+             <ion-icon name="alert"></ion-icon>{{validation.message}}
             </div>
           </ng-container>
       </div>
@@ -100,7 +100,7 @@
         <ng-container *ngFor="let validation of mensajes_error.same_password">
           <div class="error-message" *ngIf="datos_registro.get('password_validations').hasError(validation.type) 
            && (datos_registro.get('password_validations').get('passwordVerif').dirty || datos_registro.get('password_validations').get('passwordVerif').touched)">
-            {{validation.message}}
+           <ion-icon name="alert"></ion-icon>{{validation.message}}
           </div>
         </ng-container>
     </div>
@@ -129,7 +129,7 @@
             <ng-container *ngFor="let validation of mensajes_error.fecha_nacimiento">
               <div class="error-message" *ngIf="datos_registro.get('fecha_nacimiento').hasError(validation.type) 
                    && (datos_registro.get('fecha_nacimiento').dirty || datos_registro.get('fecha_nacimiento').touched)">
-                {{validation.message}}
+                   <ion-icon name="alert"></ion-icon>{{validation.message}}
               </div>
             </ng-container>
         </div>

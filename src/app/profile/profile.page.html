@@ -8,21 +8,48 @@
 </ion-header>
 
 <ion-content>
-    <form #form="ngForm" (ngSubmit)="actualizarDatos(form)">
+    <form [formGroup]="datos_perfil" (ngSubmit)="actualizarDatos()">
     <ion-item>
         <ion-label color="success">Nickname</ion-label>
-        <ion-input name="nickname" type="text" ngModel value="{{usuario.nickname}}" disabled="{{soloVista}}" ></ion-input>
+        <ion-input name="nickname" type="text" formControlName="nickname" value="{{usuario.nickname}}" disabled="{{soloVista}}" ></ion-input>
     </ion-item>
 
+    <div class="validation-errors">
+        <ng-container *ngFor="let validation of mensajes_error.nickname">
+          <div class="error-message" *ngIf="datos_perfil.get('nickname').hasError(validation.type) 
+          && (datos_perfil.get('nickname').dirty || datos_perfil.get('nickname').touched)">
+            <ion-icon name="alert"></ion-icon>{{validation.message}}
+          </div>
+        </ng-container>
+      </div>
+      
     <ion-item>
         <ion-label color="success">Nombre(s)</ion-label>
-        <ion-input name="nombres" type="text" value="{{usuario.nombres}}" disabled="{{soloVista}}" ngModel ></ion-input>
+        <ion-input name="nombres" type="text" value="{{usuario.nombres}}" disabled="{{soloVista}}" formControlName="nombres" ></ion-input>
     </ion-item>
+
+    <div class="validation-errors">
+        <ng-container *ngFor="let validation of mensajes_error.nombres">
+          <div class="error-message" *ngIf="datos_perfil.get('nombres').hasError(validation.type) 
+          && (datos_perfil.get('nombres').dirty || datos_perfil.get('nombres').touched)">
+            <ion-icon name="alert"></ion-icon>{{validation.message}}
+          </div>
+        </ng-container>
+    </div>
 
     <ion-item>
         <ion-label color="success">Apellidos(s)</ion-label>
-        <ion-input name="apellidos" type="text" value="{{usuario.apellidos}}" disabled="{{soloVista}}" ngModel></ion-input>
+        <ion-input name="apellidos" type="text" value="{{usuario.apellidos}}" disabled="{{soloVista}}" formControlName="apellidos"></ion-input>
     </ion-item>
+
+    <div class="validation-errors">
+        <ng-container *ngFor="let validation of mensajes_error.apellidos">
+          <div class="error-message" *ngIf="datos_perfil.get('apellidos').hasError(validation.type) 
+          && (datos_perfil.get('apellidos').dirty || datos_perfil.get('apellidos').touched)">
+            <ion-icon name="alert"></ion-icon>{{validation.message}}
+          </div>
+        </ng-container>
+    </div>
 
     <ion-item>
         <ion-label color="success">Email</ion-label>
@@ -44,7 +71,7 @@
     </div>
 
     <div  class="ion-padding" [hidden]="soloVista">
-      <ion-button size="medium" color="success" expand="block" type="submit" [disabled]="form.invalid">Guardar</ion-button>
+      <ion-button size="medium" color="success" expand="block" type="submit" [disabled]="datos_perfil.invalid">Guardar</ion-button>
     </div>
 
     <div  class="ion-padding" [hidden]="soloVista">
