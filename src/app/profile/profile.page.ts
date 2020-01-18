@@ -51,8 +51,8 @@ export class ProfilePage{
       this.usuario = res.body;
       console.log(this.usuario);
 
-      if(this.usuario.image_perfil!=null){
-        this.url = 'data:image/jpg;base64,' + this.usuario.image_perfil.toString();
+      if(this.usuario.imagen_perfil!=null){
+        this.url = 'data:image/jpg;base64,' + this.usuario.imagen_perfil.toString();
       }
     },
   error =>{
