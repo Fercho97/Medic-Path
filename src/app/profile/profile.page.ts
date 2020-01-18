@@ -5,6 +5,7 @@ import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ErrorMsg } from '../utils/error_msg.const';
+import {Router} from '@angular/router';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -18,9 +19,12 @@ export class ProfilePage{
   mensajes_error = ErrorMsg.ERROR_MSG_REGISTER;
   id = window.localStorage.getItem('id');
   private values : HttpParams;
+  formData: any = new FormData();
+  selectedFile : File = null;
   usuario = {} as any;
   soloVista : boolean = true;
-  constructor(private profileServ : ProfileService, private toast : ToastrService) {
+  public url : string = "";
+  constructor(private profileServ : ProfileService, private toast : ToastrService, private router : Router) {
 
     this.datos_perfil = new FormGroup({
       nombres : new FormControl('', [
@@ -37,22 +41,29 @@ export class ProfilePage{
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(20)
-      ])
+      ]),
+      picture : new FormControl('')
     })
    }
 
   ionViewWillEnter() {
-    this.profileServ.getUser(this.id).subscribe( (res: any) =>{
+    this.profileServ.getUser(this.id,window.localStorage.getItem('token')).subscribe( (res: any) =>{
       this.usuario = res.body;
       console.log(this.usuario);
+
+      if(this.usuario.image_perfil!=null){
+        this.url = 'data:image/jpg;base64,' + this.usuario.image_perfil.toString();
+      }
     },
   error =>{
       console.log(error);
   })
   }
 
-  underConstruction(){
-    this.toast.warning('Vista y funcionalidad en construcción', 'En proceso');
+  createFormData(event){
+    this.selectedFile = <File>event.target.files[0];
+    this.formData.append('image', this.selectedFile, this.selectedFile.name);
+    console.log(this.formData.get('image'));
   }
 
   comenzarEdicion(){
@@ -64,14 +75,14 @@ export class ProfilePage{
   }
 
   actualizarDatos(){
-        this.values = new HttpParams()
-        .set('nickname', this.datos_perfil.value.nickname)
-        .set('nombres', this.datos_perfil.value.nombres)
-        .set('apellidos', this.datos_perfil.value.apellidos)
-        this.profileServ.updateUser(this.id, this.values).subscribe( (res: any) =>{
+    this.formData.append('nickname', this.datos_perfil.value.nickname);
+    this.formData.append('nombres', this.datos_perfil.value.nombres);
+    this.formData.append('apellidos', this.datos_perfil.value.apellidos);
+        this.profileServ.updateUser(this.id, this.formData).subscribe( (res: any) =>{
           this.soloVista=true;
           window.localStorage.setItem('username',this.datos_perfil.value.nickname);
           this.toast.success('Datos Modificados con éxito', 'Modificación Exitosa!');
+          this.formData = new FormData();
         },
       error =>{
         console.log(error.message);

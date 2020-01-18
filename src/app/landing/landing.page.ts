@@ -29,6 +29,7 @@ export class LandingPage {
   constructor(private toast : ToastrService) { }
   ionViewWillEnter(){
     console.log(window.localStorage.getItem('username'));
+    console.log(window.localStorage.getItem('token'));
     this.username=window.localStorage.getItem('username')
   }
 

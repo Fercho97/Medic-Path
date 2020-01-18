@@ -12,22 +12,21 @@ export class ProfileService{
     }
 
 
-    getUser(id : any){
+    getUser(id : any, token : any){
+        const headers = new HttpHeaders({'Authorization': token ,'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
+        console.log(headers);
         return this._http.get(this._urlIndividual + id,
             {
-              headers: new HttpHeaders()
-              .set('Content-Type', 'application/x-www-form-urlencoded'),
+              headers: headers,
               observe : 'response'
             },
         )
     }
 
-    updateUser(id : any,valores : HttpParams){
+    updateUser(id : any,valores : FormData){
         return this._http.put(this._urlEditar + id,
-            valores.toString(),
+            valores,
             {
-                headers: new HttpHeaders()
-                .set('Content-Type', 'application/x-www-form-urlencoded'),
                 observe : 'response' 
             }
         )

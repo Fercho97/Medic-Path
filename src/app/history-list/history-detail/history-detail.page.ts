@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HistoryDetailPage {
   historial = {} as any;
   padecimientoInfo = {} as any;
-  public url : string = "";
+  public url : string = '';
   constructor(private consultServ : ConsultService, private toast : ToastrService, private route : ActivatedRoute) { }
 
   ionViewWillEnter() {
@@ -20,7 +20,7 @@ export class HistoryDetailPage {
       this.padecimientoInfo = res.body[1];
 
       if(this.padecimientoInfo.url_imagen_pad!= null){
-      this.url = this.padecimientoInfo.url_imagen_pad.toString();
+      this.url = 'data:image/jpg;base64,' + this.padecimientoInfo.url_imagen_pad.toString();
       }
       console.log(res.body);
     },
