@@ -48,7 +48,7 @@ export class ProfilePage{
 
   ionViewWillEnter() {
     this.profileServ.getUser(this.id,window.localStorage.getItem('token')).subscribe( (res: any) =>{
-      this.usuario = res.body;
+      this.usuario = res.body.resultado;
       console.log(this.usuario);
 
       if(this.usuario.imagen_perfil!=null){

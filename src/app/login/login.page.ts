@@ -20,7 +20,8 @@ export class LoginPage {
     console.log(form.value.email);
     this.values = new HttpParams()
     .set('nickOrEmail', form.value.email)
-    .set('password', form.value.password);
+    .set('password', form.value.password)
+    .set('mobile', "true");
     this.logServ.checkLogin(this.values).subscribe( (res : any) =>{
 
     if(res.body.message=="Verificacion"){
