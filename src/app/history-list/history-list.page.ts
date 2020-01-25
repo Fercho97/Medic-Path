@@ -15,7 +15,7 @@ export class HistoryListPage{
 
   ionViewWillEnter(){
     //console.log(this.id);
-    this.consultServ.historyList(this.id).subscribe( (res: any) =>{
+    this.consultServ.historyList(this.id,window.localStorage.getItem('token')).subscribe( (res: any) =>{
       this.historiales = res.body;
       //console.log(this.historiales);
     },

@@ -12,10 +12,10 @@ export class ProfileService{
     }
 
 
-    getUser(id : any, token : any){
+    getUser(hash : any, token : any){
         const headers = new HttpHeaders({'Authorization': token ,'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
         console.log(headers);
-        return this._http.get(this._urlIndividual + id,
+        return this._http.get(this._urlIndividual + encodeURIComponent(hash),
             {
               headers: headers,
               observe : 'response'
@@ -23,10 +23,12 @@ export class ProfileService{
         )
     }
 
-    updateUser(id : any,valores : FormData){
-        return this._http.put(this._urlEditar + id,
+    updateUser(hash : any,token: any,valores : FormData){
+        const headers = new HttpHeaders({'Authorization': token, 'X-Requested-With':'XMLHttpRequest'});
+        return this._http.put(this._urlEditar + encodeURIComponent(hash),
             valores,
             {
+                headers: headers,
                 observe : 'response' 
             }
         )

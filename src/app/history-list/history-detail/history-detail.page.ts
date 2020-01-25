@@ -15,7 +15,7 @@ export class HistoryDetailPage {
   constructor(private consultServ : ConsultService, private toast : ToastrService, private route : ActivatedRoute) { }
 
   ionViewWillEnter() {
-    this.consultServ.getHistory(this.route.snapshot.params.id).subscribe( (res: any) =>{
+    this.consultServ.getHistory(this.route.snapshot.params.id, window.localStorage.getItem('token')).subscribe( (res: any) =>{
       this.historial = res.body[0];
       this.padecimientoInfo = res.body[1];
 

@@ -17,7 +17,7 @@ export class ProfilePage{
   datos_perfil : FormGroup;
 
   mensajes_error = ErrorMsg.ERROR_MSG_REGISTER;
-  id = window.localStorage.getItem('id');
+  hash = window.localStorage.getItem('hash');
   private values : HttpParams;
   formData: any = new FormData();
   selectedFile : File = null;
@@ -47,7 +47,7 @@ export class ProfilePage{
    }
 
   ionViewWillEnter() {
-    this.profileServ.getUser(this.id,window.localStorage.getItem('token')).subscribe( (res: any) =>{
+    this.profileServ.getUser(this.hash,window.localStorage.getItem('token')).subscribe( (res: any) =>{
       this.usuario = res.body.resultado;
       console.log(this.usuario);
 
@@ -78,7 +78,7 @@ export class ProfilePage{
     this.formData.append('nickname', this.datos_perfil.value.nickname);
     this.formData.append('nombres', this.datos_perfil.value.nombres);
     this.formData.append('apellidos', this.datos_perfil.value.apellidos);
-        this.profileServ.updateUser(this.id, this.formData).subscribe( (res: any) =>{
+        this.profileServ.updateUser(this.hash,window.localStorage.getItem('token'), this.formData).subscribe( (res: any) =>{
           this.soloVista=true;
           window.localStorage.setItem('username',this.datos_perfil.value.nickname);
           this.toast.success('Datos Modificados con éxito', 'Modificación Exitosa!');
