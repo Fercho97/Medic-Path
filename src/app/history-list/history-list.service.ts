@@ -5,10 +5,10 @@ export class ConsultService{
     _urlListado : string = '';
     _urlIndividual : string = '';
     constructor(private _http: HttpClient) {
-        this._urlListado = //"https://medicpath.herokuapp.com/historial/"
-        'http://localhost:3000/historial/'
-        this._urlIndividual = //"https://medicpath.herokuapp.com/historial/usuarioHist/"
-        'http://localhost:3000/historial/usuarioHist/'
+        this._urlListado = "https://medicpath.herokuapp.com/historial/"
+        //'http://localhost:3000/historial/'
+        this._urlIndividual = "https://medicpath.herokuapp.com/historial/usuarioHist/"
+        //'http://localhost:3000/historial/usuarioHist/'
         
     }
 
