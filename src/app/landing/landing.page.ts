@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { LoginService } from '../login/login.service';
+import {Router} from '@angular/router';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
@@ -20,13 +22,9 @@ export class LandingPage {
     {
       title: "Perfil",
       url: "/profile"
-    },
-    {
-      title: "Logout",
-      url: ""
     }
 ]
-  constructor(private toast : ToastrService) { }
+  constructor(private toast : ToastrService, private logServ : LoginService, private router : Router) { }
   ionViewWillEnter(){
     console.log(window.localStorage.getItem('username'));
     console.log(window.localStorage.getItem('token'));
@@ -35,6 +33,17 @@ export class LandingPage {
 
   underConstruction(){
     this.toast.warning('Vista y funcionalidad en construcción', 'En proceso');
+  }
+
+  logout(){
+
+    this.logServ.logout(window.localStorage.getItem('token')).subscribe( (res: any) =>{
+      window.localStorage.clear();
+      this.router.navigate([''])
+    },
+  error =>{
+      console.log(error);
+  })
   }
 
 }
