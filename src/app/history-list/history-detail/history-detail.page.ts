@@ -10,17 +10,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class HistoryDetailPage {
   historial = {} as any;
-  padecimientoInfo = {} as any;
   public url : string = '';
+  sintomas = [] as any;
   constructor(private consultServ : ConsultService, private toast : ToastrService, private route : ActivatedRoute) { }
 
   ionViewWillEnter() {
     this.consultServ.getHistory(this.route.snapshot.params.id, window.localStorage.getItem('token')).subscribe( (res: any) =>{
-      this.historial = res.body[0];
-      this.padecimientoInfo = res.body[1];
-
-      if(this.padecimientoInfo.url_imagen_pad!= null){
-      this.url = 'data:image/jpg;base64,' + this.padecimientoInfo.url_imagen_pad.toString();
+      this.historial = res.body;
+      this.sintomas = res.body.detalles.split(",");
+      if(this.historial.url_imagen_pad!= null){
+      this.url = 'data:image/jpg;base64,' + this.historial.url_imagen_pad.toString();
       }
       console.log(res.body);
     },

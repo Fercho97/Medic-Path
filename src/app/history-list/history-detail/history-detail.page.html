@@ -9,12 +9,19 @@
     <ion-card>
       <img justify-content-center align-items-center style="width:300px;height:200px;" [src]="url">
     <ion-item>
-        <ion-label>Con resultado de {{padecimientoInfo.nombre_pad}}</ion-label>
+        <ion-label>Con resultado de {{historial.nombre_pad}}</ion-label>
     </ion-item>
     <ion-card-content>
-      {{padecimientoInfo.descripcion}}
+      {{historial.descripcion}}
       <br>
-      <ion-label><span>Con los sintomas:</span> {{historial.detalles}}</ion-label>
+      <ion-label><span>Médico recomendado para chequeo en caso de complicaciones:</span> {{historial.nombre_esp}}</ion-label>
+      <br>
+      <ion-list>
+        <ion-label>Con los sintomas:</ion-label>
+        <ion-item *ngFor="let sintoma of sintomas">
+          <ion-label>{{sintoma}}</ion-label>
+        </ion-item>
+      </ion-list>
     </ion-card-content>
   </ion-card>
 </ion-content>
