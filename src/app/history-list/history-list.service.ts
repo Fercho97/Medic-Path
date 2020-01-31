@@ -13,8 +13,8 @@ export class ConsultService{
     }
 
 
-    historyList(user : any, token : any){
-        const headers = new HttpHeaders({'Authorization': token, 'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
+    historyList(user : any){
+        const headers = new HttpHeaders({'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
         
         return this._http.get(this._urlListado + user,
             {
@@ -24,8 +24,8 @@ export class ConsultService{
         )
     }
 
-    getHistory(id : any, token : any){
-        const headers = new HttpHeaders({'Authorization': token, 'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
+    getHistory(id : any){
+        const headers = new HttpHeaders({'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
         
         return this._http.get(this._urlIndividual + encodeURIComponent(id),
             {

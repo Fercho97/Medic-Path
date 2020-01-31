@@ -9,7 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginPage } from './login/login.page';
@@ -17,6 +17,8 @@ import { RegisterPage } from './register/register.page';
 import { FormsModule} from '@angular/forms';
 import { PassResetPage } from './pass-reset/pass-reset.page'
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthInterceptorService } from "./auth/interceptor-service";
+
 @NgModule({
   declarations: [AppComponent,LoginPage,RegisterPage,PassResetPage],
   entryComponents: [],
@@ -30,7 +32,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
   ],
   bootstrap: [AppComponent]
 })
