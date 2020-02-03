@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" color="secondary" routerLink="/landing" >Volver</ion-button>
+    <ion-title *ngIf="!hasEspe" class="ion-text-center">Directorio Médico</ion-title>
+    <ion-title *ngIf="hasEspe" class="ion-text-center">Directorio Médico de {{tipo}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="outer-content">
+  <ion-list *ngIf="medicos.length>0">
+    <ion-item-sliding *ngFor="let medico of medicos">
+      <ion-item class="item item-block item-md">
+          <ion-label><h2>Doctor {{medico.apellidos + " " + medico.nombres}}</h2>
+                                            <p>Teléfono: {{medico.telefono}}</p>
+                                            <p>Dirección: {{medico.direccion}}</p>
+                                            </ion-label>
+          <ion-label *ngIf="!hasEspe"><p>Especializaciones:</p><p *ngFor="let espe of medico.especializacions">{{espe.nombre_esp}}</p></ion-label>
+       </ion-item>
+      <ion-item-options>
+        <button ion-button color="light" icon-start routerLink="/directory-detail/{{medico.hash_id}}">
+          <ion-icon name="more"></ion-icon>
+          Detalles
+        </button>
+      </ion-item-options>  
+     
+      </ion-item-sliding>
+  </ion-list>
+  <h2 *ngIf="medicos.length==0">No hay médicos en el sistema</h2>
+</ion-content>

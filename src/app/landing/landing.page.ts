@@ -22,6 +22,10 @@ export class LandingPage {
     {
       title: "Perfil",
       url: "/profile"
+    },
+    {
+      title: "Directorio Médico",
+      url: "/directory"
     }
 ]
   constructor(private toast : ToastrService, private logServ : LoginService, private router : Router) { }

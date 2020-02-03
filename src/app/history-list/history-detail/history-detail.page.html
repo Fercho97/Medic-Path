@@ -14,7 +14,7 @@
     <ion-card-content>
       {{historial.descripcion}}
       <br>
-      <ion-label><span>Médico recomendado para chequeo en caso de complicaciones:</span> {{historial.nombre_esp}}</ion-label>
+      <ion-label routerLink="/directory/{{historial.nombre_esp}}"><span>Médico recomendado para chequeo en caso de complicaciones:</span> {{historial.nombre_esp}}</ion-label>
       <br>
       <ion-list>
         <ion-label>Con los sintomas:</ion-label>

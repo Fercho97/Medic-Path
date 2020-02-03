@@ -11,7 +11,12 @@ const routes: Routes = [
   { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
   { path: 'landing', loadChildren: './landing/landing.module#LandingPageModule' },
   { path: 'history-list', loadChildren: './history-list/history-list.module#HistoryListPageModule' },
-  { path: 'history-detail/:id', loadChildren: './history-list/history-detail/history-detail.module#HistoryDetailPageModule' },  { path: 'diagnostic', loadChildren: './diagnostic/diagnostic.module#DiagnosticPageModule' },
+  { path: 'history-detail/:id', loadChildren: './history-list/history-detail/history-detail.module#HistoryDetailPageModule' },
+  { path: 'diagnostic', loadChildren: './diagnostic/diagnostic.module#DiagnosticPageModule' },
+  { path: 'directory', loadChildren: './directory/directory.module#DirectoryPageModule' },
+  { path: 'directory/:type', loadChildren: './directory/directory.module#DirectoryPageModule' },
+  { path: 'directory-detail/:hash', loadChildren: './directory/directory-detail/directory-detail.module#DirectoryDetailPageModule' },
+
 
 ];
 @NgModule({
