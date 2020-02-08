@@ -7,6 +7,8 @@ import { RegisterService } from './register.service';
 import {Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorMsg } from '../utils/error_msg.const';
+import { NicknameValidator } from "../validators/NicknameValidator";
+import { EmailValidator } from "../validators/EmailValidator";
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -20,7 +22,9 @@ export class RegisterPage implements OnInit {
   sexo : string = "";
   private values : HttpParams;
   public samePass : boolean = true;
-  constructor(private regServ : RegisterService, private toast : ToastrService, private router : Router) {
+  constructor(private regServ : RegisterService, private toast : ToastrService,
+              private router : Router, private nickVal : NicknameValidator,
+              private emailVal : EmailValidator) {
 
     this.datos_registro = new FormGroup({
       nombres : new FormControl('', [
@@ -36,12 +40,12 @@ export class RegisterPage implements OnInit {
       email: new FormControl('', [
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-      ]),
+      ], [this.emailVal.existingEmail()]),
       nickname : new FormControl('', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(20)
-      ]),
+      ],[this.nickVal.existingNickname()]),
 
       password_validations : new FormGroup({
       password : new FormControl('', [Validators.required, Validators.minLength(5)]),
