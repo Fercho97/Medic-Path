@@ -6,6 +6,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ErrorMsg } from '../utils/error_msg.const';
 import {Router} from '@angular/router';
+import { NicknameValidator } from "../validators/NicknameValidator";
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -20,11 +21,15 @@ export class ProfilePage{
   hash = window.localStorage.getItem('hash');
   private values : HttpParams;
   formData: any = new FormData();
+  formDataImg: any = new FormData()
   selectedFile : File = null;
   usuario = {} as any;
   soloVista : boolean = true;
+  hasImage : boolean = false;
   public url : string = "";
-  constructor(private profileServ : ProfileService, private toast : ToastrService, private router : Router) {
+  public originalValue : string = "";
+  constructor(private profileServ : ProfileService, private toast : ToastrService, 
+              private router : Router, private nickVal : NicknameValidator) {
 
     this.datos_perfil = new FormGroup({
       nombres : new FormControl('', [
@@ -49,11 +54,15 @@ export class ProfilePage{
   ionViewWillEnter() {
     this.profileServ.getUser(this.hash).subscribe( (res: any) =>{
       this.usuario = res.body.resultado;
+      this.originalValue = res.body.resultado.nickname;
       console.log(this.usuario);
 
       if(this.usuario.imagen_perfil!=null){
         this.url = 'data:image/jpg;base64,' + this.usuario.imagen_perfil.toString();
       }
+      this.datos_perfil.controls['nickname'].setValue(this.usuario.nickname, {onlySelf : true});
+      this.datos_perfil.controls['nombres'].setValue(this.usuario.nombres, {onlySelf : true});
+      this.datos_perfil.controls['apellidos'].setValue(this.usuario.apellidos, {onlySelf : true});
     },
   error =>{
       console.log(error);
@@ -62,8 +71,9 @@ export class ProfilePage{
 
   createFormData(event){
     this.selectedFile = <File>event.target.files[0];
-    this.formData.append('image', this.selectedFile, this.selectedFile.name);
-    console.log(this.formData.get('image'));
+    this.formDataImg.append('image', this.selectedFile, this.selectedFile.name);
+    console.log(this.formDataImg.get('image'));
+    this.hasImage=true;
   }
 
   comenzarEdicion(){
@@ -75,6 +85,7 @@ export class ProfilePage{
   }
 
   actualizarDatos(){
+    console.log(this.datos_perfil.value);
     this.formData.append('nickname', this.datos_perfil.value.nickname);
     this.formData.append('nombres', this.datos_perfil.value.nombres);
     this.formData.append('apellidos', this.datos_perfil.value.apellidos);
@@ -89,5 +100,31 @@ export class ProfilePage{
           this.toast.error(error.error.message,'Error');
       })
     
+  }
+
+  guardarImg(){
+    this.profileServ.updateProfilePic(this.hash, this.formDataImg).subscribe( (res: any) =>{
+      this.formDataImg = new FormData();
+      window.location.reload();
+      this.toast.success('Imagen cambiada con éxito!', 'Modificación Exitosa!');
+    },
+  error =>{
+    console.log(error.message);
+      this.toast.error(error.error.message,'Error');
+  })
+
+}
+
+  check(){
+    console.log("check")
+    if(this.originalValue.toLowerCase()!=this.datos_perfil.get('nickname').value.toString().toLowerCase()){
+      console.log("lol")
+      this.datos_perfil.get('nickname').updateValueAndValidity();
+      this.datos_perfil.get('nickname').setAsyncValidators(this.nickVal.existingNickname());
+      
+    }else{
+      this.datos_perfil.get('nickname').clearAsyncValidators();
+      this.datos_perfil.get('nickname').updateValueAndValidity();
+    }
   }
 }

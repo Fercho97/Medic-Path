@@ -9,16 +9,18 @@
 
 <ion-content>
     <form [formGroup]="datos_perfil" (ngSubmit)="actualizarDatos()">
-
+        <div text-center>
         <img justify-content-center align-items-center style="width:300px;height:200px;" [src]="url">
-    <ion-item [hidden]="soloVista">
+        </div>    
+    <ion-item >
         <ion-label color="success">Imagen</ion-label>
-        <ion-input name="picture" type="file" formControlName="picture" disabled="{{soloVista}}" accept="image/jpeg" (change)="createFormData($event)"></ion-input>
+        <ion-input name="picture" type="file" formControlName="picture" accept="image/jpeg" (change)="createFormData($event)"></ion-input>
+        <ion-button [hidden]="!hasImage" size="medium" color="success" expand="block" (click)="guardarImg()">Guardar Imagen</ion-button>
     </ion-item>
 
     <ion-item>
         <ion-label color="success">Nickname</ion-label>
-        <ion-input name="nickname" type="text" formControlName="nickname" value="{{usuario.nickname}}" disabled="{{soloVista}}" ></ion-input>
+        <ion-input name="nickname" type="text" formControlName="nickname" value="{{usuario.nickname}}" disabled="{{soloVista}}" (keyup)="check()" ></ion-input>
     </ion-item>
 
     <div class="validation-errors">
