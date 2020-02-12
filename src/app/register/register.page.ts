@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ErrorMsg } from '../utils/error_msg.const';
 import { NicknameValidator } from "../validators/NicknameValidator";
 import { EmailValidator } from "../validators/EmailValidator";
+import { DateValidator } from "../validators/DateValidator";
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -54,7 +55,7 @@ export class RegisterPage implements OnInit {
           return this.equalPasswords(formGroup);
       }),
       genero : new FormControl('', Validators.required),
-      fecha_nacimiento : new FormControl('', Validators.required)
+      fecha_nacimiento : new FormControl('', [Validators.required,DateValidator.isFutureDate,DateValidator.noValidAge])
     })
    }
 

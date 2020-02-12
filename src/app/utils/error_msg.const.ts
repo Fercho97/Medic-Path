@@ -22,7 +22,9 @@ export class ErrorMsg{
           {type: 'emailTaken', message: 'Correo en uso, intente con otro'}
         ],
         'fecha_nacimiento' : [
-          {type: 'required', message: 'Debe seleccionar una fecha'}
+          {type: 'required', message: 'Debe seleccionar una fecha'},
+          {type: 'isFutureDate', message: 'Debe elegir una fecha anterior a la actual'},
+          {type: 'noValidAge', message: 'Usted no cumple con los requisitos de edad para el uso del sistema'}
         ],
         'password' : [
           {type: 'required', message: 'Debe ingresar una contraseña'},
