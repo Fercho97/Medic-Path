@@ -10,7 +10,7 @@
   <ion-list *ngIf="medicos.length>0">
     <ion-item-sliding *ngFor="let medico of medicos">
       <ion-item class="item item-block item-md">
-          <ion-label><h2>Doctor {{medico.apellidos + " " + medico.nombres}}</h2>
+          <ion-label><h2>Doctor {{medico.fullname}}</h2>
                                             <p>Teléfono: {{medico.telefono}}</p>
                                             <p>Dirección: {{medico.direccion}}</p>
                                             </ion-label>
