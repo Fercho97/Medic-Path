@@ -28,7 +28,23 @@ export class DiagnosticPage implements OnInit {
   hasResult : boolean = false;
   breadcrumb : string = "";
   idResultado : string = '';
+  isDoctor : boolean;
+  selectedUser : boolean;
+  public usuarios : any = [];
+  public usuario : any;
   ngOnInit() {
+    if(window.localStorage.getItem('tipoUsuario')=="2"){
+      this.isDoctor=true;
+      this.diagServ.obtenerUsuarios().subscribe((res: any) =>{
+        console.log(res.body);
+        this.usuarios = res.body.usuarios;
+      })
+      this.selectedUser=false;
+    }
+    else{
+      this.isDoctor=false;
+      this.selectedUser=true;
+    }
   }
 
   iniciarDiagnostico(){
@@ -122,6 +138,7 @@ export class DiagnosticPage implements OnInit {
           this.idResultado=this.reglaEvaluar.partesConclusion[0].padecimiento;
           console.log(this.idResultado);
           this.hasResult=true;
+          this.guardar();
         }
       }else{
         console.log("No se cumplio: " + this.reglaEvaluar.partesConclusion)
@@ -141,25 +158,29 @@ export class DiagnosticPage implements OnInit {
       }
     }
 
-    guardar(resp : any){
+    guardar(){
       let values = new HttpParams()
       .set('detalles', this.breadcrumb.replace(/->/g,","))
-      .set('usuario', window.localStorage.getItem('id'))
+      .set('usuario', this.isDoctor==true ? this.usuario : window.localStorage.getItem('id'))
       .set('padecimiento_final', this.idResultado)
-      .set('visible', resp);
+      .set('visible', "true");
 
       this.diagServ.guardarHistorial(values).subscribe(res =>{
-        console.log("Ok", res)
-        if(resp=='true'){
+        if(this.isDoctor==false){
         this.toast.success('Se ha guardado con éxito en su historial', 'Guardado Exitoso!');
-      this.router.navigate(['/history-list'])
-        }else{
-          this.router.navigate(['/landing']);
+        }else if(this.isDoctor==true){
+          this.toast.success('Se ha guardado con éxito en el historial del usuario', 'Guardado Exitoso!');
         }
     }, error =>{
         console.log("Error", error.error);
         this.toast.error(error.error, 'Error');
         this.router.navigate(['/landing'])
     })
+    }
+
+    selectUser(event : any){
+      this.usuario = event.detail.value;
+      console.log(this.usuario);
+      this.selectedUser=true;
     }
 }

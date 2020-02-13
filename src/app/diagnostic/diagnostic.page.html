@@ -12,7 +12,13 @@
               <p>Bienvenido a la herramienta de diagnostico. 
                  Para comenzar simplemente haga click en el siguiente botón</p>
           </ion-item>
-          <ion-card-content>
+          <ion-item *ngIf="isDoctor">
+              <ion-label>Paciente a diagnosticar</ion-label>
+              <ion-select placeholder="Eliga el paciente" (ionChange)="selectUser($event)">
+                <ion-select-option *ngFor="let usuario of usuarios" value="{{usuario.id}}" >{{usuario.fullname}}</ion-select-option>
+              </ion-select>
+          </ion-item>
+          <ion-card-content *ngIf="selectedUser">
               <ion-button size="medium" color="success" expand="block" slot="end" (click)="iniciarDiagnostico()">Comenzar</ion-button>              
           </ion-card-content>
         </ion-card>
@@ -30,11 +36,10 @@
             
             <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>
         
-            <ion-label [hidden]="!hasResult">¿Desea guardar su resultado?</ion-label>
             <br>
-            <ion-button expand="block" slot="end" color="success" [hidden]="!hasResult" (click)="guardar('true')">Si</ion-button>
-            
-            <ion-button expand="block" slot="start" color="danger" [hidden]="!hasResult" (click)="guardar('false')">No</ion-button>
+
+            <ion-button *ngIf='!isDoctor' routerLink="/record" expand="block"  size="medium" color="medium" [hidden]="!hasResult" >Continuar</ion-button>
+            <ion-button *ngIf='isDoctor' routerLink="/landing" expand="block"  size="medium" color="medium" [hidden]="!hasResult" >Finalizar</ion-button>
 
         </ion-card-content>
       </ion-card>
