@@ -7,11 +7,31 @@
 
     <ion-content>
       <ion-list>
-        <ion-menu-toggle auto-hide="false" *ngFor="let p of pages">
-        <ion-item [routerLink]="p.url">
-          {{p.title}}
+        <ion-menu-toggle auto-hide="false">
+        <ion-item routerLink="/history-list">
+            Mi Historial
         </ion-item>
         </ion-menu-toggle> 
+        <ion-menu-toggle auto-hide="false" *ngIf="isDoctor">
+          <ion-item routerLink="/guided-diagnostic">
+              Diagnóstico Guiado
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide="false" *ngIf="!isDoctor">
+            <ion-item routerLink="/diagnostic">
+                Diagnóstico
+            </ion-item>
+          </ion-menu-toggle>
+        <ion-menu-toggle auto-hide="false">
+        <ion-item routerLink="/profile">
+            Perfil
+        </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide="false">
+        <ion-item routerLink="/directory">
+          Directorio Médico
+        </ion-item>
+        </ion-menu-toggle>
       </ion-list>
     </ion-content>
   </ion-menu>
