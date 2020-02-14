@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-button slot="start" color="secondary" routerLink="/landing" >Volver</ion-button>
+    <ion-title class="ion-text-center">Consulta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div  *ngIf="!hasPregunta">
+      <ion-card>
+          <ion-item>
+              <p>Bienvenido a la herramienta de diagnostico. 
+                 Para comenzar simplemente seleccione un paciente</p>
+          </ion-item>
+          <ion-item>
+              <ion-label>Paciente a diagnosticar</ion-label>
+              <ion-select placeholder="Eliga el paciente" (ionChange)="selectUser($event)">
+                <ion-select-option *ngFor="let usuario of usuarios" value="{{usuario.id}}" >{{usuario.fullname}}</ion-select-option>
+              </ion-select>
+          </ion-item>
+          <ion-card-content>
+              <ion-button color="success" (click)="selection()" *ngIf="selectedUser"  expand="block" slot="end">Seleccionar sintomas iniciales</ion-button>
+                          
+          </ion-card-content>
+
+          <ion-card-content *ngIf="isSelection">
+              <ion-select placeholder="Eliga el paciente" multiple="true" [(ngModel)] = "sintomasSeleccionados">
+                  <ion-select-option *ngFor="let ini of iniciales" value="{{ini.nombre_sint}}" >{{ini.nombre_sint}}</ion-select-option>
+              </ion-select>
+          </ion-card-content>
+
+          <ion-button color="error" *ngIf="isSelection" (click)="cancel()"  expand="block" slot="end">Cancelar</ion-button>
+          <br>
+          <ion-button color="success" *ngIf="isSelection" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnostico con sintomas iniciales</ion-button>
+          <br>
+          <ion-button color="medium" *ngIf="selectedUser" (click)="iniciarDiagnostico()"  expand="block" slot="end">Iniciar diagnostico desde 0</ion-button>
+
+        </ion-card>
+
+</div>
+
+<div [hidden]="!hasPregunta">
+    <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Sus sintomas: {{breadcrumb}}</ion-card-subtitle>
+          <ion-card-title>{{message}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-button size="medium" slot="end" expand="block" color="success" [hidden]="hasResult" (click)="responder('Si')">Si</ion-button>
+            
+            <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>
+        
+            <br>
+
+            <ion-button *ngIf='!isDoctor' routerLink="/landing" expand="block"  size="medium" color="medium" [hidden]="!hasResult" >Continuar</ion-button>
+            <ion-button *ngIf='isDoctor' routerLink="/landing" expand="block"  size="medium" color="medium" [hidden]="!hasResult" >Finalizar</ion-button>
+
+        </ion-card-content>
+      </ion-card>
+ 
+</div>
+</ion-content>
+

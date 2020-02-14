@@ -15,7 +15,8 @@ const routes: Routes = [
   { path: 'diagnostic', loadChildren: './diagnostic/diagnostic.module#DiagnosticPageModule' },
   { path: 'directory', loadChildren: './directory/directory.module#DirectoryPageModule' },
   { path: 'directory/:type', loadChildren: './directory/directory.module#DirectoryPageModule' },
-  { path: 'directory-detail/:hash', loadChildren: './directory/directory-detail/directory-detail.module#DirectoryDetailPageModule' },
+  { path: 'directory-detail/:hash', loadChildren: './directory/directory-detail/directory-detail.module#DirectoryDetailPageModule' },  { path: 'guided-diagnostic', loadChildren: './guided-diagnostic/guided-diagnostic.module#GuidedDiagnosticPageModule' },
+
 
 
 ];
