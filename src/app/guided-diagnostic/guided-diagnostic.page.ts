@@ -18,6 +18,7 @@ export class GuidedDiagnosticPage implements OnInit {
 
   hasPregunta : boolean = false;
   message : string = "";
+  descripcion : string = "";
   baseConocimiento : any[] = [];
   memoriaDeTrabajo = new MemoriaTrabajo();
   reglaEvaluar = new Regla();
@@ -33,6 +34,7 @@ export class GuidedDiagnosticPage implements OnInit {
   public iniciales : any = [];
   public sintomasSeleccionados : any = [];
   public isSelection : boolean = false;
+  public descs : any[];
   constructor(private diagServ : DiagnosticService, private toast : ToastrService,
               private router : Router) { }
 
@@ -70,24 +72,11 @@ export class GuidedDiagnosticPage implements OnInit {
     }
 
     inferencia(){
-        let indice;
-        if(this.isSelection==true){
-          indice = this.evaluacionInicial();
-          if(indice!=undefined){
-            this.contador++;
-          }
-          this.isSelection=false;
-        }
-        if(indice==undefined){
-        this.reglaEvaluar = this.baseConocimiento[this.contador];
-        }else{
-          this.reglaEvaluar = this.baseConocimiento[indice-1];
-        }
+        let indice = this.pathSelection();
         
-        //console.log("Entro regla");
-        //console.log(this.reglaEvaluar);
+        this.reglaEvaluar = this.baseConocimiento[indice-1];
+        this.contador++;
         for  (var element of this.reglaEvaluar.partesCondicion){
-          //console.log(element);
           if(element instanceof Atomo){
             let almacenado = null;
 
@@ -96,6 +85,7 @@ export class GuidedDiagnosticPage implements OnInit {
             if(almacenado===false){
             this.atomosCondicion.push(new Atomo(element.desc,element.estado,element.obj,element.padecimiento));
              this.preguntas.push("¿Ha tenido " + element.desc + " ?");
+             this.descs.push(element.desc);
             }
           }
         };
@@ -111,7 +101,9 @@ export class GuidedDiagnosticPage implements OnInit {
     }
 
     generarPregunta(){
+      let id = this.descs.pop();
       this.message = this.preguntas.pop();
+      this.descripcion = this.iniciales.find(item => item['nombre_sint'].toString() === id);
     }
 
     responder(resp : any){
@@ -208,20 +200,21 @@ export class GuidedDiagnosticPage implements OnInit {
     fromSintomasIniciales(){
       this.sintomasSeleccionados.forEach(element => {
         //Generar atomo
-        let atomoRegla = new Atomo(element,true,false,null);
+        let atomoRegla = new Atomo(element.nombre_sint,true,false,null);
         
         //Guardar en memoria de trabajo
         this.memoriaDeTrabajo.almacenarAtomo(atomoRegla);
-        this.breadcrumb = this.breadcrumb + element + "->"
+        this.breadcrumb = this.breadcrumb + element.nombre_sint + "->"
       });
       
      this.iniciarDiagnostico();
     }
 
-    evaluacionInicial(){
+    pathSelection(){
       let bestStart;
       let atomsInRule;
       let commonAtoms;
+      let bestPorcentage = 0;
       let porcentage;
       let index = 0;
       this.baseConocimiento.forEach((element:Regla)=> {
@@ -237,11 +230,15 @@ export class GuidedDiagnosticPage implements OnInit {
           }
         });
         porcentage = commonAtoms * 100 / atomsInRule;
-        if(porcentage => 60){
+        if(porcentage > bestPorcentage){
+          bestPorcentage = porcentage;
           bestStart = index;
         }
       });
+
+      if(bestStart==undefined){
+      bestStart = Math.floor(Math.random() * this.baseConocimiento.length);
+      }
       return bestStart;
     }
-
 }

@@ -25,7 +25,7 @@
 
           <ion-card-content *ngIf="isSelection">
               <ion-select placeholder="Eliga el paciente" multiple="true" [(ngModel)] = "sintomasSeleccionados">
-                  <ion-select-option *ngFor="let ini of iniciales" value="{{ini.nombre_sint}}" >{{ini.nombre_sint}}</ion-select-option>
+                  <ion-select-option *ngFor="let ini of iniciales" value="{{ini}}" >{{ini.nombre_sint}}</ion-select-option>
               </ion-select>
           </ion-card-content>
 
@@ -43,6 +43,7 @@
     <ion-card>
         <ion-card-header>
           <ion-card-subtitle>Sus sintomas: {{breadcrumb}}</ion-card-subtitle>
+          <ion-card-title *ngIf="!hasResult">{{descripcion.descripcion}}</ion-card-title>
           <ion-card-title>{{message}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
