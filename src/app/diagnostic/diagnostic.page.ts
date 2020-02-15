@@ -19,32 +19,27 @@ export class DiagnosticPage implements OnInit {
 
   hasPregunta : boolean = false;
   message : string = "";
+  descripcion : string = "";
   baseConocimiento : any[] = [];
   memoriaDeTrabajo = new MemoriaTrabajo();
+  conocimientoEvaluado : any[] = [];
   reglaEvaluar = new Regla();
   preguntas : string[] = [];
   atomosCondicion : Atomo[] = [];
-  contador : number = 0;
   hasResult : boolean = false;
   breadcrumb : string = "";
   idResultado : string = '';
-  isDoctor : boolean;
-  selectedUser : boolean;
-  public usuarios : any = [];
-  public usuario : any;
+  user : boolean = false;
+  public iniciales : any = [];
+  public sintomasSeleccionados : any = [];
+  public sintomasExtras : any =[];
+  public isSelection : boolean = false;
+  public descs : any = [];
   ngOnInit() {
-    if(window.localStorage.getItem('tipoUsuario')=="2"){
-      this.isDoctor=true;
-      this.diagServ.obtenerUsuarios().subscribe((res: any) =>{
-        console.log(res.body);
-        this.usuarios = res.body.usuarios;
-      })
-      this.selectedUser=false;
-    }
-    else{
-      this.isDoctor=false;
-      this.selectedUser=true;
-    }
+    this.diagServ.getComponents().subscribe(res =>{
+      this.iniciales = res.body;
+      console.log(this.iniciales);
+    })
   }
 
   iniciarDiagnostico(){
@@ -70,9 +65,10 @@ export class DiagnosticPage implements OnInit {
 
     inferencia(){
       
-        this.reglaEvaluar = this.baseConocimiento[this.contador];
-        //console.log("Entro regla");
-        //console.log(this.reglaEvaluar);
+      let indice = this.pathSelection();
+      
+      this.reglaEvaluar = this.baseConocimiento[indice-1];
+      this.conocimientoEvaluado.push(this.baseConocimiento.splice(indice-1,1))
         for  (var element of this.reglaEvaluar.partesCondicion){
           //console.log(element);
           if(element instanceof Atomo){
@@ -83,12 +79,10 @@ export class DiagnosticPage implements OnInit {
             if(almacenado===false){
             this.atomosCondicion.push(new Atomo(element.desc,element.estado,element.obj,element.padecimiento));
              this.preguntas.push("¿Ha tenido " + element.desc + " ?");
+             this.descs.push(element.desc);
             }
           }
         };
-        //console.log(this.atomosCondicion);
-        //console.log(this.preguntas);
-        this.contador++;
         if(this.preguntas.length!=0){
           this.generarPregunta();
           }
@@ -98,7 +92,15 @@ export class DiagnosticPage implements OnInit {
     }
 
     generarPregunta(){
+      let id = this.descs.pop();
+      console.log(id);
       this.message = this.preguntas.pop();
+      let found = this.iniciales.find(item => item['nombre_sint'].toString() === id);
+
+      if(found!=undefined){
+      this.descripcion = found.descripcion;
+      }
+
     }
 
     responder(resp : any){
@@ -133,12 +135,7 @@ export class DiagnosticPage implements OnInit {
         }
 
         if(this.reglaEvaluar.objetivo===true){
-          console.log(this.reglaEvaluar.partesConclusion[0].desc)
-          this.message="Usted padece de : " + this.reglaEvaluar.partesConclusion[0].desc;
-          this.idResultado=this.reglaEvaluar.partesConclusion[0].padecimiento;
-          console.log(this.idResultado);
-          this.hasResult=true;
-          this.guardar();
+          this.showWhy();
         }
       }else{
         console.log("No se cumplio: " + this.reglaEvaluar.partesConclusion)
@@ -147,11 +144,7 @@ export class DiagnosticPage implements OnInit {
           this.memoriaDeTrabajo.almacenarAtomo(atomoNoCumplido);
         }
       }
-      
-      console.log(this.memoriaDeTrabajo)
-      console.log(this.contador);
-      console.log(this.baseConocimiento.length);
-      if(this.contador<this.baseConocimiento.length && this.hasResult==false){
+      if(this.baseConocimiento.length!=0 && this.hasResult==false){
       this.inferencia();
       }else if(this.hasResult==false){
         this.message="Lo sentimos, no se pudo encontrar su padecimiento conforme sus respuestas";
@@ -161,16 +154,14 @@ export class DiagnosticPage implements OnInit {
     guardar(){
       let values = new HttpParams()
       .set('detalles', this.breadcrumb.replace(/->/g,","))
-      .set('usuario', this.isDoctor==true ? this.usuario : window.localStorage.getItem('id'))
+      .set('usuario', window.localStorage.getItem('id'))
       .set('padecimiento_final', this.idResultado)
       .set('visible', "true");
 
       this.diagServ.guardarHistorial(values).subscribe(res =>{
-        if(this.isDoctor==false){
+        
         this.toast.success('Se ha guardado con éxito en su historial', 'Guardado Exitoso!');
-        }else if(this.isDoctor==true){
-          this.toast.success('Se ha guardado con éxito en el historial del usuario', 'Guardado Exitoso!');
-        }
+        
     }, error =>{
         console.log("Error", error.error);
         this.toast.error(error.error, 'Error');
@@ -178,9 +169,49 @@ export class DiagnosticPage implements OnInit {
     })
     }
 
-    selectUser(event : any){
-      this.usuario = event.detail.value;
-      console.log(this.usuario);
-      this.selectedUser=true;
+    pathSelection(){
+      let bestStart;
+      let atomsInRule;
+      let commonAtoms;
+      let bestPorcentage = 0;
+      let porcentage;
+      let index = 0;
+      this.baseConocimiento.forEach((element:Regla)=> {
+        atomsInRule=0;
+        commonAtoms=0;
+        index++;
+        element.partesCondicion.forEach(parte =>{
+          if(parte instanceof Atomo){
+            atomsInRule++;
+          }
+          if(this.memoriaDeTrabajo.atomosAfirmados.some(atom => atom.desc === parte.desc)){
+            commonAtoms++;
+          }
+        });
+        porcentage = commonAtoms * 100 / atomsInRule;
+        if(porcentage > bestPorcentage){
+          bestPorcentage = porcentage;
+          bestStart = index;
+        }
+      });
+      if(bestStart==undefined){
+      bestStart = Math.floor(Math.random() * this.baseConocimiento.length) + 1;
+      }
+      return bestStart;
+    }
+
+    showWhy(){
+      console.log(this.reglaEvaluar.partesConclusion[0].desc)
+      this.message="Usted padece de : " + this.reglaEvaluar.partesConclusion[0].desc;
+      this.hasResult=true;
+      this.idResultado=this.reglaEvaluar.partesConclusion[0].padecimiento;
+      console.log(this.sintomasSeleccionados);
+      this.reglaEvaluar.partesCondicion.forEach(element => {
+          if((element!=="&") && (element!=="!")){
+          this.sintomasSeleccionados.push(this.memoriaDeTrabajo.estaAfirmado(element));
+         }
+      });
+        this.guardar();
+      
     }
 }

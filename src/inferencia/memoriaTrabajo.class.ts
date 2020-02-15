@@ -50,4 +50,12 @@ export class MemoriaTrabajo{
             }
         }
     }
+
+    estaAfirmado(atomo : Atomo){
+        for(let afirmado of this.atomosAfirmados){
+            if(afirmado.desc===atomo.desc){
+                return afirmado;
+            }
+        }
+    }
 }
