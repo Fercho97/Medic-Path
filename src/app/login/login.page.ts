@@ -32,6 +32,7 @@ export class LoginPage {
       window.localStorage.setItem('id', res.body.usuario.id);
       window.localStorage.setItem('token', res.body.token);
       window.localStorage.setItem('hash', res.body.usuario.hash_id);
+      window.localStorage.setItem('tipoUsuario', res.body.usuario.tipoUsuario);
       console.log(window.localStorage.getItem('username'));
     this.toast.success('Bienvenido al sistema Medic Path ' +  res.body.usuario.nickname, 'Éxito!');
     this.router.navigate(['/landing']);
