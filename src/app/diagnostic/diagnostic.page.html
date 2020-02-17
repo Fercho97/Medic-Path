@@ -28,6 +28,13 @@
           <ion-label *ngIf="hasResult"><p>Sintomas pertenecientes a su resultado:</p><p *ngFor="let sintoma of sintomasSeleccionados">{{sintoma.desc}}</p></ion-label>
         </ion-card-header>
         <ion-card-content>
+                <ul *ngIf="sintomasExtras.length>0">
+                        <h2>Sin embargo presento sintomas que pueden concordar con las siguientes enfermedades: </h2>
+                        <li *ngFor="let sints of sintomasExtras">
+                          {{sints.padecimiento + " " + sints.porcentaje}} 
+                          <p><ion-progress-bar color="primary" value="{{sints.showPorcentaje}}"></ion-progress-bar></p>
+                        </li>
+                    </ul>
             <ion-button size="medium" slot="end" expand="block" color="success" [hidden]="hasResult" (click)="responder('Si')">Si</ion-button>
             
             <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>

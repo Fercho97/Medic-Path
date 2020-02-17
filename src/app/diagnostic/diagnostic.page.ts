@@ -35,6 +35,8 @@ export class DiagnosticPage implements OnInit {
   public sintomasExtras : any =[];
   public isSelection : boolean = false;
   public descs : any = [];
+  public nextObjective : any = [];
+
   ngOnInit() {
     this.diagServ.getComponents().subscribe(res =>{
       this.iniciales = res.body;
@@ -47,14 +49,12 @@ export class DiagnosticPage implements OnInit {
     let mira : string = "";
     this.diagServ.consulta(mira).subscribe((res : any)  =>{
       //this.hasPregunta = true;
-      console.log(res.body);
       
      res.body.reglas.forEach(element => {
         let rule = new Regla();
         this.baseConocimiento.push(rule.desgloseReglas(element));
       });
 
-      console.log(this.baseConocimiento);
       this.hasPregunta = true;
       this.inferencia();
     }, error =>{
@@ -64,18 +64,32 @@ export class DiagnosticPage implements OnInit {
     }
 
     inferencia(){
+      let indice;
+      if(this.nextObjective.length==0){
+      indice = this.pathSelection();
       
-      let indice = this.pathSelection();
-      
-      this.reglaEvaluar = this.baseConocimiento[indice-1];
-      this.conocimientoEvaluado.push(this.baseConocimiento.splice(indice-1,1))
+      this.reglaEvaluar = this.baseConocimiento[indice];
+      }else{
+        this.reglaEvaluar = this.nextObjective.pop();
+        indice = this.searchNextObjectiveCurrentIndex();
+      }
+      let middleAtomRule = this.hasMiddleAtom();
+      if(middleAtomRule!=undefined){
+        this.nextObjective.push(this.reglaEvaluar);
+        //console.log(this.nextObjective);
+        this.reglaEvaluar= this.baseConocimiento[middleAtomRule];
+        indice=middleAtomRule;
+      }
+
+      this.conocimientoEvaluado.push(this.baseConocimiento.splice(indice,1));
+
         for  (var element of this.reglaEvaluar.partesCondicion){
           //console.log(element);
           if(element instanceof Atomo){
             let almacenado = null;
 
             almacenado =  this.memoriaDeTrabajo.estaAlmacenado(element);
-            console.log("Esta en la memoria?" + almacenado)
+            //console.log("Esta en la memoria?" + almacenado)
             if(almacenado===false){
             this.atomosCondicion.push(new Atomo(element.desc,element.estado,element.obj,element.padecimiento));
              this.preguntas.push("¿Ha tenido " + element.desc + " ?");
@@ -93,7 +107,6 @@ export class DiagnosticPage implements OnInit {
 
     generarPregunta(){
       let id = this.descs.pop();
-      console.log(id);
       this.message = this.preguntas.pop();
       let found = this.iniciales.find(item => item['nombre_sint'].toString() === id);
 
@@ -124,8 +137,9 @@ export class DiagnosticPage implements OnInit {
 
     analize(){
       let condicion = false;
+      console.log(this.reglaEvaluar);
       condicion = this.reglaEvaluar.checarCondicion(this.memoriaDeTrabajo)
-      console.log(condicion);
+     // console.log(condicion);
       if(condicion===true){
         let atomos = this.reglaEvaluar.disparadorReglas(this.memoriaDeTrabajo)
         for(var atomo of atomos){
@@ -197,7 +211,7 @@ export class DiagnosticPage implements OnInit {
       if(bestStart==undefined){
       bestStart = Math.floor(Math.random() * this.baseConocimiento.length) + 1;
       }
-      return bestStart;
+      return bestStart-1;
     }
 
     showWhy(){
@@ -211,7 +225,88 @@ export class DiagnosticPage implements OnInit {
           this.sintomasSeleccionados.push(this.memoriaDeTrabajo.estaAfirmado(element));
          }
       });
+        this.calculateCloseness();
         this.guardar();
       
+    }
+
+    calculateCloseness(){
+      let atomsInRule;
+      let commonAtoms;
+      let percentage;
+      this.conocimientoEvaluado.forEach(element => {
+         if(element[0].partesConclusion[0].obj==true){
+        atomsInRule=0;
+        commonAtoms=0;
+        element[0].partesCondicion.forEach(parte =>{
+          if(parte instanceof Atomo){
+            atomsInRule++;
+          }
+          if(this.memoriaDeTrabajo.atomosAfirmados.some(atom => atom.desc === parte.desc)){
+            commonAtoms++;
+          }
+        });
+        percentage = commonAtoms * 100 / atomsInRule;
+        if(percentage > 10 && percentage != 100){
+          let showPercentage = percentage*0.01;
+          let closeness = {padecimiento: element[0].partesConclusion[0].desc, porcentaje: Math.floor(percentage), showPorcentaje: showPercentage.toFixed(1)};
+          this.sintomasExtras.push(closeness);
+        }
+      }
+      });
+      this.baseConocimiento.forEach(element => {
+        if(element.partesConclusion[0].obj==true){
+        atomsInRule=0;
+        commonAtoms=0;
+        element.partesCondicion.forEach(parte =>{
+          if(parte instanceof Atomo){
+            atomsInRule++;
+          }
+          if(this.memoriaDeTrabajo.atomosAfirmados.some(atom => atom.desc === parte.desc)){
+            commonAtoms++;
+          }
+        });
+        percentage = commonAtoms * 100 / atomsInRule;
+        if(percentage > 10 && percentage != 100){
+          let showPercentage = percentage*0.01;
+          let closeness = {padecimiento: element.partesConclusion[0].desc, porcentaje: Math.floor(percentage), showPorcentaje: showPercentage.toFixed(1)};
+         console.log(closeness);
+          this.sintomasExtras.push(closeness);
+        }
+      }
+      });
+
+      console.log(this.sintomasExtras);
+    }
+
+    hasMiddleAtom(){
+     let previousRuleIndex;
+      this.reglaEvaluar.partesCondicion.forEach(condition => {
+        if(!this.memoriaDeTrabajo.estaAlmacenado(condition)){
+        this.baseConocimiento.forEach(function(rule,index){
+          if((condition!="&") && (condition!="!")){
+              if(condition.desc === rule.partesConclusion[0].desc){
+                previousRuleIndex = index;
+                
+              }
+          }
+        });
+      }
+      });
+
+      return previousRuleIndex;
+    }
+
+    searchNextObjectiveCurrentIndex(){
+      let lastId;
+      let currentObjective = this.reglaEvaluar.partesConclusion[0].desc;
+      this.baseConocimiento.forEach(function(element, index) {
+
+        if(currentObjective==element.partesConclusion[0].desc){
+          lastId = index;
+        }
+      })
+
+      return lastId;
     }
 }
