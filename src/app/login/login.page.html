@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      Login
+      Login de Medic Path
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -32,11 +32,15 @@
     </ion-grid>
   </form>
 
-  <div class="ion-padding">
-    <ion-button size="medium"  expand="block" routerLink="/register">Registrarse</ion-button>
-  </div>
-
-  <div class="ion-padding">
-    <ion-button size="medium"  expand="block" routerLink="/passReset">¿Olvido su contraseña?</ion-button>
-  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button shape="round" class="round-button" expand="full" routerLink="/register">Registrarse</ion-button>
+      </ion-col>
+      <ion-col>  
+        <ion-button shape="round" class="round-button" expand="full" routerLink="/passReset">¿Olvido su contraseña?</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>  
+  
 </ion-content>

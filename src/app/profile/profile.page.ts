@@ -58,7 +58,7 @@ export class ProfilePage{
       console.log(this.usuario);
 
       if(this.usuario.imagen_perfil!=null){
-        this.url = 'data:image/jpg;base64,' + this.usuario.imagen_perfil.toString();
+        this.url = this.usuario.imagen_perfil.toString();
       }
       this.datos_perfil.controls['nickname'].setValue(this.usuario.nickname, {onlySelf : true});
       this.datos_perfil.controls['nombres'].setValue(this.usuario.nombres, {onlySelf : true});
