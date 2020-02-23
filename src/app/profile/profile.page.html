@@ -1,8 +1,6 @@
 <ion-header>
   <ion-toolbar color="success">
-    <ion-buttons slot="start">
-      <ion-back-button text="Volver"></ion-back-button>
-    </ion-buttons>
+        <ion-button slot="start" color="success" routerLink="/landing"><ion-icon name="arrow-back"></ion-icon></ion-button>
     <ion-title class="ion-text-center">Mis Datos</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -85,6 +83,10 @@
 
     <div  class="ion-padding" [hidden]="soloVista">
         <ion-button size="medium" color="success" expand="block" (click)="cancelar()">Cancelar</ion-button>
+    </div>
+
+    <div class="ion-padding">
+        <ion-button size="medium" color="success" expand="block" routerLink="/pass-change">Cambiar contraseña</ion-button>
     </div>
     </form>
 </ion-content>

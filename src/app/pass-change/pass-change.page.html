@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-button slot="start" color="tertiary" routerLink="/profile"><ion-icon name="arrow-back"></ion-icon></ion-button>
+    <ion-title class="ion-text-center">Cambiar contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="form-content">
+  <form [formGroup]="reset" (ngSubmit)="changePassword()">
+  <div formGroupName="password_validations">
+    <ion-item >
+        <ion-label color="tertiary" position="floating">Nueva Contraseña</ion-label>
+        <ion-input formControlName="newPass" type="password" ></ion-input>
+        <ion-icon name="key" color="tertiary" slot="end"></ion-icon>
+    </ion-item>
+
+    <div class="validation-errors">
+        <ng-container *ngFor="let validation of mensajes_error.password">
+          <div class="error-message" *ngIf="reset.get('password_validations').get('newPass').hasError(validation.type) 
+            && (reset.get('password_validations').get('newPass').dirty || reset.get('password_validations').get('newPass').touched)">
+            <ion-icon name="alert"></ion-icon>{{validation.message}}
+          </div>
+        </ng-container>
+    </div>
+
+  <ion-item>
+      <ion-label color="tertiary" position="floating">Repetir Contraseña</ion-label>
+      <ion-input formControlName="verifiedPassword" type="password" ></ion-input>
+      <ion-icon name="key" color="tertiary" slot="end"></ion-icon>
+  </ion-item>
+  
+  <div class="validation-errors">
+      <ng-container *ngFor="let validation of mensajes_error.passwordVerif">
+        <div class="error-message" *ngIf="reset.get('password_validations').get('verifiedPassword').hasError(validation.type) 
+         && (reset.get('password_validations').get('verifiedPassword').dirty || reset.get('password_validations').get('verifiedPassword').touched)">
+         <ion-icon name="alert"></ion-icon>{{validation.message}}
+        </div>
+      </ng-container>
+  </div>
+</div>
+<div class="ion-padding">
+    <ion-button shape="round" class="round-button" expand="full" type="submit" [disabled]="!reset.valid">Cambiar</ion-button>
+  </div>
+  </form>
+</ion-content>

@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'directory', loadChildren: './directory/directory.module#DirectoryPageModule' },
   { path: 'directory/:type', loadChildren: './directory/directory.module#DirectoryPageModule' },
   { path: 'directory-detail/:hash', loadChildren: './directory/directory-detail/directory-detail.module#DirectoryDetailPageModule' },  { path: 'guided-diagnostic', loadChildren: './guided-diagnostic/guided-diagnostic.module#GuidedDiagnosticPageModule' },
+  { path: 'pass-change', loadChildren: './pass-change/pass-change.module#PassChangePageModule' },
 
 
 
