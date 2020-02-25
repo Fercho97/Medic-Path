@@ -25,7 +25,7 @@
 
           <ion-card-content *ngIf="isSelection">
               <ion-select placeholder="Eliga el paciente" multiple="true" [(ngModel)] = "sintomasSeleccionados">
-                  <ion-select-option *ngFor="let ini of iniciales" value="{{ini}}" >{{ini.nombre_sint}}</ion-select-option>
+                  <ion-select-option *ngFor="let ini of sintomas" value="{{ini.nombre_sint}}" >{{ini.nombre_sint}}</ion-select-option>
               </ion-select>
           </ion-card-content>
 
@@ -44,21 +44,79 @@
         <ion-card-header>
           <ion-card-subtitle>Sus sintomas: {{breadcrumb}}</ion-card-subtitle>
           <ion-card-title *ngIf="!hasResult">{{descripcion.descripcion}}</ion-card-title>
-          <ion-card-title>{{message}}</ion-card-title>
+          <ion-card-title>{{question.message}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-            <ion-button size="medium" slot="end" expand="block" color="success" [hidden]="hasResult" (click)="responder('Si')">Si</ion-button>
-            
-            <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>
+            <div *ngIf="question.type === 'boolean'">
+                <ion-button size="medium" slot="end" expand="block" color="success" [hidden]="hasResult" (click)="responder('Si')">Si</ion-button>
+                
+                <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>
+                </div>
+    
+                <div *ngIf="question.type === 'numeric'">
+                    <form [formGroup]="numeric" (ngSubmit)="numericAnswer()">
+                        <ion-item>
+                            <ion-input  formControlName="temp" type="text" placeholder="Temperatura corporal"></ion-input>
+                          </ion-item>
+                                <div class="validation-errors">
+                                <ng-container *ngFor="let validation of errores_Diag.temp">
+                                    <div class="form-control-feedback" *ngIf="numeric.get('temp').hasError(validation.type) 
+                                    && (numeric.get('temp').dirty || numeric.get('temp').touched)">
+                                    <i class="fas fa-exclamation-circle"></i> {{validation.message}}
+                                    </div>
+                                </ng-container>
+                            </div>
         
+                        <ion-button type="submit" class="btn btn-outline-primary boton" [disabled]="!numeric.valid">
+                                Enviar
+                        </ion-button>
+                    </form>
+                </div>
+    
+                <div *ngIf="question.type === 'scale'">
+                    <ion-item>
+                        <ion-range min="1" max="10" pin color="secondary" [(ngModel)]="painIndex" snaps="true"></ion-range>
+                        </ion-item>
+                    <ion-button class="btn btn-outline-primary boton" (click)="scaleAnswer(question.index)">
+                                Enviar
+                    </ion-button>
+                </div>
             <br>
-
-            <ion-button *ngIf='!isDoctor' routerLink="/landing" expand="block"  size="medium" color="medium" [hidden]="!hasResult" >Continuar</ion-button>
-            <ion-button *ngIf='isDoctor' routerLink="/landing" expand="block"  size="medium" color="medium" [hidden]="!hasResult" >Finalizar</ion-button>
+            <ion-button *ngIf='isDoctor' (click)="goBack()" routerLink="/landing" expand="block"  size="medium" color="medium" [hidden]="!hasResult" >Finalizar</ion-button>
 
         </ion-card-content>
       </ion-card>
  
+</div>
+<div  *ngIf="hasResult">
+    <ion-label *ngIf="hasResult"><p>Sintomas pertenecientes a su resultado:</p><p *ngFor="let sintoma of sintomasSeleccionados">{{sintoma.desc}}</p></ion-label>
+
+    <div>
+    <ul *ngIf="niveles.Medio.length>0">
+        <h4>Sintomas destacados <i class="far fa-question-circle" title="Sintomas que pueden afectar su vida diaria"></i></h4>
+        <li *ngFor="let niv of niveles.Medio">
+            <p>{{niv.sintoma}}</p>
+        </li>
+    </ul>
+    <ul *ngIf="niveles.Bajo.length>0">
+            <h4>Sintomas de baja urgencia <i class="far fa-question-circle" title="Sintomas cuya persistencia por más de 3 días será necesario el checar con un médico"></i></h4>
+            <li *ngFor="let niv of niveles.Bajo">
+                <p>{{niv.sintoma}}</p>
+            </li>
+    </ul>
+    <ul *ngIf="niveles.Alto.length>0">
+        <h4>Sintomas de alta urgencia <i class="far fa-question-circle" title="Sintomas que por su naturaleza o bien su persistencia se recomienda encarecidamente acudir con un médico"></i></h4>
+        <li *ngFor="let niv of niveles.Alto">
+            <p>{{niv.sintoma}}</p>
+        </li>
+    </ul>
+    <ul *ngIf="niveles.Severo.length>0">
+        <h4>Sintomas de severidad<i class="far fa-question-circle" title="Si presenta alguno de estos sintomas es sumamente necesario el acudir con un especialista con el fin de tratar dicho sintoma, por lo regular requieren estudios."></i></h4>
+        <li *ngFor="let niv of niveles.Severo">
+            <p>{{niv.sintoma}}</p>
+        </li>
+    </ul>
+    </div>
 </div>
 </ion-content>
 
