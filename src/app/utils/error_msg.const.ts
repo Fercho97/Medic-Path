@@ -37,4 +37,11 @@ export class ErrorMsg{
           {type: 'equalPasswords', message: 'Las contraseñas no son iguales'}
         ]
       }
+
+      public static ERROR_DIAG = {
+        'temp' : [
+          {type: 'required', message: 'Es necesario ingresar su temperatura'},
+          {type: 'pattern', message: 'Ingrese una cantidad válida'},
+        ]
+      }
 }

@@ -5,12 +5,16 @@ export class DiagnosticService{
     _url : string = '';
     _saveUrl : string = '';
     _registeredUsers : string = '';
+    _allSymptoms : string = '';
     _urlCompList : string = '';
+
     constructor(private _http : HttpClient){
         this._url = "https://medicpath.herokuapp.com/consulta/getReglas"
        //"http://localhost:3000/consulta/getReglas";
         this._saveUrl = "https://medicpath.herokuapp.com/historial/create"
         //"http://localhost:3000/historial/create"
+        this._allSymptoms = "https://medicpath.herokuapp.com/sintomas/sintlist";
+        //'http://localhost:3000/sintomas/sintlist/'
         this._registeredUsers = "https://medicpath.herokuapp.com/usuarios/pacientslist"
         //"http://localhost:3000/usuarios/pacientslist";
         this._urlCompList = "https://medicpath.herokuapp.com/sintomas/comp/getComponents/";
@@ -46,6 +50,16 @@ export class DiagnosticService{
           observe : 'response'
       },
     )
+    }
+
+    getAllSymptoms() {
+      return this._http.get(this._allSymptoms, {
+        headers: new HttpHeaders().set(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        ),
+        observe: "response"
+      });
     }
 
     getComponents() {
