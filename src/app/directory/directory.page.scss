@@ -1,17 +1,9 @@
-.header .col {
-    background-color:lightgrey;
+.title{
+    color:blue;
 }
 
-.col {
-    border: solid 1px grey;
-    border-bottom-style: none;
-    border-right-style: none;
-}
-
-.col:last-child {
-    border-right: solid 1px grey;
-}
-
-.row:last-child .col {
-    border-bottom: solid 1px grey;
+.loading{
+    width: 100%;
+    text-align: center;
+    padding: 10px;
 }

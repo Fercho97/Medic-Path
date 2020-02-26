@@ -7,14 +7,21 @@
 </ion-header>
 
 <ion-content class="outer-content">
+    <ion-searchbar [formControl]="searchControl" 
+    placeholder="Ingrese el nombre del médico"
+    (ionChange)="searchInput()"></ion-searchbar>
+    <div *ngIf="searching" class="loading">
+        <ion-spinner></ion-spinner>
+    </div>  
   <ion-list *ngIf="medicos.length>0">
-    <ion-item-sliding *ngFor="let medico of medicos">
+    <ion-item-sliding *ngFor="let medico of medicosFilter">
       <ion-item class="item item-block item-md">
-          <ion-label><h2>Doctor {{medico.fullname}}</h2>
-                                            <p>Teléfono: {{medico.telefono}}</p>
-                                            <p>Dirección: {{medico.direccion}}</p>
+          <ion-label><h2>Doctor {{medico.nombres}}</h2>
+                     <h2>       {{medico.apellidos}}</h2>
+                                            <p><span class="title">Teléfono:</span> {{medico.telefono}}</p>
+                                            <p><span class="title">Dirección:</span> {{medico.direccion}}</p>
                                             </ion-label>
-          <ion-label *ngIf="!hasEspe"><p>Especializaciones:</p><p *ngFor="let espe of medico.especializacions">{{espe.nombre_esp}}</p></ion-label>
+          <ion-label *ngIf="!hasEspe"><p class="title">Especializaciones:</p><p *ngFor="let espe of medico.especializacions">{{espe.nombre_esp}}</p></ion-label>
        </ion-item>
       <ion-item-options>
         <button ion-button color="light" icon-start routerLink="/directory-detail/{{medico.hash_id}}">
