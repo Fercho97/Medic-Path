@@ -55,7 +55,7 @@
 
             <div *ngIf="question.type === 'scale'">
                 <ion-item>
-                    <ion-range min="1" max="10" pin color="secondary" [(ngModel)]="painIndex" snaps="true"></ion-range>
+                    <ion-range [color]="color" min="1" max="10" pin [(ngModel)]="painIndex" (ionChange)="rangeDynamic()" snaps="true"></ion-range>
                     </ion-item>
                 <ion-button class="btn btn-outline-primary boton" (click)="scaleAnswer(question.index)">
                             Enviar

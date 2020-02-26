@@ -45,6 +45,7 @@ export class GuidedDiagnosticPage implements OnInit {
   public errores_Diag = ErrorMsg.ERROR_DIAG;
   public painIndex = 1;
   public niveles : any = { "Ninguno" : [], "Bajo" : [], "Medio" : [], "Alto" : [], "Severo" : []};
+  public color = "secondary";
   constructor(private diagServ : DiagnosticService, private toast : ToastrService,
               private router : Router) { }
 
@@ -386,7 +387,7 @@ export class GuidedDiagnosticPage implements OnInit {
             let atomSymp = this.allSymptoms.find(item => item['nombre_sint'].toString() === symp);
             let sympIndex = this.allSymptoms.findIndex(item => item['nombre_sint'].toString() === symp);
             if(atomSymp.nivel_urgencia==0.4){
-              this.preguntas.push({message:'Del 1 al 10 que rango de molestia le causa el tener ' + atomSymp.nombre_sint, type: 'scale', index: sympIndex});
+              this.preguntas.push({message:'Del 1 al 10 que rango de molestia le causa a su paciente el tener ' + atomSymp.nombre_sint, type: 'scale', index: sympIndex});
             }
            }
       
@@ -401,4 +402,20 @@ export class GuidedDiagnosticPage implements OnInit {
           this.analize();
           }
            }
+
+           rangeDynamic(){
+            
+                      if(this.painIndex> 1 && this.painIndex<3){
+                        this.color="primary";
+                      }
+                      else if(this.painIndex> 3 && this.painIndex<6){
+                        this.color="success";
+                      }
+                      else if(this.painIndex> 6 && this.painIndex<8){
+                        this.color="warning";
+                      }
+                      else if(this.painIndex>= 8 && this.painIndex<=10){
+                        this.color="danger";
+                      }
+                    }
 }

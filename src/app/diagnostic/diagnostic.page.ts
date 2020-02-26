@@ -45,6 +45,7 @@ export class DiagnosticPage implements OnInit {
   public scale : FormGroup;
   public errores_Diag = ErrorMsg.ERROR_DIAG;
   public painIndex = 1;
+  public color = "secondary";
   constructor(private diagServ : DiagnosticService, private toast : ToastrService,
               private router : Router, private nav : NavController) { 
     this.numeric = new FormGroup({
@@ -368,5 +369,21 @@ export class DiagnosticPage implements OnInit {
 
         goToHistory(){
           this.nav.navigateRoot(["/history-list"]);
+        }
+
+        rangeDynamic(){
+
+          if(this.painIndex> 1 && this.painIndex<3){
+            this.color="primary";
+          }
+          else if(this.painIndex> 3 && this.painIndex<6){
+            this.color="success";
+          }
+          else if(this.painIndex> 6 && this.painIndex<8){
+            this.color="warning";
+          }
+          else if(this.painIndex>= 8 && this.painIndex<=10){
+            this.color="danger";
+          }
         }
 }
