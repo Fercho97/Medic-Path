@@ -17,9 +17,9 @@ export class HistoryDetailPage {
   ionViewWillEnter() {
     this.consultServ.getHistory(this.route.snapshot.params.id).subscribe( (res: any) =>{
       this.historial = res.body.resultado;
-      this.sintomas = res.body.resultado.detalles.split(",");
+      this.sintomas = res.body.resultado.detalles.split(",").filter(item => item);
       if(this.historial.url_imagen_pad!= null){
-      this.url = 'data:image/jpg;base64,' + this.historial.url_imagen_pad.toString();
+      this.url = this.historial.url_imagen_pad.toString();
       }
       console.log(res.body);
     },
