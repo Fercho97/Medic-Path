@@ -3,17 +3,20 @@ import { ToastrService } from 'ngx-toastr';
 import { LoginService } from '../login/login.service';
 import {Router} from '@angular/router';
 import { AlertController } from '@ionic/angular';
-
+import { UtilService } from '../utils/util.service';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
   styleUrls: ['./landing.page.scss'],
+  providers: [UtilService]
 })
 export class LandingPage {
   username : string = "";
   isDoctor : boolean = false;
-
-  constructor(private toast : ToastrService, private logServ : LoginService, private router : Router, private alertCtr : AlertController) { }
+  symptomsNew : any;
+  constructor(private toast : ToastrService, private logServ : LoginService, 
+              private router : Router, private alertCtr : AlertController,
+              private utilServ : UtilService) { }
   ionViewWillEnter(){
     console.log(window.localStorage.getItem('username'));
     console.log(window.localStorage.getItem('token'));
@@ -22,6 +25,11 @@ export class LandingPage {
     if(window.localStorage.getItem('tipoUsuario')=="2"){
       this.isDoctor=true;
     }
+
+    this.utilServ.getLastSymptoms().subscribe((res:any) =>{
+      this.symptomsNew = res.body.resultado;
+    });
+  
   }
 
   underConstruction(){

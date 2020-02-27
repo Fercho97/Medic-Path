@@ -55,5 +55,16 @@
 <ion-router-outlet id="content" main></ion-router-outlet>
 
 <ion-content>
-    
+  <div *ngIf="isDoctor">
+    <h4 text-center>Ultimas actualizaciones</h4>
+    <ion-card *ngFor="let sintoma of symptomsNew" class="items">
+      <ion-card-header>
+        <ion-card-subtitle>Sintoma nuevo</ion-card-subtitle>
+        <ion-card-title>{{sintoma.nombre_sint}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Creado: {{sintoma.creationDate}}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
