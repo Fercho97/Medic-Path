@@ -3,6 +3,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import { DirectoryService } from './directory.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from "rxjs/operators";
+import { LoadingController } from "@ionic/angular";
 @Component({
   selector: 'app-directory',
   templateUrl: './directory.page.html',
@@ -16,11 +17,18 @@ export class DirectoryPage implements OnInit {
   public searchControl : FormControl;
   medicosFilter: any;
   searching=false;
-  constructor(private route : ActivatedRoute, private direcServ : DirectoryService) {
+  private loading;
+  constructor(private route : ActivatedRoute, private direcServ : DirectoryService, private loadCtr : LoadingController) {
     this.searchControl = new FormControl();
    }
 
   ngOnInit() {
+    this.loadCtr.create({
+      message: "Cargando"
+    }).then((overlay) =>{
+      this.loading = overlay;
+      this.loading.present();
+    })
     if(this.route.snapshot.params.type){
       this.tipo = this.route.snapshot.params.type
       this.hasEspe = true;
@@ -30,6 +38,7 @@ export class DirectoryPage implements OnInit {
       console.log(res.body);
       this.medicos = res.body;
       this.medicosFilter = this.medicos;
+      this.loading.dismiss();
     });
 
     this.searchControl.valueChanges.pipe(debounceTime(800))
