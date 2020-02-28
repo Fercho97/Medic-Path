@@ -12,23 +12,31 @@ import { UtilService } from '../utils/util.service';
 })
 export class LandingPage {
   username : string = "";
-  isDoctor : boolean = false;
+  isDoctor : boolean;
   symptomsNew : any;
+  roosterNews: any;
   constructor(private toast : ToastrService, private logServ : LoginService, 
               private router : Router, private alertCtr : AlertController,
               private utilServ : UtilService) { }
   ionViewWillEnter(){
+    this.isDoctor = false;
     console.log(window.localStorage.getItem('username'));
     console.log(window.localStorage.getItem('token'));
     this.username=window.localStorage.getItem('username')
-    
     if(window.localStorage.getItem('tipoUsuario')=="2"){
       this.isDoctor=true;
+      
+      this.utilServ.getLastSymptoms().subscribe((res:any) =>{
+        this.symptomsNew = res.body.resultado;
+      });
+    }else{
+      this.utilServ.getRoosterUpdates().subscribe((res:any) =>{
+        console.log(res.body.resultados);
+        this.roosterNews = res.body.resultados;
+      })
     }
 
-    this.utilServ.getLastSymptoms().subscribe((res:any) =>{
-      this.symptomsNew = res.body.resultado;
-    });
+    
   
   }
 
