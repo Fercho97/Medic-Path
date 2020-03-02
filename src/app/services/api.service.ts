@@ -30,6 +30,8 @@ const _urlAllDocs = apiUrl+ "usuarios/doctorlist/";
 
 const _urlDoctor = apiUrl + "usuarios/doctor/";
 
+const _registeredUsers = apiUrl + "usuarios/pacientslist";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -205,6 +207,23 @@ getDoctorInfo(hash: any){
   }
 }
 
+obtenerUsuarios(){
+  if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Offline){
+    return from(this.getLocalData('patients'));
+  }else{
+        return this.http.get(_registeredUsers,
+        {
+              headers: new HttpHeaders()
+              .set('Content-Type', 'application/x-www-form-urlencoded'),
+            observe : 'response'
+        },
+      ).pipe(map(res => res['body']['usuarios']),
+      tap(res =>{
+        this.setLocalData('patients', res);
+      }));
+ }
+}
+
 private setLocalData(key, data){
   this.storage.set(API_STORAGE_KEY+"-"+key,data);
 }
@@ -219,5 +238,8 @@ updateLocalDatabase(){
   this.getAllSymptoms().subscribe();
   this.getAllAilments().subscribe();
   this.getDoctors('all').subscribe();
+
+  this.obtenerUsuarios().subscribe();
+  console.log('updated');
 }
 }

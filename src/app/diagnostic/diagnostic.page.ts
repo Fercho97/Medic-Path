@@ -13,13 +13,14 @@ import { ErrorMsg } from '../utils/error_msg.const';
 import { ApiService } from '../services/api.service';
 import { HistoryOfflineManagerService } from '../services/history-offline-manager.service';
 import { NetworkService, ConnectionStatus } from '../services/network.service';
+import { CurrentUserService } from "../services/current-user.service";
 import * as moment from 'moment-timezone';
 moment.locale('es');
 @Component({
   selector: 'app-diagnostic',
   templateUrl: './diagnostic.page.html',
   styleUrls: ['./diagnostic.page.scss'],
-  providers: [HistoryOfflineManagerService, ApiService, NetworkService]
+  providers: [HistoryOfflineManagerService, ApiService, NetworkService,CurrentUserService]
 })
 export class DiagnosticPage implements OnInit {
 
@@ -51,7 +52,7 @@ export class DiagnosticPage implements OnInit {
   public color = "secondary";
   constructor(private histServ : HistoryOfflineManagerService, private toast : ToastrService,
               private router : Router, private nav : NavController,
-              private api : ApiService, private network : NetworkService) { 
+              private api : ApiService, private network : NetworkService, private session : CurrentUserService) { 
     this.numeric = new FormGroup({
       temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
     });
@@ -198,11 +199,12 @@ export class DiagnosticPage implements OnInit {
       }
     }
 
-    guardar(){
+    async guardar(){
       var fecha = moment().tz('America/Mexico_City').format();
+      var user = await this.session.obtainSessionId();
       let values = new HttpParams()
       .set('detalles', this.breadcrumb.replace(/->/g,","))
-      .set('usuario', window.localStorage.getItem('id'))
+      .set('usuario', user)
       .set('padecimiento_final', this.idResultado)
       .set('visible', "true")
       .set('fecha', fecha.toString());

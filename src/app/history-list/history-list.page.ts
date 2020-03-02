@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ConsultService } from './history-list.service';
-import { ToastrService } from 'ngx-toastr';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from "rxjs/operators";
 import { ApiService } from '../services/api.service';
 import { LoadingService } from "../services/loading.service";
-
+import { CurrentUserService } from "../services/current-user.service";
 @Component({
   selector: 'app-history-list',
   templateUrl: './history-list.page.html',
@@ -13,21 +12,23 @@ import { LoadingService } from "../services/loading.service";
   providers: [ConsultService,ApiService,LoadingService]
 })
 export class HistoryListPage{
-  hash = window.localStorage.getItem('hash');
+  
   public searchControl : FormControl;
   historialesFromDb =[] as any;
   historiales: any;
   searching=false;
   public loading;
   public loaded = false;
-  constructor(private loadServ : LoadingService, private api : ApiService ) {
+  constructor(private loadServ : LoadingService, private api : ApiService, private sessionServ : CurrentUserService ) {
     this.searchControl = new FormControl();
    }
 
-  ionViewWillEnter(){
+  async ionViewWillEnter(){
+    let hash = await this.sessionServ.obtainSessionHash();
+    console.log(hash);
     this.loadServ.present();
     //console.log(this.id);
-    this.api.historyList(this.hash).subscribe( (res: any) =>{
+    this.api.historyList(hash).subscribe( (res: any) =>{
       console.log(res);
       this.historialesFromDb = res;
       this.historiales = this.historialesFromDb;

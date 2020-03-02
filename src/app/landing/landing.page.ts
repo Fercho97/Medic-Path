@@ -7,6 +7,7 @@ import { UtilService } from '../utils/util.service';
 import { Storage } from '@ionic/storage';
 import {OfflineRequestsManager } from '../services/offline-manager.service'
 import { ApiService } from '../services/api.service';
+import { CurrentUserService } from '../services/current-user.service';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
@@ -18,15 +19,19 @@ export class LandingPage {
   isDoctor : boolean;
   symptomsNew : any;
   roosterNews: any;
-  constructor(private toast : ToastrService, private logServ : LoginService, 
-              private router : Router, private alertCtr : AlertController,
+  constructor(private logServ : LoginService, private router : Router, 
+              private alertCtr : AlertController, private session : CurrentUserService,
               private utilServ : UtilService, private storage : Storage,
               private offline : OfflineRequestsManager, private api : ApiService) { }
-  ionViewWillEnter(){
+
+  async ionViewWillEnter(){
     this.isDoctor = false;
-    this.username=window.localStorage.getItem('username')
+    this.username= await this.session.obtainSessionUsername();
+    console.log(this.username);
     this.api.updateLocalDatabase();
-    if(window.localStorage.getItem('tipoUsuario')=="2"){
+    let userType = await this.session.obtainSessionUserType();
+    console.log(userType);
+    if(userType=="2"){
       this.isDoctor=true;
       
       this.utilServ.getLastSymptoms().subscribe((res:any) =>{
@@ -38,13 +43,6 @@ export class LandingPage {
         this.roosterNews = res.body.resultados;
       })
     }
-
-    
-  
-  }
-
-  underConstruction(){
-    this.toast.warning('Vista y funcionalidad en construcción', 'En proceso');
   }
 
   logout(){

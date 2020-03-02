@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Storage } from '@ionic/storage';
 import { ApiService } from '../services/api.service';
-
+import { CurrentUserService } from '../services/current-user.service';
 @Component({
   selector: 'app-login',
   templateUrl: 'login.page.html',
@@ -17,7 +17,8 @@ import { ApiService } from '../services/api.service';
 })
 export class LoginPage {
   private values : HttpParams;
-  constructor(private logServ : LoginService, private api: ApiService,private toast : ToastrService, private router : Router, private storage : Storage) {}
+  constructor(private logServ : LoginService, private api: ApiService,private toast : ToastrService, 
+              private router : Router, private storage : Storage, private session : CurrentUserService) {}
 
  ionViewWillEnter(){
   this.api.updateLocalDatabase();
@@ -40,7 +41,8 @@ export class LoginPage {
       window.localStorage.setItem('token', res.body.token);
       window.localStorage.setItem('hash', res.body.usuario.hash_id);
       window.localStorage.setItem('tipoUsuario', res.body.usuario.tipoUsuario);
-      console.log(window.localStorage.getItem('username'));
+
+      this.session.setCurrentUserSession(res);
     this.toast.success('Bienvenido al sistema Medic Path ' +  res.body.usuario.nickname, 'Éxito!');
     this.router.navigate(['/landing']);
     }
