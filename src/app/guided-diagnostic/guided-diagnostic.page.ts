@@ -9,6 +9,11 @@ import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
 import {Router} from '@angular/router';
 import { questions } from '../utils/questions.const';
 import { ErrorMsg } from '../utils/error_msg.const';
+import * as moment from 'moment-timezone';
+moment.locale('es');
+import { ApiService } from '../services/api.service';
+import { HistoryOfflineManagerService } from '../services/history-offline-manager.service';
+import { NetworkService, ConnectionStatus } from '../services/network.service';
 @Component({
   selector: 'app-guided-diagnostic',
   templateUrl: './guided-diagnostic.page.html',
@@ -47,7 +52,8 @@ export class GuidedDiagnosticPage implements OnInit {
   public niveles : any = { "Ninguno" : [], "Bajo" : [], "Medio" : [], "Alto" : [], "Severo" : []};
   public color = "secondary";
   constructor(private diagServ : DiagnosticService, private toast : ToastrService,
-              private router : Router) { }
+              private router : Router, private api : ApiService, private network : NetworkService,
+              private histServ : HistoryOfflineManagerService) { }
 
   ngOnInit() {
     this.diagServ.obtenerUsuarios().subscribe((res: any) =>{
@@ -60,7 +66,7 @@ export class GuidedDiagnosticPage implements OnInit {
       console.log(this.sintomas);
     })
 
-    this.diagServ.getAllSymptoms().subscribe(res =>{
+    this.api.getAllSymptoms().subscribe(res =>{
       this.allSymptoms = res.body;
     })
   }
@@ -220,18 +226,18 @@ export class GuidedDiagnosticPage implements OnInit {
     }
 
     guardar(){
-      console.log("se envia");
+      var fecha = moment().tz('America/Mexico_City').format();
       let values = new HttpParams()
       .set('detalles', this.breadcrumb.replace(/->/g,","))
       .set('usuario', this.usuario)
       .set('padecimiento_final', this.idResultado)
-      .set('visible', 'true');
+      .set('visible', 'true')
+      .set('fecha', fecha.toString());
 
-      this.diagServ.guardarHistorial(values).subscribe(res =>{
-        console.log("Ok", res)
-        
-      this.toast.success('Se ha guardado con éxito en el historial del paciente', 'Guardado Exitoso!');
-      
+      this.api.guardarHistorial(values).subscribe(res =>{
+        if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
+          this.toast.success('Se ha guardado con éxito en el historial del paciente', 'Guardado Exitoso!');
+        }
     }, error =>{
         console.log("Error", error.error);
         this.toast.error(error.error, 'Error');
