@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { DiagnosticService } from './diagnostic.service';
 import { Regla } from '../../inferencia/regla.class';
 import { Atomo } from '../../inferencia/atomo.class';
 import { MemoriaTrabajo } from '../../inferencia/memoriaTrabajo.class';
@@ -11,12 +10,16 @@ import {Router} from '@angular/router';
 import { questions } from '../utils/questions.const';
 import { Calculus } from '../../inferencia/calculus.class';
 import { ErrorMsg } from '../utils/error_msg.const';
-
+import { ApiService } from '../services/api.service';
+import { HistoryOfflineManagerService } from '../services/history-offline-manager.service';
+import { NetworkService, ConnectionStatus } from '../services/network.service';
+import * as moment from 'moment-timezone';
+moment.locale('es');
 @Component({
   selector: 'app-diagnostic',
   templateUrl: './diagnostic.page.html',
   styleUrls: ['./diagnostic.page.scss'],
-  providers: [DiagnosticService]
+  providers: [HistoryOfflineManagerService, ApiService, NetworkService]
 })
 export class DiagnosticPage implements OnInit {
 
@@ -46,16 +49,17 @@ export class DiagnosticPage implements OnInit {
   public errores_Diag = ErrorMsg.ERROR_DIAG;
   public painIndex = 1;
   public color = "secondary";
-  constructor(private diagServ : DiagnosticService, private toast : ToastrService,
-              private router : Router, private nav : NavController) { 
+  constructor(private histServ : HistoryOfflineManagerService, private toast : ToastrService,
+              private router : Router, private nav : NavController,
+              private api : ApiService, private network : NetworkService) { 
     this.numeric = new FormGroup({
       temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
     });
   }
 
   ngOnInit() {
-    this.diagServ.getAllSymptoms().subscribe(res =>{
-      this.sintomas = res.body;
+    this.api.getAllSymptoms().subscribe(res =>{
+      this.sintomas = res;
       console.log(this.sintomas);
     })
   }
@@ -63,10 +67,10 @@ export class DiagnosticPage implements OnInit {
   iniciarDiagnostico(){
     console.log("inicia")
     let mira : string = "";
-    this.diagServ.consulta(mira).subscribe((res : any)  =>{
+    this.api.consulta(mira).subscribe((res : any)  =>{
       //this.hasPregunta = true;
       
-     res.body.reglas.forEach(element => {
+     res.forEach(element => {
         let rule = new Regla();
         this.baseConocimiento.push(rule.desgloseReglas(element));
       });
@@ -195,16 +199,21 @@ export class DiagnosticPage implements OnInit {
     }
 
     guardar(){
+      var fecha = moment().tz('America/Mexico_City').format();
       let values = new HttpParams()
       .set('detalles', this.breadcrumb.replace(/->/g,","))
       .set('usuario', window.localStorage.getItem('id'))
       .set('padecimiento_final', this.idResultado)
-      .set('visible', "true");
-
-      this.diagServ.guardarHistorial(values).subscribe(res =>{
-        
+      .set('visible', "true")
+      .set('fecha', fecha.toString());
+      
+      this.api.guardarHistorial(values).subscribe(res =>{
+        if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
         this.toast.success('Se ha guardado con éxito en su historial', 'Guardado Exitoso!');
         
+        }else{
+         this.histServ.addHistoryToLocal(fecha.toString(),this.breadcrumb.replace(/->/g,","),this.idResultado);
+        }
     }, error =>{
         console.log("Error", error.error);
         this.toast.error(error.error, 'Error');

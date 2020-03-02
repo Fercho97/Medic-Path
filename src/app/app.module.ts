@@ -18,6 +18,7 @@ import { FormsModule} from '@angular/forms';
 import { PassResetPage } from './pass-reset/pass-reset.page'
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptorService } from "./auth/interceptor-service";
+import { Network } from '@ionic-native/network/ngx';
 
 @NgModule({
   declarations: [AppComponent,LoginPage,RegisterPage,PassResetPage],
@@ -33,7 +34,8 @@ import { AuthInterceptorService } from "./auth/interceptor-service";
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
+    Network
   ],
   bootstrap: [AppComponent]
 })

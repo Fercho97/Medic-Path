@@ -3,7 +3,8 @@ import {Router, ActivatedRoute} from '@angular/router';
 import { DirectoryService } from './directory.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from "rxjs/operators";
-import { LoadingController } from "@ionic/angular";
+import { LoadingService } from "../services/loading.service";
+import { ApiService } from "../services/api.service";
 @Component({
   selector: 'app-directory',
   templateUrl: './directory.page.html',
@@ -17,28 +18,24 @@ export class DirectoryPage implements OnInit {
   public searchControl : FormControl;
   medicosFilter: any;
   searching=false;
-  private loading;
-  constructor(private route : ActivatedRoute, private direcServ : DirectoryService, private loadCtr : LoadingController) {
+  constructor(private route : ActivatedRoute, private direcServ : DirectoryService, 
+              private loadServ : LoadingService, private api : ApiService) {
     this.searchControl = new FormControl();
    }
 
   ngOnInit() {
-    this.loadCtr.create({
-      message: "Cargando"
-    }).then((overlay) =>{
-      this.loading = overlay;
-      this.loading.present();
-    })
+    this.loadServ.present();
     if(this.route.snapshot.params.type){
       this.tipo = this.route.snapshot.params.type
       this.hasEspe = true;
     }
     console.log(this.tipo);
-    this.direcServ.getDoctors(this.tipo).subscribe((res: any) =>{
-      console.log(res.body);
-      this.medicos = res.body;
+    this.api.getDoctors(this.tipo).subscribe((res: any) =>{
+      console.log(res);
+      this.medicos = res;
+      console.log(this.medicos);
       this.medicosFilter = this.medicos;
-      this.loading.dismiss();
+      this.loadServ.dismiss();
     });
 
     this.searchControl.valueChanges.pipe(debounceTime(800))

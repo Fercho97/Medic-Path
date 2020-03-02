@@ -3,37 +3,35 @@ import { ConsultService } from './history-list.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from "rxjs/operators";
-import { LoadingController } from "@ionic/angular";
+import { ApiService } from '../services/api.service';
+import { LoadingService } from "../services/loading.service";
 
 @Component({
   selector: 'app-history-list',
   templateUrl: './history-list.page.html',
   styleUrls: ['./history-list.page.scss'],
-  providers: [ConsultService]
+  providers: [ConsultService,ApiService,LoadingService]
 })
 export class HistoryListPage{
-  id = window.localStorage.getItem('id');
+  hash = window.localStorage.getItem('hash');
   public searchControl : FormControl;
   historialesFromDb =[] as any;
   historiales: any;
   searching=false;
-  private loading;
-  constructor(private consultServ : ConsultService, private toast : ToastrService, private loadCtr : LoadingController ) {
+  public loading;
+  public loaded = false;
+  constructor(private loadServ : LoadingService, private api : ApiService ) {
     this.searchControl = new FormControl();
    }
 
   ionViewWillEnter(){
-    this.loadCtr.create({
-      message: "Cargando"
-    }).then((overlay) =>{
-      this.loading = overlay;
-      this.loading.present();
-    })
+    this.loadServ.present();
     //console.log(this.id);
-    this.consultServ.historyList(this.id).subscribe( (res: any) =>{
-      this.historialesFromDb = res.body.resultados;
+    this.api.historyList(this.hash).subscribe( (res: any) =>{
+      console.log(res);
+      this.historialesFromDb = res;
       this.historiales = this.historialesFromDb;
-      this.loading.dismiss();
+      this.loadServ.dismiss();
     },
   error =>{
       console.log(error);

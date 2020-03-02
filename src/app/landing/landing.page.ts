@@ -4,6 +4,9 @@ import { LoginService } from '../login/login.service';
 import {Router} from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { UtilService } from '../utils/util.service';
+import { Storage } from '@ionic/storage';
+import {OfflineRequestsManager } from '../services/offline-manager.service'
+import { ApiService } from '../services/api.service';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
@@ -17,12 +20,12 @@ export class LandingPage {
   roosterNews: any;
   constructor(private toast : ToastrService, private logServ : LoginService, 
               private router : Router, private alertCtr : AlertController,
-              private utilServ : UtilService) { }
+              private utilServ : UtilService, private storage : Storage,
+              private offline : OfflineRequestsManager, private api : ApiService) { }
   ionViewWillEnter(){
     this.isDoctor = false;
-    console.log(window.localStorage.getItem('username'));
-    console.log(window.localStorage.getItem('token'));
     this.username=window.localStorage.getItem('username')
+    this.api.updateLocalDatabase();
     if(window.localStorage.getItem('tipoUsuario')=="2"){
       this.isDoctor=true;
       

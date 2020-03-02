@@ -6,15 +6,22 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { LoginService } from './login.service';
 import {Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Storage } from '@ionic/storage';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: 'login.page.html',
-  styleUrls: ['login.page.scss']
+  styleUrls: ['login.page.scss'],
+  providers: [ApiService]
 })
 export class LoginPage {
   private values : HttpParams;
-  constructor(private logServ : LoginService, private toast : ToastrService, private router : Router) {}
+  constructor(private logServ : LoginService, private api: ApiService,private toast : ToastrService, private router : Router, private storage : Storage) {}
+
+ ionViewWillEnter(){
+  this.api.updateLocalDatabase();
+ }
 
   login(form){
     console.log(form.value.email);
