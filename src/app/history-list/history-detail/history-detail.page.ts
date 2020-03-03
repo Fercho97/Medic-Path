@@ -10,7 +10,7 @@ import { ApiService } from '../../services/api.service';
 })
 export class HistoryDetailPage {
   historial = {} as any;
-  public url : string = '';
+  public url : string = '../../../assets/default-image.jpg';
   sintomas = [] as any;
   constructor(private api : ApiService, private route : ActivatedRoute) { }
 

@@ -12,8 +12,9 @@ interface User {
   sessionToken: string,
   user_hash: string,
   id: number,
-  genero: string,
+  sexo: string,
   tipo: string,
+  fecha_nacimiento: string
 }
 
 @Injectable({
@@ -32,12 +33,24 @@ export class CurrentUserService {
       sessionToken: res.body.token,
       user_hash: res.body.usuario.hash_id,
       id: res.body.usuario.id,
-      genero: res.body.usuario.sexo,
-      tipo: res.body.usuario.tipoUsuario
+      sexo: res.body.usuario.sexo,
+      tipo: res.body.usuario.tipoUsuario,
+      fecha_nacimiento: res.body.usuario.fecha_nacimiento
   };
 
   return this.storage.set(STORAGE_USR_KEY,session);
 
+  }
+
+  updateCurrentSessionInfo(res: any){
+    this.storage.get(STORAGE_USR_KEY).then(usuario =>{
+      let user = usuario;
+      user.nickname = res.nickname;
+      user.nombres = res.nombres;
+      user.apellidos = res.apellidos;
+
+      this.storage.set(STORAGE_USR_KEY,user);
+    })
   }
 
   obtainSessionHash(){

@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ErrorMsg } from '../utils/error_msg.const';
-import {Router} from '@angular/router';
 import { NicknameValidator } from "../validators/NicknameValidator";
+import { CurrentUserService } from "../services/current-user.service";
+import { ApiService } from "../services/api.service";
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -18,7 +19,7 @@ export class ProfilePage{
   datos_perfil : FormGroup;
 
   mensajes_error = ErrorMsg.ERROR_MSG_REGISTER;
-  hash = window.localStorage.getItem('hash');
+  hash = "";
   private values : HttpParams;
   formData: any = new FormData();
   formDataImg: any = new FormData()
@@ -26,10 +27,11 @@ export class ProfilePage{
   usuario = {} as any;
   soloVista : boolean = true;
   hasImage : boolean = false;
-  public url : string = "";
+  public url : string = "../../assets/default-image.jpg";
   public originalValue : string = "";
   constructor(private profileServ : ProfileService, private toast : ToastrService, 
-              private router : Router, private nickVal : NicknameValidator) {
+              private nickVal : NicknameValidator, private sessionServ : CurrentUserService,
+              private api : ApiService) {
 
     this.datos_perfil = new FormGroup({
       nombres : new FormControl('', [
@@ -51,13 +53,13 @@ export class ProfilePage{
     })
    }
 
-  ionViewWillEnter() {
-    this.profileServ.getUser(this.hash).subscribe( (res: any) =>{
-      this.usuario = res.body.resultado;
-      this.originalValue = res.body.resultado.nickname;
-      console.log(this.usuario);
+  async ionViewWillEnter() {
+    this.hash = await this.sessionServ.obtainSessionHash();
+    this.api.getUser(this.hash).subscribe( (res: any) =>{
+      this.usuario = res;
+      this.originalValue = res.nickname;
 
-      if(this.usuario.imagen_perfil!=null){
+      if(this.usuario.imagen_perfil!=null && this.usuario.imagen_perfil!=""){
         this.url = this.usuario.imagen_perfil.toString();
       }
       this.datos_perfil.controls['nickname'].setValue(this.usuario.nickname, {onlySelf : true});

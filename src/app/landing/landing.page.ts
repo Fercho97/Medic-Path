@@ -68,6 +68,7 @@ export class LandingPage {
         handler: () =>{
           this.logServ.logout(window.localStorage.getItem('token')).subscribe( (res: any) =>{
             window.localStorage.clear();
+            this.storage.remove("newKey-currentUser");
             this.router.navigate([''])
           },
         error =>{

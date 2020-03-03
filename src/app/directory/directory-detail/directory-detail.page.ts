@@ -23,8 +23,9 @@ export class DirectoryDetailPage implements OnInit {
       this.infoDoc = res;
       this.especializaciones = res.especializacions;
 
-      if(res.imagen_perfil==null){
-        this.url = "../../../../assets/default-image.jpg"
+      if(res.imagen_perfil==null || res.imagen_perfil==""){
+        this.hasInfo = true;
+        this.url = "../../../assets/default-image.jpg"
       }else{
         this.hasInfo = true;
         this.url = res.imagen_perfil.toString();

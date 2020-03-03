@@ -6,6 +6,7 @@ import { NetworkService, ConnectionStatus } from './network.service';
 import { Storage} from '@ionic/storage';
 import { Observable, from } from 'rxjs';
 import { tap, map, catchError} from 'rxjs/operators';
+import { CurrentUserService } from './current-user.service'
 
 const API_STORAGE_KEY = 'newKey';
 
@@ -32,12 +33,16 @@ const _urlDoctor = apiUrl + "usuarios/doctor/";
 
 const _registeredUsers = apiUrl + "usuarios/pacientslist";
 
+const _urlPerfil = apiUrl + "usuarios/";
+
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  constructor(private http: HttpClient, private networkServ : NetworkService, private storage : Storage, private offlineManager : OfflineRequestsManager) { }
+  constructor(private http: HttpClient, private networkServ : NetworkService, 
+              private storage : Storage, private offlineManager : OfflineRequestsManager,
+              private userServ : CurrentUserService) { }
 
 
   historyList(user : any){
@@ -221,6 +226,24 @@ obtenerUsuarios(){
       tap(res =>{
         this.setLocalData('patients', res);
       }));
+ }
+}
+
+getUser(hash : any){
+  if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Offline){
+    return from(this.getLocalData('currentUser'));
+  }else{
+    const headers = new HttpHeaders({'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
+    
+    return this.http.get(_urlPerfil + encodeURIComponent(hash),
+        {
+          headers: headers,
+          observe : 'response'
+        },
+    ).pipe(map(res => res['body']['resultado']),
+    tap(res =>{
+      this.userServ.updateCurrentSessionInfo(res);
+    }));
  }
 }
 

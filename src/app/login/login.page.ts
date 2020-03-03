@@ -22,6 +22,11 @@ export class LoginPage {
 
  ionViewWillEnter(){
   this.api.updateLocalDatabase();
+  this.storage.get('newKey-currentUser').then(user =>{
+    if(user!=undefined && user!=null){
+      this.router.navigate(['/landing']);
+    }
+  })
  }
 
   login(form){

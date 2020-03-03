@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Storage } from '@ionic/storage';
 import { PassChangeService } from './pass-change.service';
 import {Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -23,7 +22,8 @@ export class PassChangePage {
   mensajes_error = ErrorMsg.ERROR_MSG_REGISTER;
   
   constructor(private passServ : PassChangeService, private logServ : LoginService, 
-              private http : HttpClient, private router : Router, private toast : ToastrService) {
+              private http : HttpClient, private router : Router, private toast : ToastrService,
+              private storage : Storage) {
     this.reset = new FormGroup({
       
               password_validations : new FormGroup({
@@ -84,6 +84,7 @@ export class PassChangePage {
   logout(){
     this.logServ.logout(window.localStorage.getItem('token')).subscribe( (res: any) =>{
       window.localStorage.clear();
+      this.storage.remove("newKey-currentUser");
       this.router.navigate([''])
     }, error =>{
       console.log("Error", error.error.message);

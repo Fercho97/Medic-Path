@@ -56,19 +56,18 @@ export class GuidedDiagnosticPage implements OnInit {
               private histServ : HistoryOfflineManagerService) { }
 
   ngOnInit() {
-    this.diagServ.obtenerUsuarios().subscribe((res: any) =>{
-      console.log(res.body);
-      this.usuarios = res.body.usuarios;
-    })
+    this.api.obtenerUsuarios().subscribe((res: any) =>{
 
-    this.diagServ.getComponents().subscribe(res =>{
-      this.sintomas = res.body;
-      console.log(this.sintomas);
+      this.usuarios = res;
     })
 
     this.api.getAllSymptoms().subscribe(res =>{
-      this.allSymptoms = res.body;
+      console.log(res);
+      this.allSymptoms = res;
+      this.sintomas = this.allSymptoms.filter(sintoma => sintoma['compuesto']==false);
     })
+    console.log(this.allSymptoms);
+    
   }
 
   iniciarDiagnostico(){
