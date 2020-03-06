@@ -117,14 +117,14 @@ export class GuidedDiagnosticPage implements OnInit {
             almacenado =  this.memoriaDeTrabajo.estaAlmacenado(element);
             console.log("Esta en la memoria?" + almacenado)
             if(almacenado===false){
-            this.atomosCondicion.push(new Atomo(element.desc,element.estado,element.obj,element.padecimiento));
+            this.atomosCondicion.push(new Atomo(element.desc,element.estado,element.obj,element.padecimiento,element.sintoma));
             let question = this.questionGen(element.desc); 
             if(question!=null){
               this.preguntas.push(question);
             }else{
             this.preguntas.push({message: "¿Ha tenido " + element.desc + " ?", type: "boolean"});
             }
-             this.descs.push(element.desc);
+             this.descs.push(element.sintoma);
             }
           }
         };
@@ -146,7 +146,7 @@ export class GuidedDiagnosticPage implements OnInit {
       let id = this.descs.pop();
       console.log(id);
       
-      let found = this.sintomas.find(item => item['nombre_sint'].toString() === id);
+      let found = this.sintomas.find(item => item['idSint'].toString() === id);
 
       if(found!=undefined){
       this.descripcion = found.descripcion;
@@ -159,7 +159,7 @@ export class GuidedDiagnosticPage implements OnInit {
       if(resp=='Si'){
         atomoEvaluado.estado = true; 
         this.breadcrumb = this.breadcrumb + atomoEvaluado.desc + "->"
-        this.evaluateSypmtom(atomoEvaluado.desc);
+        this.evaluateSypmtom(atomoEvaluado.sintoma);
         console.log(this.preguntas);
       }
       else{
@@ -193,7 +193,7 @@ export class GuidedDiagnosticPage implements OnInit {
       }else{
         console.log("No se cumplio: " + this.reglaEvaluar.partesConclusion)
         for(var noCumplido of this.reglaEvaluar.partesConclusion){
-          let atomoNoCumplido = new Atomo(noCumplido.desc,false,noCumplido.obj,noCumplido.padecimiento);
+          let atomoNoCumplido = new Atomo(noCumplido.desc,false,noCumplido.obj,noCumplido.padecimiento,noCumplido.sintoma);
           this.memoriaDeTrabajo.almacenarAtomo(atomoNoCumplido);
         }
       }
@@ -210,7 +210,7 @@ export class GuidedDiagnosticPage implements OnInit {
 
     showWhy(){
       console.log(this.reglaEvaluar.partesConclusion[0].desc)
-      this.question={message: "Usted padece de : " + this.reglaEvaluar.partesConclusion[0].desc }
+      this.question={message: "Su paciente padece de : " + this.reglaEvaluar.partesConclusion[0].desc }
       this.hasResult=true;
       this.idResultado=this.reglaEvaluar.partesConclusion[0].padecimiento;
       console.log(this.sintomasSeleccionados);
@@ -260,8 +260,8 @@ export class GuidedDiagnosticPage implements OnInit {
     fromSintomasIniciales(){
       console.log(this.sintomasSeleccionados);
       this.sintomasSeleccionados.forEach(element => {
-        //Generar atomo
-        let atomoRegla = new Atomo(element,true,false,null);
+        //Generar atomo//TODO get sintoma id;
+        let atomoRegla = new Atomo(element,true,false,null,null);
         
         //Guardar en memoria de trabajo
         this.memoriaDeTrabajo.almacenarAtomo(atomoRegla);
@@ -389,8 +389,8 @@ export class GuidedDiagnosticPage implements OnInit {
            }
       
            evaluateSypmtom(symp : any){
-            let atomSymp = this.allSymptoms.find(item => item['nombre_sint'].toString() === symp);
-            let sympIndex = this.allSymptoms.findIndex(item => item['nombre_sint'].toString() === symp);
+            let atomSymp = this.allSymptoms.find(item => item['idSint'].toString() === symp);
+            let sympIndex = this.allSymptoms.findIndex(item => item['idSint'].toString() === symp);
             if(atomSymp.nivel_urgencia==0.4){
               this.preguntas.push({message:'Del 1 al 10 que rango de molestia le causa a su paciente el tener ' + atomSymp.nombre_sint, type: 'scale', index: sympIndex});
             }

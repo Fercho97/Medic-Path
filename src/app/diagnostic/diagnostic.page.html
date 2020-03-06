@@ -33,6 +33,11 @@
             <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>
             </div>
 
+            <div *ngIf="question.type === 'option'">
+                <ion-button type="button" [hidden]="hasResult" class="btn btn-danger btn-lg" (click)="optionAnswer(question.options,question.normal,question.atoms,'No')">No</ion-button>
+    
+                <ion-button type="button" [hidden]="hasResult" class="btn btn-primary btn-lg" (click)="optionAnswer(question.options,question.normal,question.atoms,'Si')">Si</ion-button>
+            </div>
             <div *ngIf="question.type === 'numeric'">
                 <form [formGroup]="numeric" (ngSubmit)="numericAnswer()">
                     <ion-item>
@@ -63,6 +68,12 @@
             </div>
             <br>
 
+            <div *ngIf="question.type === 'selection'">
+                <div *ngFor="let boton of question.buttons">
+                    <ion-button class="btn btn-primary" (click)=selectedOption(boton.value)>{{boton.message}}</ion-button>
+                    <i class="far fa-question-circle" title="{{boton.desc}}"></i>
+                </div>
+            </div>
             <ion-button routerLink="/history-list" replaceUrl="true" expand="block"  size="medium" color="medium" [hidden]="!hasResult" >Continuar</ion-button>
 
         </ion-card-content>

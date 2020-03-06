@@ -51,4 +51,42 @@ export class Calculus{
   
         return sintomasExtras;
       }
+
+      getDifferencesBetweenNames(names : any, sint: any){
+        let samewords : any = this.getSameWords(names, sint);
+        let differences : any = [];
+        let result = [];
+        names.forEach(element => {
+        let compareElement = element.split(" ");
+          compareElement.forEach(word =>{
+            if(samewords.indexOf(word)===-1)
+              differences.push(word);
+          })
+        });
+        
+        result.push(differences);
+        let text = samewords.join(' ');
+        console.log(text);
+        result.push(text);
+        return result;
+      }
+
+      getSameWords(names : any, sint :any){
+       let sameWords : any = [];
+        let compareTo = sint.split(" ");
+        names.forEach(element => {
+          if(element!==sint){
+          let compareElement = element.split(" ");
+          console.log(compareElement);
+            compareElement.forEach(word => {
+              let index = compareTo.indexOf(word);
+              if(index!=-1){
+                if(sameWords.indexOf(word)==-1)
+                    sameWords.push(word);
+              }
+            });
+          }
+          });
+        return sameWords;
+      }
 }
