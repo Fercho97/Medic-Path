@@ -47,12 +47,18 @@
           <ion-card-title>{{question.message}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-            <div *ngIf="question.type === 'boolean'">
-                <ion-button size="medium" slot="end" expand="block" color="success" [hidden]="hasResult" (click)="responder('Si')">Si</ion-button>
-                
-                <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>
+                <div *ngIf="question.type === 'boolean'">
+                    <ion-button size="medium" slot="end" expand="block" color="success" [hidden]="hasResult" (click)="responder('Si')">Si</ion-button>
+                    
+                    <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>
                 </div>
     
+                <div *ngIf="question.type === 'option'">
+                    <ion-button size="medium" slot="end" expand="block" color="success" [hidden]="hasResult" (click)="optionAnswer(question.options,question.normal,question.atoms,'Si')">Si</ion-button>
+                   
+                    <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="optionAnswer(question.options,question.normal,question.atoms,'No')">No</ion-button>
+                </div>
+
                 <div *ngIf="question.type === 'numeric'">
                     <form [formGroup]="numeric" (ngSubmit)="numericAnswer()">
                         <ion-item>
@@ -81,6 +87,13 @@
                                 Enviar
                     </ion-button>
                 </div>
+
+                <div *ngIf="question.type === 'selection'">
+                    <div *ngFor="let boton of question.buttons">
+                        <ion-button size="medium" slot="start" expand="block" color="primary" (click)=selectedOption(boton.value)>{{boton.message}}</ion-button>
+                        <i class="far fa-question-circle" title="{{boton.desc}}"></i>
+                    </div>
+                </div>
             <br>
             <ion-button *ngIf='isDoctor' (click)="goBack()" routerLink="/landing" expand="block"  size="medium" color="medium" [hidden]="!hasResult" >Finalizar</ion-button>
 
@@ -89,8 +102,12 @@
  
 </div>
 <div  *ngIf="hasResult">
-    <ion-label *ngIf="hasResult"><p>Sintomas pertenecientes a su resultado:</p><p *ngFor="let sintoma of sintomasSeleccionados">{{sintoma.desc}}</p></ion-label>
-
+    <ion-list *ngIf="hasResult"><p>Sintomas pertenecientes a su resultado:</p>
+        <ion-item *ngFor="let sintoma of sintomasSeleccionados">
+            <ion-label>{{sintoma.desc}}</ion-label>
+        </ion-item>
+    </ion-list>
+    
     <div>
     <ul *ngIf="niveles.Medio.length>0">
         <h4>Sintomas destacados <i class="far fa-question-circle" title="Sintomas que pueden afectar su vida diaria"></i></h4>

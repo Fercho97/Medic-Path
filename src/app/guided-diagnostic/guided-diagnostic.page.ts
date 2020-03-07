@@ -14,6 +14,7 @@ moment.locale('es');
 import { ApiService } from '../services/api.service';
 import { HistoryOfflineManagerService } from '../services/history-offline-manager.service';
 import { NetworkService, ConnectionStatus } from '../services/network.service';
+import { Calculus } from '../../inferencia/calculus.class';
 @Component({
   selector: 'app-guided-diagnostic',
   templateUrl: './guided-diagnostic.page.html',
@@ -36,6 +37,7 @@ export class GuidedDiagnosticPage implements OnInit {
   breadcrumb : string = "";
   idResultado : string = '';
   selectedUser : boolean;
+  calculusClass = new Calculus();
   public usuarios : any = [];
   public usuario : any;
   public sintomas : any = [];
@@ -51,9 +53,14 @@ export class GuidedDiagnosticPage implements OnInit {
   public painIndex = 1;
   public niveles : any = { "Ninguno" : [], "Bajo" : [], "Medio" : [], "Alto" : [], "Severo" : []};
   public color = "secondary";
+  public atomos_opciones : any = [];
   constructor(private diagServ : DiagnosticService, private toast : ToastrService,
               private router : Router, private api : ApiService, private network : NetworkService,
-              private histServ : HistoryOfflineManagerService) { }
+              private histServ : HistoryOfflineManagerService) { 
+                this.numeric = new FormGroup({
+                  temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
+                });
+              }
 
   ngOnInit() {
     this.api.obtenerUsuarios().subscribe((res: any) =>{
@@ -160,7 +167,6 @@ export class GuidedDiagnosticPage implements OnInit {
         atomoEvaluado.estado = true; 
         this.breadcrumb = this.breadcrumb + atomoEvaluado.desc + "->"
         this.evaluateSypmtom(atomoEvaluado.sintoma);
-        console.log(this.preguntas);
       }
       else{
         atomoEvaluado.estado = false; 
@@ -267,8 +273,25 @@ export class GuidedDiagnosticPage implements OnInit {
         this.memoriaDeTrabajo.almacenarAtomo(atomoRegla);
         this.breadcrumb = this.breadcrumb + element + "->"
       });
-      
+      this.avoidUnnecesaryQuestions();
+      console.log(this.memoriaDeTrabajo);
      this.iniciarDiagnostico();
+    }
+
+    avoidUnnecesaryQuestions(){
+      this.memoriaDeTrabajo.atomosAfirmados.forEach(sintoma =>{
+        let multiOption = this.checkMultipleTypes(sintoma.desc);
+
+        if(multiOption.length>1){
+          multiOption.forEach(option =>{
+            let atomo = new Atomo(option.nombre_sint,false,false,null,null);
+            console.log(this.memoriaDeTrabajo.estaAfirmado(atomo));
+            if(this.memoriaDeTrabajo.estaAlmacenado(atomo)===false){
+              this.memoriaDeTrabajo.almacenarAtomo(atomo);
+            }
+          })
+        }
+      })
     }
 
     pathSelection(){
@@ -355,72 +378,168 @@ export class GuidedDiagnosticPage implements OnInit {
             })
            }
       
-           questionGen(sint: any){
+      questionGen(sint: any){
+  
+        let hasCertainQuestion = questions.QUESTIONS[sint.toLowerCase()];
+        let multiOption = this.checkMultipleTypes(sint);
+        if(hasCertainQuestion!=undefined){
+          return hasCertainQuestion[0];
+        }
+        else if(multiOption.length>1){
+          hasCertainQuestion = this.generateMultiOptionQuestion(multiOption,sint);
+          return hasCertainQuestion;
+        }
+        else{
+          return null;
+        }
+      }
       
-            let hasCertainQuestion = questions.QUESTIONS[sint.toLowerCase()];
-      
-            if(hasCertainQuestion!=undefined){
-              return hasCertainQuestion[0];
-            }else{
-              return null;
-            }
-            
-           }
-      
-           numericAnswer(){
-             let expectedValue = this.question.validValue;
-      
-             let atomoEvaluado = this.atomosCondicion.pop();
-             if(this.numeric.value.temp >= expectedValue){
-               atomoEvaluado.estado = true; 
-               this.breadcrumb = this.breadcrumb + atomoEvaluado.desc + "->"
-             }
-             else{
-               atomoEvaluado.estado = false; 
-             }
-             this.memoriaDeTrabajo.almacenarAtomo(atomoEvaluado);
-       
-             if(this.atomosCondicion.length>0){
-               this.mostrarPregunta();
-             }
-             else{
-               this.analize();
-             }
-           }
-      
-           evaluateSypmtom(symp : any){
-            let atomSymp = this.allSymptoms.find(item => item['idSint'].toString() === symp);
-            let sympIndex = this.allSymptoms.findIndex(item => item['idSint'].toString() === symp);
-            if(atomSymp.nivel_urgencia==0.4){
-              this.preguntas.push({message:'Del 1 al 10 que rango de molestia le causa a su paciente el tener ' + atomSymp.nombre_sint, type: 'scale', index: sympIndex});
-            }
-           }
-      
-           scaleAnswer(index : any){
-          let atomSymp = this.allSymptoms[index];
-          let calculatedUrgency = (atomSymp.nivel_urgencia*this.painIndex)/4;
-          this.allSymptoms[index].nivel_urgencia = calculatedUrgency;
-          this.painIndex=1;
-          if(this.preguntas.length>0){
-          this.mostrarPregunta();
-          }else{
-          this.analize();
-          }
-           }
+      numericAnswer(){
+        let expectedValue = this.question.validValue;
 
-           rangeDynamic(){
-            
-                      if(this.painIndex> 1 && this.painIndex<3){
-                        this.color="primary";
-                      }
-                      else if(this.painIndex> 3 && this.painIndex<6){
-                        this.color="success";
-                      }
-                      else if(this.painIndex> 6 && this.painIndex<8){
-                        this.color="warning";
-                      }
-                      else if(this.painIndex>= 8 && this.painIndex<=10){
-                        this.color="danger";
-                      }
-                    }
+        let atomoEvaluado = this.atomosCondicion.pop();
+        if(this.numeric.value.temp >= expectedValue){
+          atomoEvaluado.estado = true; 
+          this.breadcrumb = this.breadcrumb + atomoEvaluado.desc + "->"
+        }
+        else{
+          atomoEvaluado.estado = false; 
+        }
+        this.memoriaDeTrabajo.almacenarAtomo(atomoEvaluado);
+  
+        if(this.atomosCondicion.length>0){
+          this.mostrarPregunta();
+        }
+        else{
+          this.analize();
+        }
+      }
+
+      evaluateSypmtom(symp : any){
+      let atomSymp = this.allSymptoms.find(item => item['idSint'].toString() === symp);
+      let sympIndex = this.allSymptoms.findIndex(item => item['idSint'].toString() === symp);
+      if(atomSymp.nivel_urgencia==0.4){
+        this.preguntas.push({message:'Del 1 al 10 que rango de molestia le causa a su paciente el tener ' + atomSymp.nombre_sint, type: 'scale', index: sympIndex});
+      }
+      }
+
+      scaleAnswer(index : any){
+    let atomSymp = this.allSymptoms[index];
+    let calculatedUrgency = (atomSymp.nivel_urgencia*this.painIndex)/4;
+    this.allSymptoms[index].nivel_urgencia = calculatedUrgency;
+    this.painIndex=1;
+    if(this.preguntas.length>0){
+    this.mostrarPregunta();
+    }else{
+    this.analize();
+    }
+      }
+
+        rangeDynamic(){
+            if(this.painIndex> 1 && this.painIndex<3){
+              this.color="primary";
+            }
+            else if(this.painIndex> 3 && this.painIndex<6){
+              this.color="success";
+            }
+            else if(this.painIndex> 6 && this.painIndex<8){
+              this.color="warning";
+            }
+            else if(this.painIndex>= 8 && this.painIndex<=10){
+              this.color="danger";
+            }
+          }
+        
+          checkMultipleTypes(sint:any){
+            let sintoma = this.sintomas.find(symp => symp['nombre_sint']==sint);
+            let sameSynts = this.sintomas.filter(symp => symp['categoria_sint']==sintoma.categoria_sint && symp['keyWord']==sintoma.keyWord);
+            return sameSynts;
+          }
+     
+     
+          generateMultiOptionQuestion(options :any, sint: any){
+           var nombres:any = [];
+     
+           options.forEach(element => {
+             nombres.push(element.nombre_sint);
+           });
+     
+     
+           let resultado = this.calculusClass.getDifferencesBetweenNames(nombres,sint);
+     
+           let diferencias = resultado[0];
+     
+           return {message: '¿Ha tenido ' + resultado[1] +"?", type: 'option', options: diferencias, normal: resultado[1], atoms: nombres}
+          }
+     
+          optionAnswer(opciones: any, text : any, atomos : any, answer){
+           //TODO en base a los datos de options generar los botones de manera dinámica, en base a los datos de atoms generar los atomos negados en caso de que no y el atomo aceptado en caso de que si.
+           if(opciones.length<atomos.length){
+             opciones.push('Simple');
+           }
+     
+           console.log(atomos);
+           //console.log(opciones.length);
+           if(answer==="Si"){
+             let optionSize = opciones.length;
+             this.atomos_opciones.push( atomos.slice());
+             console.log(this.atomos_opciones);
+             let buttonOptions = [];
+             for(var i = 0; i<optionSize; i++){
+               let atomo = atomos.pop();
+               let showOption = opciones.pop();
+               let sintoma = this.sintomas.find(symp => symp['nombre_sint']==atomo);
+               let button = {message: showOption, value: atomo, desc: sintoma.descripcion};
+               buttonOptions.push(button);
+             }
+             console.log(buttonOptions);
+             this.preguntas.push({message: "¿Como describe el paciente su " + text + "?",buttons: buttonOptions, type: 'selection'});
+           }else{
+             let atomoEvaluado = this.atomosCondicion.pop();
+             atomoEvaluado.estado=false;
+             this.memoriaDeTrabajo.almacenarAtomo(atomoEvaluado);
+             atomos.forEach(atom =>{
+               if(atom!==atomoEvaluado.desc){
+                 let negado = new Atomo(atom,false,false,null,null);
+                 this.memoriaDeTrabajo.almacenarAtomo(negado);
+               }
+             })
+     
+           }
+           if(this.preguntas.length>0){
+             this.mostrarPregunta();
+             }else{
+             this.analize();
+             }
+         }
+     
+         selectedOption(selectedAtom : any){
+           let atomoEvaluado = this.atomosCondicion.pop();
+           let atom : any;
+           if(atomoEvaluado.desc===selectedAtom){
+             atomoEvaluado.estado=true;
+             this.memoriaDeTrabajo.almacenarAtomo(atomoEvaluado);
+             this.breadcrumb = this.breadcrumb + atomoEvaluado.desc + "->"
+           }else{
+             let sint = this.sintomas.find(symp => symp['nombre_sint']==selectedAtom);
+             atom = new Atomo(selectedAtom,true,false,null,sint.idSint);
+             this.memoriaDeTrabajo.almacenarAtomo(atom);
+             this.breadcrumb = this.breadcrumb + atom.desc + "->"
+           }
+     
+           let opciones = this.atomos_opciones.pop();
+           opciones.forEach(atomo =>{
+             if(atomo!==selectedAtom){
+               let negAtom = new Atomo(atomo,false,false,null,null);
+               this.memoriaDeTrabajo.almacenarAtomo(negAtom);
+             }
+           })
+     
+           console.log(this.memoriaDeTrabajo)
+           if(this.preguntas.length>0){
+             this.mostrarPregunta();
+             }else{
+             this.analize();
+             }
+         }
 }
