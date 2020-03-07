@@ -35,6 +35,7 @@ const _registeredUsers = apiUrl + "usuarios/pacientslist";
 
 const _urlPerfil = apiUrl + "usuarios/";
 
+const _urlActSintomas = apiUrl + 'sintomas/news/lastCreations';
 @Injectable({
   providedIn: 'root'
 })
@@ -245,6 +246,24 @@ getUser(hash : any){
       this.userServ.updateCurrentSessionInfo(res);
     }));
  }
+}
+
+getLastSymptoms(){
+  if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Offline){
+    return from(this.getLocalData('updates'));
+  }else{
+  const headers = new HttpHeaders({'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
+
+  return this.http.get(_urlActSintomas,
+      {
+        headers: headers,
+        observe : 'response'
+      },
+  ).pipe(map(res => res['body']['resultado']),
+  tap(res =>{
+    this.setLocalData('updates', res);
+  }));
+  }
 }
 
 private setLocalData(key, data){

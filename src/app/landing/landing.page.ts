@@ -34,11 +34,11 @@ export class LandingPage {
     if(userType=="2"){
       this.isDoctor=true;
       
-      this.utilServ.getLastSymptoms().subscribe((res:any) =>{
-        this.symptomsNew = res.body.resultado;
+      this.api.getLastSymptoms().subscribe((res:any) =>{
+        this.symptomsNew = res;
       });
     }else{
-      this.utilServ.getRoosterUpdates().subscribe((res:any) =>{
+      this.api.getRoosterUpdates().subscribe((res:any) =>{
         console.log(res.body.resultados);
         this.roosterNews = res.body.resultados;
       })

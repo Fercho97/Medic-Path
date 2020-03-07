@@ -59,8 +59,10 @@
     <h4 text-center>Ultimas actualizaciones</h4>
     <ion-card *ngFor="let sintoma of symptomsNew" class="items">
       <ion-card-header>
-        <ion-card-subtitle>Sintoma registrado</ion-card-subtitle>
-        <ion-card-title>{{sintoma.nombre_sint}}</ion-card-title>
+        <ion-card-subtitle *ngIf="sintoma.hasOwnProperty('nombre_sint')">Sintoma registrado</ion-card-subtitle>
+        <ion-card-subtitle *ngIf="sintoma.hasOwnProperty('nombre_pad')">Padecimiento registrado</ion-card-subtitle>
+        <ion-card-title *ngIf="sintoma.hasOwnProperty('nombre_sint')">{{sintoma.nombre_sint}}</ion-card-title>
+        <ion-card-title *ngIf="sintoma.hasOwnProperty('nombre_pad')">{{sintoma.nombre_pad}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <p>Creado: {{sintoma.creationDate}}</p>
