@@ -19,9 +19,8 @@ export class LandingPage {
   isDoctor : boolean;
   symptomsNew : any;
   roosterNews: any;
-  constructor(private logServ : LoginService, private router : Router, 
-              private alertCtr : AlertController, private session : CurrentUserService,
-              private utilServ : UtilService, private storage : Storage,
+  constructor(private router : Router, private alertCtr : AlertController, 
+              private session : CurrentUserService, private storage : Storage,
               private offline : OfflineRequestsManager, private api : ApiService) { }
 
   async ionViewWillEnter(){
@@ -55,7 +54,8 @@ export class LandingPage {
   async logoutAlert(){
     const alert = await this.alertCtr.create({
       header: 'Logout',
-      message: '¿Desea salir de la aplicación?',
+      message: '¿Desea salir de la aplicación?'+ 
+               'Esto cerrara su sesión por completo',
       buttons : [{
         text: 'No',
         role: 'cancel',
@@ -66,7 +66,7 @@ export class LandingPage {
       },{
         text: 'Si',
         handler: () =>{
-          this.logServ.logout(window.localStorage.getItem('token')).subscribe( (res: any) =>{
+          this.api.logout(window.localStorage.getItem('token')).subscribe( (res: any) =>{
             window.localStorage.clear();
             this.storage.remove("newKey-currentUser");
             this.router.navigate([''])

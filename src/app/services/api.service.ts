@@ -10,8 +10,8 @@ import { CurrentUserService } from './current-user.service'
 
 const API_STORAGE_KEY = 'newKey';
 
-const apiUrl = 'https://medicpath.herokuapp.com/';
-               //'http://localhost:3000/'
+const apiUrl = //'https://medicpath.herokuapp.com/';
+               'http://localhost:3000/'
 
 const saveHistory = apiUrl + 'historial/create';
 
@@ -36,6 +36,10 @@ const _registeredUsers = apiUrl + "usuarios/pacientslist";
 const _urlPerfil = apiUrl + "usuarios/";
 
 const _urlActSintomas = apiUrl + 'sintomas/news/lastCreations';
+
+const urlLogin = apiUrl + 'usuarios/login';
+
+const urlLogout = apiUrl + 'usuarios/logout';
 @Injectable({
   providedIn: 'root'
 })
@@ -264,6 +268,30 @@ getLastSymptoms(){
     this.setLocalData('updates', res);
   }));
   }
+}
+
+checkLogin(valores : HttpParams){
+  return this.http.post(urlLogin,
+      valores.toString(),
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded'),
+        observe : 'response'
+      },
+    )
+}
+
+logout(token : any){
+  const values = new HttpParams()
+   .set('token', token)
+   return this.http.post(urlLogout,
+       values.toString(),
+       {
+         headers: new HttpHeaders()
+           .set('Content-Type', 'application/x-www-form-urlencoded'),
+         observe : 'response'
+       },
+     )
 }
 
 private setLocalData(key, data){

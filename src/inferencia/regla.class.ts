@@ -93,6 +93,32 @@ disparadorReglas(mt){
     }
 
     this.objetivo=obj;
+    if(partes.indexOf("!")===-1){
+        for(let ind = partes.length; ind>0; ind--){
+        let indice = Math.floor(Math.random() * partes.length);
+        let parte = partes.splice(indice,1);
+        let id = ids.splice(indice,1);
+            switch(parte[0]){  
+                case "!": negado = true;
+                          break;
+    
+                case "&": unions.push(parte[0]);
+                          break;
+                
+                case "|": unions.push(parte[0]);
+                                      break;
+    
+                default: 
+                    let atomoRegla = new Atomo(parte[0],true,false,null,id[0]);
+                    this.partesCondicion.push(atomoRegla);
+                    if(negado==true){
+                        this.partesCondicion.push("~");
+                        negado=false;
+                    }
+                break;
+            }
+        }
+    }else{
     let indice = 0;
     partes.forEach(parte =>{
         indice++;
@@ -116,7 +142,7 @@ disparadorReglas(mt){
             break;
         }
     });
-
+    }
     unions.forEach(char => {
         this.partesCondicion.push(char);
     });
