@@ -24,6 +24,33 @@
           <ion-label>{{sintoma}}</ion-label>
         </ion-item>
       </ion-list>
+
+      <div *ngIf="niveles!=''">
+        <ul *ngIf="niveles.Medio.length>0">
+            <h4>Sintomas destacados <i class="far fa-question-circle" title="Sintomas que pueden afectar su vida diaria"></i></h4>
+            <li *ngFor="let niv of niveles.Medio">
+                <p>{{niv.sintoma}}</p>
+            </li>
+        </ul>
+        <ul *ngIf="niveles.Bajo.length>0">
+                <h4>Sintomas de baja urgencia <i class="far fa-question-circle" title="Sintomas cuya persistencia por más de 3 días será necesario el checar con un médico"></i></h4>
+                <li *ngFor="let niv of niveles.Bajo">
+                    <p>{{niv.sintoma}}</p>
+                </li>
+        </ul>
+        <ul *ngIf="niveles.Alto.length>0">
+            <h4>Sintomas de alta urgencia <i class="far fa-question-circle" title="Sintomas que por su naturaleza o bien su persistencia se recomienda encarecidamente acudir con un médico"></i></h4>
+            <li *ngFor="let niv of niveles.Alto">
+                <p>{{niv.sintoma}}</p>
+            </li>
+        </ul>
+        <ul *ngIf="niveles.Severo.length>0">
+            <h4>Sintomas de severidad<i class="far fa-question-circle" title="Si presenta alguno de estos sintomas es sumamente necesario el acudir con un especialista con el fin de tratar dicho sintoma, por lo regular requieren estudios."></i></h4>
+            <li *ngFor="let niv of niveles.Severo">
+                <p>{{niv.sintoma}}</p>
+            </li>
+        </ul>
+        </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

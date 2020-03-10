@@ -159,7 +159,7 @@ export class DiagnosticPage implements OnInit {
       }
       this.memoriaDeTrabajo.almacenarAtomo(atomoEvaluado);
 
-      if(this.atomosCondicion.length>0){
+      if(this.atomosCondicion.length>0 || this.preguntas.length>0){
         this.mostrarPregunta();
       }
       else{
@@ -208,14 +208,15 @@ export class DiagnosticPage implements OnInit {
       .set('usuario', user)
       .set('padecimiento_final', this.idResultado)
       .set('visible', "true")
-      .set('fecha', fecha.toString());
+      .set('fecha', fecha.toString())
+      .set('detalles_especificos', JSON.stringify(this.niveles));
       
       this.api.guardarHistorial(values).subscribe(res =>{
         if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
         this.toast.success('Se ha guardado con éxito en su historial', 'Guardado Exitoso!');
         
         }else{
-         this.histServ.addHistoryToLocal(fecha.toString(),this.breadcrumb.replace(/->/g,","),this.idResultado);
+         this.histServ.addHistoryToLocal(fecha.toString(),this.breadcrumb.replace(/->/g,","),this.idResultado,JSON.stringify(this.niveles));
         }
     }, error =>{
         console.log("Error", error.error);

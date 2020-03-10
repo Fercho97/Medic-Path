@@ -38,8 +38,8 @@ export class LandingPage {
       });
     }else{
       this.api.getRoosterUpdates().subscribe((res:any) =>{
-        console.log(res.body.resultados);
-        this.roosterNews = res.body.resultados;
+        
+        this.roosterNews = res;
       })
     }
   }

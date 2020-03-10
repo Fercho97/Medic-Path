@@ -237,7 +237,8 @@ export class GuidedDiagnosticPage implements OnInit {
       .set('usuario', this.usuario)
       .set('padecimiento_final', this.idResultado)
       .set('visible', 'true')
-      .set('fecha', fecha.toString());
+      .set('fecha', fecha.toString())
+      .set('detalles_especificos', JSON.stringify(this.niveles));
 
       this.api.guardarHistorial(values).subscribe(res =>{
         if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){

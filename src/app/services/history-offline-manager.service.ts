@@ -13,7 +13,8 @@ interface History {
   nombre_pad: string,
   descripcion: string,
   url_imagen_pad: string,
-  nombre_esp: string
+  nombre_esp: string,
+  detalles_especificos: string
 }
 
 @Injectable({
@@ -23,7 +24,7 @@ export class HistoryOfflineManagerService {
 
   constructor(private storage: Storage) { }
 
-  addHistoryToLocal(fecha,descripcion,padecimiento){
+  addHistoryToLocal(fecha,descripcion,padecimiento,detalles){
     let result;
     this.storage.get(STORAGE_PAD_KEY).then(padecimientos =>{
       console.log(padecimientos);
@@ -37,7 +38,8 @@ export class HistoryOfflineManagerService {
                   nombre_pad: element.nombre_pad,
                   descripcion: element.descripcion,
                   url_imagen_pad: element.url_imagen_pad,
-                  nombre_esp: element.nombre_esp
+                  nombre_esp: element.nombre_esp,
+                  detalles_especificos: detalles
               };
             
               return this.storage.get(STORAGE_REQ_KEY).then(storesOperations =>{
