@@ -44,4 +44,19 @@ export class ErrorMsg{
           {type: 'pattern', message: 'Ingrese una cantidad válida'},
         ]
       }
+
+      public static LEVEL_EXPLAIN = {
+        'bajo' : 
+          {message: 'Sintomas cuya persistencia por más de 3 días será necesario el checar con un médico'} 
+        ,
+        'medio' : 
+          {message: 'Sintomas que pueden afectar su vida diaria debido a sus efectos'}
+        ,
+        'alto' : 
+          {message: 'Sintomas que por su naturaleza o bien su persistencia se recomienda encarecidamente acudir con un médico'}
+        ,
+        'severo' : 
+          {message: 'Si presenta alguno de estos sintomas es sumamente necesario el acudir con un especialista con el fin de tratar dicho sintoma, por lo regular requieren estudios'}
+        
+      }
 }

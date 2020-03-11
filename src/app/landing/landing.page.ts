@@ -17,8 +17,8 @@ import { CurrentUserService } from '../services/current-user.service';
 export class LandingPage {
   username : string = "";
   isDoctor : boolean;
-  symptomsNew : any;
-  roosterNews: any;
+  symptomsNew : any = [];
+  roosterNews: any = [];
   constructor(private router : Router, private alertCtr : AlertController, 
               private session : CurrentUserService, private storage : Storage,
               private offline : OfflineRequestsManager, private api : ApiService) { }

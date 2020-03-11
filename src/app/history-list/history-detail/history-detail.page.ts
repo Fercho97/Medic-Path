@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ConsultService } from '../history-list.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { AlertController } from '@ionic/angular';
+import { ErrorMsg } from '../../utils/error_msg.const';
 @Component({
   selector: 'app-history-detail',
   templateUrl: './history-detail.page.html',
@@ -13,9 +15,12 @@ export class HistoryDetailPage {
   public url : string = '../../../assets/default-image.jpg';
   sintomas = [] as any;
   niveles = "";
-  constructor(private api : ApiService, private route : ActivatedRoute) { }
+  public nivelesInfo = ErrorMsg.LEVEL_EXPLAIN;
+  constructor(private api : ApiService, private route : ActivatedRoute,
+              private alertCtr : AlertController) { }
 
   ionViewWillEnter() {
+    console.log(this.nivelesInfo)
     this.api.getHistory(this.route.snapshot.params.id).subscribe( (res: any) =>{
       console.log(res);
       this.historial = res;
@@ -33,4 +38,27 @@ export class HistoryDetailPage {
   })
   }
 
+  showInfo(label : any){
+    console.log(label);
+    let mensaje = this.nivelesInfo[label].message;
+    this.infoAlert(mensaje)
+  }
+
+  async infoAlert(mensaje : any){
+    const alert = await this.alertCtr.create({
+      header: 'Info',
+      message: mensaje,
+      buttons : [{
+        text: 'Okay',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () =>{
+
+        }
+      }
+    ]
+    });
+
+    await alert.present();
+  }
 }
