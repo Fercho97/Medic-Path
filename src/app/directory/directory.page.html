@@ -1,6 +1,8 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-button slot="start" color="secondary" routerLink="/landing" >Volver</ion-button>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/landing"><ion-icon name="arrow-back"></ion-icon></ion-button>
+    </ion-buttons>
     <ion-title *ngIf="!hasEspe" class="ion-text-center">Directorio Médico</ion-title>
     <ion-title *ngIf="hasEspe" class="ion-text-center">Directorio Médico de {{tipo}}</ion-title>
   </ion-toolbar>

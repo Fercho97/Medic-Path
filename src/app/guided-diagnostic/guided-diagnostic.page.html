@@ -1,7 +1,9 @@
 <ion-header>
-  <ion-toolbar>
-      <ion-button slot="start" color="secondary" routerLink="/landing" >Volver</ion-button>
-    <ion-title class="ion-text-center">Consulta</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/landing" replaceUrl="true"><ion-icon name="arrow-back"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Diágnostico Guiado</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -109,30 +111,46 @@
     </ion-list>
     
     <div>
-    <ul *ngIf="niveles.Medio.length>0">
-        <h4>Sintomas destacados <i class="far fa-question-circle" title="Sintomas que pueden afectar su vida diaria"></i></h4>
-        <li *ngFor="let niv of niveles.Medio">
-            <p>{{niv.sintoma}}</p>
-        </li>
-    </ul>
-    <ul *ngIf="niveles.Bajo.length>0">
-            <h4>Sintomas de baja urgencia <i class="far fa-question-circle" title="Sintomas cuya persistencia por más de 3 días será necesario el checar con un médico"></i></h4>
-            <li *ngFor="let niv of niveles.Bajo">
-                <p>{{niv.sintoma}}</p>
-            </li>
-    </ul>
-    <ul *ngIf="niveles.Alto.length>0">
-        <h4>Sintomas de alta urgencia <i class="far fa-question-circle" title="Sintomas que por su naturaleza o bien su persistencia se recomienda encarecidamente acudir con un médico"></i></h4>
-        <li *ngFor="let niv of niveles.Alto">
-            <p>{{niv.sintoma}}</p>
-        </li>
-    </ul>
-    <ul *ngIf="niveles.Severo.length>0">
-        <h4>Sintomas de severidad<i class="far fa-question-circle" title="Si presenta alguno de estos sintomas es sumamente necesario el acudir con un especialista con el fin de tratar dicho sintoma, por lo regular requieren estudios."></i></h4>
-        <li *ngFor="let niv of niveles.Severo">
-            <p>{{niv.sintoma}}</p>
-        </li>
-    </ul>
+        <div *ngIf="niveles.Medio.length>0">
+            <ion-item color="medium">Sintomas destacados  <ion-icon name="help-circle" slot="end" (click)="showInfo('medio')"></ion-icon></ion-item>
+            <ion-list inset=true>
+                <ion-item *ngFor="let niv of niveles.Medio">
+                    <ion-label>{{niv.sintoma}}</ion-label>
+                </ion-item>
+            </ion-list>
+          </div>
+          <div *ngIf="niveles.Ninguno.length>0">
+            <ion-item color="medium">Sintomas sin urgencia  <ion-icon name="help-circle" slot="end" (click)="showInfo('ninguno')"></ion-icon></ion-item>
+            <ion-list inset=true>
+                <ion-item *ngFor="let niv of niveles.Ninguno">
+                    <ion-label>{{niv.sintoma}}</ion-label>
+                </ion-item>
+            </ion-list>
+          </div>
+          <div *ngIf="niveles.Bajo.length>0">
+            <ion-item color="medium">Sintomas de baja urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('bajo')"></ion-icon></ion-item>
+            <ion-list inset=true>
+                    <ion-item *ngFor="let niv of niveles.Bajo">
+                        <ion-label>{{niv.sintoma}}</ion-label>
+                    </ion-item>
+            </ion-list>
+          </div>
+          <div *ngIf="niveles.Alto.length>0">
+            <ion-item color="medium">Sintomas de alta urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('alto')"></ion-icon></ion-item>
+            <ion-list inset=true>
+                <ion-item *ngFor="let niv of niveles.Alto">
+                    <ion-label>{{niv.sintoma}}</ion-label>
+                </ion-item>
+            </ion-list>
+          </div>
+          <div *ngIf="niveles.Severo.length>0">
+            <ion-item color="medium">Sintomas de severidad <ion-icon name="help-circle" slot="end" (click)="showInfo('severo')"></ion-icon></ion-item>
+            <ion-list inset=true>
+                <ion-item *ngFor="let niv of niveles.Severo">
+                    <ion-label>{{niv.sintoma}}</ion-label>
+                </ion-item>
+            </ion-list>
+          </div>
     </div>
 </div>
 </ion-content>

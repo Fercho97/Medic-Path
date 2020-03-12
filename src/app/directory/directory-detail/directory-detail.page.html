@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button text="Volver"></ion-back-button>
+      <ion-button routerLink="/directory"><ion-icon name="arrow-back"></ion-icon></ion-button>
     </ion-buttons>
     <ion-title class="ion-text-center">Perfil médico</ion-title>
   </ion-toolbar>
@@ -9,15 +9,15 @@
 
 <ion-content>
   <ion-card>
-      <img justify-content-center align-items-center style="width:300px;height:200px;" [src]="url">
+      <img [src]="url">
       <ion-card-content>
         <ion-card-title>Doctor: {{infoDoc.apellidos + " " + infoDoc.nombres}}</ion-card-title>
         <ion-item>
-        <ion-label><p>Especializaciones:</p><p *ngFor="let espe of especializaciones">{{espe.nombre_esp}}</p></ion-label>
+        <ion-label><p><ion-text color="primary">Especializaciones:</ion-text></p><p *ngFor="let espe of especializaciones">{{espe.nombre_esp}}</p></ion-label>
         <ion-label>
-          <p>Teléfono: {{infoDoc.telefono}}</p>
-          <p>Dirección: {{infoDoc.direccion}}</p>
-          <p>Email: {{infoDoc.email}}</p>
+          <p><ion-text color="primary">Teléfono:</ion-text> {{infoDoc.telefono}}</p>
+          <p><ion-text color="primary">Dirección:</ion-text> {{infoDoc.direccion}}</p>
+          <p><ion-text color="primary">Email:</ion-text> {{infoDoc.email}}</p>
           </ion-label>
         </ion-item>
       </ion-card-content>

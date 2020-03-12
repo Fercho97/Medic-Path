@@ -14,8 +14,8 @@
         </ion-menu-toggle> 
         <ion-menu-toggle auto-hide="false" *ngIf="isDoctor">
           <ion-item routerLink="/guided-diagnostic" color="primary">
-              Diagnóstico Guiado
-          </ion-item><ion-icon name="clipboard"></ion-icon>
+              Diagnóstico Guiado<ion-icon name="clipboard" slot="end"></ion-icon>
+          </ion-item>
         </ion-menu-toggle>
         <ion-menu-toggle auto-hide="false" *ngIf="!isDoctor">
             <ion-item routerLink="/diagnostic" color="primary">
@@ -48,7 +48,7 @@
       </ion-menu-button>
     </ion-buttons>
     
-    <ion-title class="ion-text-center">Bienvenido {{username}}</ion-title>
+    <ion-title >Bienvenido {{username}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -57,7 +57,7 @@
 <ion-content>
   <div *ngIf="isDoctor">
     <h4 text-center>Ultimas actualizaciones</h4>
-    <p text-center *ngIf="symptomsNew.length==0">Por el momento no se ha actualizado nada en la base de conocimiento</p>
+    <p class="ion-text-center" text-center *ngIf="symptomsNew.length==0">Por el momento no se ha actualizado nada en la base de conocimiento</p>
     <ion-card *ngFor="let sintoma of symptomsNew" class="items">
       <ion-card-header>
         <ion-card-subtitle *ngIf="sintoma.hasOwnProperty('nombre_sint')">Sintoma registrado</ion-card-subtitle>
@@ -71,9 +71,9 @@
       </ion-card-content>
     </ion-card>
   </div>
-  <div *ngIf="!isDoctor">
-    <h4 text-center>Ultimas noticias</h4>
-    <p text-center *ngIf="roosterNews.length==0">Por el momento no hay noticias para mostrar</p>
+  <div *ngIf="!isDoctor" class="ion-text-center">
+    <h4>Ultimas noticias</h4>
+    <p *ngIf="roosterNews.length==0">Por el momento no hay noticias para mostrar</p>
     <ion-card *ngFor="let new of roosterNews" class="items">
       <ion-card-header>
         <ion-card-subtitle>Se ha unido un nuevo médico al sistema</ion-card-subtitle>

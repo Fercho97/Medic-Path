@@ -15,6 +15,7 @@ import { ApiService } from '../services/api.service';
 import { HistoryOfflineManagerService } from '../services/history-offline-manager.service';
 import { NetworkService, ConnectionStatus } from '../services/network.service';
 import { Calculus } from '../../inferencia/calculus.class';
+import { AlertsManagerService} from '../services/alerts-manager.service'
 @Component({
   selector: 'app-guided-diagnostic',
   templateUrl: './guided-diagnostic.page.html',
@@ -50,13 +51,14 @@ export class GuidedDiagnosticPage implements OnInit {
   public numeric : FormGroup;
   public scale : FormGroup;
   public errores_Diag = ErrorMsg.ERROR_DIAG;
+  public nivelesInfo = ErrorMsg.LEVEL_EXPLAIN;
   public painIndex = 1;
   public niveles : any = { "Ninguno" : [], "Bajo" : [], "Medio" : [], "Alto" : [], "Severo" : []};
   public color = "secondary";
   public atomos_opciones : any = [];
   constructor(private diagServ : DiagnosticService, private toast : ToastrService,
               private router : Router, private api : ApiService, private network : NetworkService,
-              private histServ : HistoryOfflineManagerService) { 
+              private histServ : HistoryOfflineManagerService, private alertServ : AlertsManagerService) { 
                 this.numeric = new FormGroup({
                   temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
                 });
@@ -73,18 +75,18 @@ export class GuidedDiagnosticPage implements OnInit {
       this.allSymptoms = res;
       this.sintomas = this.allSymptoms.filter(sintoma => sintoma['compuesto']==false);
     })
-    console.log(this.allSymptoms);
     
   }
 
   iniciarDiagnostico(){
-    console.log("inicia")
+
+    console.log(this.allSymptoms)
     let mira : string = "";
-    this.diagServ.consulta(mira).subscribe((res : any)  =>{
+    this.api.consulta(mira).subscribe((res : any)  =>{
       //this.hasPregunta = true;
-      console.log(res.body);
+      console.log(res);
       
-     res.body.reglas.forEach(element => {
+     res.forEach(element => {
         let rule = new Regla();
         this.baseConocimiento.push(rule.desgloseReglas(element));
       });
@@ -102,7 +104,6 @@ export class GuidedDiagnosticPage implements OnInit {
       let indice;
       if(this.nextObjective.length==0){
       indice = this.pathSelection();
-      console.log(indice);
       this.reglaEvaluar = this.baseConocimiento[indice];
       }else{
         this.reglaEvaluar = this.nextObjective.pop();
@@ -122,7 +123,7 @@ export class GuidedDiagnosticPage implements OnInit {
             let almacenado = null;
 
             almacenado =  this.memoriaDeTrabajo.estaAlmacenado(element);
-            console.log("Esta en la memoria?" + almacenado)
+            console.log("evaluando" + element.desc)
             if(almacenado===false){
             this.atomosCondicion.push(new Atomo(element.desc,element.estado,element.obj,element.padecimiento,element.sintoma));
             let question = this.questionGen(element.desc); 
@@ -158,7 +159,7 @@ export class GuidedDiagnosticPage implements OnInit {
       if(found!=undefined){
       this.descripcion = found.descripcion;
       }
-    }let id = this.descs.pop();
+    }
     }
 
     responder(resp : any){
@@ -363,7 +364,7 @@ export class GuidedDiagnosticPage implements OnInit {
               let atomSymp = this.allSymptoms.find(item => item['nombre_sint'].toString() === atomo.desc);
               if(atomSymp!=null){
               console.log(atomSymp.nivel_urgencia);
-              let sympLev = {sintoma: atomSymp.nombre_sint};
+              let sympLev = {sintoma: atomSymp.nombre_sint, descripcion: atomSymp.descripcion};
               if(atomSymp.nivel_urgencia>=0 && atomSymp.nivel_urgencia<0.2){
                 this.niveles.Ninguno.push(sympLev);
               }else if(atomSymp.nivel_urgencia>=0.2 && atomSymp.nivel_urgencia<0.4){
@@ -453,6 +454,7 @@ export class GuidedDiagnosticPage implements OnInit {
         
           checkMultipleTypes(sint:any){
             let sintoma = this.sintomas.find(symp => symp['nombre_sint']==sint);
+            console.log(sintoma);
             let sameSynts = this.sintomas.filter(symp => symp['categoria_sint']==sintoma.categoria_sint && symp['keyWord']==sintoma.keyWord);
             return sameSynts;
           }
@@ -514,6 +516,12 @@ export class GuidedDiagnosticPage implements OnInit {
              }
          }
      
+         showInfo(label : any){
+          console.log(label);
+          let mensaje = this.nivelesInfo[label].message;
+          this.alertServ.infoAlert(mensaje);
+        }
+
          selectedOption(selectedAtom : any){
            let atomoEvaluado = this.atomosCondicion.pop();
            let atom : any;

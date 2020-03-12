@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
-      <ion-button slot="start" routerLink="/landing" replaceUrl="true" clear><ion-icon name="arrow-back"></ion-icon></ion-button>
-    <ion-title>Diágnostico</ion-title>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/landing" replaceUrl="true" ><ion-icon name="arrow-back"></ion-icon></ion-button>
+    </ion-buttons>
+  <ion-title>Diágnostico</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -103,7 +105,6 @@
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Ninguno">
                     <ion-label>{{niv.sintoma}}</ion-label>
-                    <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(niv.descripcion)"></ion-icon>
                 </ion-item>
             </ion-list>
           </div>
