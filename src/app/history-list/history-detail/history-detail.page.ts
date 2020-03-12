@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConsultService } from '../history-list.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { AlertController } from '@ionic/angular';
+import { AlertsManagerService } from '../../services/alerts-manager.service';
 import { ErrorMsg } from '../../utils/error_msg.const';
 @Component({
   selector: 'app-history-detail',
@@ -17,7 +17,7 @@ export class HistoryDetailPage {
   niveles = "";
   public nivelesInfo = ErrorMsg.LEVEL_EXPLAIN;
   constructor(private api : ApiService, private route : ActivatedRoute,
-              private alertCtr : AlertController) { }
+              private alertServ : AlertsManagerService) { }
 
   ionViewWillEnter() {
     console.log(this.nivelesInfo)
@@ -41,24 +41,7 @@ export class HistoryDetailPage {
   showInfo(label : any){
     console.log(label);
     let mensaje = this.nivelesInfo[label].message;
-    this.infoAlert(mensaje)
+    this.alertServ.infoAlert(mensaje);
   }
 
-  async infoAlert(mensaje : any){
-    const alert = await this.alertCtr.create({
-      header: 'Info',
-      message: mensaje,
-      buttons : [{
-        text: 'Okay',
-        role: 'cancel',
-        cssClass: 'secondary',
-        handler: () =>{
-
-        }
-      }
-    ]
-    });
-
-    await alert.present();
-  }
 }

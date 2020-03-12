@@ -14,6 +14,7 @@ import { ApiService } from '../services/api.service';
 import { HistoryOfflineManagerService } from '../services/history-offline-manager.service';
 import { NetworkService, ConnectionStatus } from '../services/network.service';
 import { CurrentUserService } from "../services/current-user.service";
+import { AlertsManagerService} from '../services/alerts-manager.service'
 import * as moment from 'moment-timezone';
 moment.locale('es');
 @Component({
@@ -48,12 +49,14 @@ export class DiagnosticPage implements OnInit {
   public numeric : FormGroup;
   public scale : FormGroup;
   public errores_Diag = ErrorMsg.ERROR_DIAG;
+  public nivelesInfo = ErrorMsg.LEVEL_EXPLAIN;
   public painIndex = 1;
   public color = "secondary";
   public atomos_opciones : any = [];
   constructor(private histServ : HistoryOfflineManagerService, private toast : ToastrService,
               private router : Router, private nav : NavController,
-              private api : ApiService, private network : NetworkService, private session : CurrentUserService) { 
+              private api : ApiService, private network : NetworkService, private session : CurrentUserService,
+              private alertServ : AlertsManagerService) { 
     this.numeric = new FormGroup({
       temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
     });
@@ -311,7 +314,7 @@ export class DiagnosticPage implements OnInit {
               let atomSymp = this.sintomas.find(item => item['nombre_sint'].toString() === atomo.desc);
               if(atomSymp!=null){
               console.log(atomSymp.nivel_urgencia);
-              let sympLev = {sintoma: atomSymp.nombre_sint};
+              let sympLev = {sintoma: atomSymp.nombre_sint, descripcion: atomSymp.descripcion};
               if(atomSymp.nivel_urgencia>=0 && atomSymp.nivel_urgencia<0.2){
                 this.niveles.Ninguno.push(sympLev);
               }else if(atomSymp.nivel_urgencia>=0.2 && atomSymp.nivel_urgencia<0.4){
@@ -468,6 +471,12 @@ export class DiagnosticPage implements OnInit {
            }
        }
    
+       showInfo(label : any){
+        console.log(label);
+        let mensaje = this.nivelesInfo[label].message;
+        this.alertServ.infoAlert(mensaje);
+      }
+
        selectedOption(selectedAtom : any){
          let atomoEvaluado = this.atomosCondicion.pop();
          let atom : any;

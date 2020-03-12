@@ -46,6 +46,9 @@ export class ErrorMsg{
       }
 
       public static LEVEL_EXPLAIN = {
+        'ninguno' :
+        {message: 'Sintomas que por si solos no presentan peligro alguno a menos que se descuiden por bastante tiempo o bien las afectaciones percibidas hacia la personas sean en exceso'}
+        ,
         'bajo' : 
           {message: 'Sintomas cuya persistencia por más de 3 días será necesario el checar con un médico'} 
         ,
