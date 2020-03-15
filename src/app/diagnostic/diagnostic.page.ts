@@ -91,7 +91,7 @@ export class DiagnosticPage implements OnInit {
     inferencia(){
       let indice;
       if(this.nextObjective.length==0){
-      indice = this.pathSelection();
+      indice = this.calculusClass.pathSelection(this.baseConocimiento,this.memoriaDeTrabajo);
       
       this.reglaEvaluar = this.baseConocimiento[indice];
       }else{
@@ -138,7 +138,7 @@ export class DiagnosticPage implements OnInit {
     mostrarPregunta(){
       this.question = this.preguntas.pop();
       console.log(this.question);
-      if(this.question.type==='boolean'){
+      if(this.question.type==='boolean' || this.question.type==='numeric'){
       let id = this.descs.pop();
       console.log(id);
       
@@ -226,37 +226,6 @@ export class DiagnosticPage implements OnInit {
         this.toast.error(error.error, 'Error');
         this.router.navigate(['/landing'])
     })
-    }
-
-    pathSelection(){
-      let bestStart;
-      let atomsInRule;
-      let commonAtoms;
-      let bestPorcentage = 0;
-      let porcentage;
-      let index = 0;
-      this.baseConocimiento.forEach((element:Regla)=> {
-        atomsInRule=0;
-        commonAtoms=0;
-        index++;
-        element.partesCondicion.forEach(parte =>{
-          if(parte instanceof Atomo){
-            atomsInRule++;
-          }
-          if(this.memoriaDeTrabajo.atomosAfirmados.some(atom => atom.desc === parte.desc)){
-            commonAtoms++;
-          }
-        });
-        porcentage = commonAtoms * 100 / atomsInRule;
-        if(porcentage > bestPorcentage){
-          bestPorcentage = porcentage;
-          bestStart = index;
-        }
-      });
-      if(bestStart==undefined){
-      bestStart = Math.floor(Math.random() * this.baseConocimiento.length) + 1;
-      }
-      return bestStart-1;
     }
 
     showWhy(){
@@ -480,15 +449,18 @@ export class DiagnosticPage implements OnInit {
        selectedOption(selectedAtom : any){
          let atomoEvaluado = this.atomosCondicion.pop();
          let atom : any;
+         let atomId : any;
          if(atomoEvaluado.desc===selectedAtom){
            atomoEvaluado.estado=true;
            this.memoriaDeTrabajo.almacenarAtomo(atomoEvaluado);
-           this.breadcrumb = this.breadcrumb + atomoEvaluado.desc + "->"
+           this.breadcrumb = this.breadcrumb + atomoEvaluado.desc + "->";
+           atomId = atomoEvaluado.sintoma;
          }else{
            let sint = this.sintomas.find(symp => symp['nombre_sint']==selectedAtom);
            atom = new Atomo(selectedAtom,true,false,null,sint.idSint);
            this.memoriaDeTrabajo.almacenarAtomo(atom);
            this.breadcrumb = this.breadcrumb + atom.desc + "->"
+           atomId = atom.sintoma;
          }
    
          let opciones = this.atomos_opciones.pop();
@@ -499,6 +471,7 @@ export class DiagnosticPage implements OnInit {
            }
          })
    
+         this.evaluateSypmtom(atomId);
          console.log(this.memoriaDeTrabajo)
          if(this.preguntas.length>0){
            this.mostrarPregunta();
