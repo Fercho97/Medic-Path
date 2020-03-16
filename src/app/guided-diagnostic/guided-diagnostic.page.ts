@@ -5,7 +5,7 @@ import { Regla } from '../../inferencia/regla.class';
 import { Atomo } from '../../inferencia/atomo.class';
 import { MemoriaTrabajo } from '../../inferencia/memoriaTrabajo.class';
 import { ToastrService } from 'ngx-toastr';
-import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import {Router} from '@angular/router';
 import { questions } from '../utils/questions.const';
 import { ErrorMsg } from '../utils/error_msg.const';

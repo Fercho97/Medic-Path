@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OfflineRequestsManager } from './offline-manager.service';
 import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { NetworkService, ConnectionStatus } from './network.service';
 import { Storage} from '@ionic/storage';
 import { Observable, from } from 'rxjs';

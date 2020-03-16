@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import {OfflineRequestsManager } from '../services/offline-manager.service'
 import { ApiService } from '../services/api.service';
 import { CurrentUserService } from '../services/current-user.service';
+import { NetworkService, ConnectionStatus } from '../services/network.service';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.page.html',
@@ -19,15 +20,16 @@ export class LandingPage {
   roosterNews: any = [];
   constructor(private router : Router, private alertCtr : AlertController, 
               private session : CurrentUserService, private storage : Storage,
-              private offline : OfflineRequestsManager, private api : ApiService) { }
+              private offline : OfflineRequestsManager, private api : ApiService,
+              private networkServ : NetworkService) { }
 
   async ionViewWillEnter(){
     this.isDoctor = false;
     this.username= await this.session.obtainSessionUsername();
-    console.log(this.username);
-    this.api.updateLocalDatabase();
+    
+    
     let userType = await this.session.obtainSessionUserType();
-    console.log(userType);
+  
     if(userType=="2"){
       this.isDoctor=true;
       
@@ -39,6 +41,10 @@ export class LandingPage {
         
         this.roosterNews = res;
       })
+    }
+
+    if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Online){
+      this.api.updateLocalDatabase();
     }
   }
 
