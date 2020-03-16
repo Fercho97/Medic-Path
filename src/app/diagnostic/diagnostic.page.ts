@@ -42,6 +42,8 @@ export class DiagnosticPage implements OnInit {
   public sintomas : any = [];
   public sintomasSeleccionados : any = [];
   public sintomasExtras : any =[];
+  public sintomasResultado : any = [];
+  public selectableSymptoms : any = [];
   public descs : any = [];
   public nextObjective : any = [];
   public niveles : any = { "Ninguno" : [], "Bajo" : [], "Medio" : [], "Alto" : [], "Severo" : []};
@@ -53,6 +55,8 @@ export class DiagnosticPage implements OnInit {
   public painIndex = 1;
   public color = "secondary";
   public atomos_opciones : any = [];
+  public isSelection : boolean = false;
+  public fromSelected = false;
   constructor(private histServ : HistoryOfflineManagerService, private toast : ToastrService,
               private router : Router, private nav : NavController,
               private api : ApiService, private network : NetworkService, private session : CurrentUserService,
@@ -65,6 +69,7 @@ export class DiagnosticPage implements OnInit {
   ngOnInit() {
     this.api.getAllSymptoms().subscribe(res =>{
       this.sintomas = res;
+      this.selectableSymptoms = this.sintomas.filter(sintoma => sintoma['compuesto']==false);
       console.log(this.sintomas);
     })
   }
@@ -204,10 +209,15 @@ export class DiagnosticPage implements OnInit {
     }
 
     async guardar(){
+      let details = "";
+      for(var atom of this.sintomasResultado){
+        details = details + atom.desc + ",";
+      }
+
       var fecha = moment().tz('America/Mexico_City').format();
       var user = await this.session.obtainSessionId();
       let values = new HttpParams()
-      .set('detalles', this.breadcrumb.replace(/->/g,","))
+      .set('detalles', details)
       .set('usuario', user)
       .set('padecimiento_final', this.idResultado)
       .set('visible', "true")
@@ -219,7 +229,7 @@ export class DiagnosticPage implements OnInit {
         this.toast.success('Se ha guardado con éxito en su historial', 'Guardado Exitoso!');
         
         }else{
-         this.histServ.addHistoryToLocal(fecha.toString(),this.breadcrumb.replace(/->/g,","),this.idResultado,JSON.stringify(this.niveles));
+         this.histServ.addHistoryToLocal(fecha.toString(),details,this.idResultado,JSON.stringify(this.niveles));
         }
     }, error =>{
         console.log("Error", error.error);
@@ -233,10 +243,10 @@ export class DiagnosticPage implements OnInit {
       this.question={message: "Usted padece de : " + this.reglaEvaluar.partesConclusion[0].desc }
       this.hasResult=true;
       this.idResultado=this.reglaEvaluar.partesConclusion[0].padecimiento;
-      console.log(this.sintomasSeleccionados);
+     
       this.reglaEvaluar.partesCondicion.forEach(element => {
           if((element!=="&") && (element!=="!")){
-          this.sintomasSeleccionados.push(this.memoriaDeTrabajo.estaAfirmado(element));
+          this.sintomasResultado.push(this.memoriaDeTrabajo.estaAfirmado(element));
          }
       });
       this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo);
@@ -275,6 +285,53 @@ export class DiagnosticPage implements OnInit {
       })
 
       return lastId;
+    }
+
+    selection(){
+      this.isSelection=true;
+    }
+
+    cancel(){
+      this.isSelection=false;
+    }
+
+    fromSintomasIniciales(){
+      console.log(this.sintomasSeleccionados);
+      this.sintomasSeleccionados.forEach(element => {
+        //Generar atomo//TODO get sintoma id;
+        let atomoRegla = new Atomo(element,true,false,null,null);
+        let sintoma = this.sintomas.find(sint => sint['nombre_sint'] == element);
+      
+        //Guardar en memoria de trabajo
+        this.memoriaDeTrabajo.almacenarAtomo(atomoRegla);
+        this.breadcrumb = this.breadcrumb + element + "->"
+        this.evaluateSypmtom(sintoma.idSint);
+      });
+      this.avoidUnnecesaryQuestions();
+      console.log(this.memoriaDeTrabajo);
+      if(this.preguntas.length>0){
+        this.hasPregunta = true;
+        this.fromSelected=true;
+        this.mostrarPregunta();
+      }else{
+        this.iniciarDiagnostico();
+      }
+    }
+
+    avoidUnnecesaryQuestions(){
+      this.memoriaDeTrabajo.atomosAfirmados.forEach(sintoma =>{
+        let multiOption = this.checkMultipleTypes(sintoma.desc);
+
+        if(multiOption.length>1){
+          multiOption.forEach(option =>{
+            let atomo = new Atomo(option.nombre_sint,false,false,null,null);
+            console.log(this.memoriaDeTrabajo.estaAfirmado(atomo));
+            if(this.memoriaDeTrabajo.estaAlmacenado(atomo)===false){
+              this.memoriaDeTrabajo.almacenarAtomo(atomo);
+            }
+          })
+        }
+      })
     }
 
     checkUrgencyLevels(){
@@ -338,8 +395,8 @@ export class DiagnosticPage implements OnInit {
            }
       
            evaluateSypmtom(symp : any){
-            let atomSymp = this.sintomas.find(item => item['idSint'].toString() === symp);
-            let sympIndex = this.sintomas.findIndex(item => item['idSint'].toString() === symp);
+            let atomSymp = this.sintomas.find(item => item['idSint'].toString() === symp.toString());
+            let sympIndex = this.sintomas.findIndex(item => item['idSint'].toString() === symp.toString());
             if(atomSymp.nivel_urgencia==0.4){
               this.preguntas.push({message:'Del 1 al 10 que rango de molestia le causa el tener ' + atomSymp.nombre_sint, type: 'scale', index: sympIndex});
             }
@@ -352,6 +409,8 @@ export class DiagnosticPage implements OnInit {
           this.painIndex=1;
           if(this.preguntas.length>0){
             this.mostrarPregunta();
+            }else if(this.fromSelected=true){
+              this.iniciarDiagnostico();
             }else{
             this.analize();
             }

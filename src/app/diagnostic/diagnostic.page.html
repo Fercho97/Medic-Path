@@ -12,11 +12,24 @@
       <ion-card>
           <ion-item>
               <p>Bienvenido a la herramienta de diagnostico. 
-                 Para comenzar simplemente haga click en el siguiente botón</p>
+                 Para comenzar simplemente haga click en el siguiente botón o bien seleccione algunos de sus sintomas para comenzar</p>
           </ion-item>
           <ion-card-content>
               <ion-button size="medium" color="success" expand="block" slot="end" (click)="iniciarDiagnostico()">Comenzar</ion-button>              
-          </ion-card-content>
+              <ion-button color="success" (click)="selection()" expand="block" slot="end">Seleccionar sintomas iniciales</ion-button>
+               
+        </ion-card-content>
+
+        <ion-card-content *ngIf="isSelection">
+            <ion-select placeholder="Eliga sus sintomas" multiple="true" [(ngModel)] = "sintomasSeleccionados">
+                <ion-select-option *ngFor="let ini of selectableSymptoms" value="{{ini.nombre_sint}}" >{{ini.nombre_sint}}</ion-select-option>
+            </ion-select>
+        </ion-card-content>
+
+        <ion-button color="error" *ngIf="isSelection" (click)="cancel()"  expand="block" slot="end">Cancelar</ion-button>
+        <br>
+        <ion-button color="success" *ngIf="isSelection" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnostico con sintomas iniciales</ion-button>
+        <br>
         </ion-card>
 
 </div>
@@ -25,7 +38,7 @@
     <ion-card>
         <ion-card-header>
           <ion-card-subtitle>Sus sintomas: {{breadcrumb}}</ion-card-subtitle>
-          <ion-card-subtitle *ngIf="!hasResult">Descripción: {{descripcion}}</ion-card-subtitle>
+          <ion-card-subtitle *ngIf="!hasResult || question.type=='boolean'">Descripción: {{descripcion}}</ion-card-subtitle>
           <ion-card-title>{{question.message}}</ion-card-title>
          </ion-card-header>
         <ion-card-content>
@@ -85,7 +98,7 @@
 
 <div  *ngIf="hasResult">
     <ion-list *ngIf="hasResult"><p>Sintomas pertenecientes a su resultado:</p>
-        <ion-item *ngFor="let sintoma of sintomasSeleccionados">
+        <ion-item *ngFor="let sintoma of sintomasResultado">
             <ion-label>{{sintoma.desc}}</ion-label>
         </ion-item>
     </ion-list>

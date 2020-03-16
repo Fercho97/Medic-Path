@@ -44,6 +44,7 @@ export class GuidedDiagnosticPage implements OnInit {
   public sintomas : any = [];
   public sintomasSeleccionados : any = [];
   public allSymptoms : any = [];
+  public sintomasResultado : any = [];
   public isSelection : boolean = false;
   public descs : any = [];
   public nextObjective : any = [];
@@ -221,10 +222,10 @@ export class GuidedDiagnosticPage implements OnInit {
       this.question={message: "Su paciente padece de : " + this.reglaEvaluar.partesConclusion[0].desc }
       this.hasResult=true;
       this.idResultado=this.reglaEvaluar.partesConclusion[0].padecimiento;
-      console.log(this.sintomasSeleccionados);
+      
       this.reglaEvaluar.partesCondicion.forEach(element => {
           if((element!=="&") && (element!=="!")){
-          this.sintomasSeleccionados.push(this.memoriaDeTrabajo.estaAfirmado(element));
+          this.sintomasResultado.push(this.memoriaDeTrabajo.estaAfirmado(element));
          }
       });
       this.checkUrgencyLevels();
@@ -233,9 +234,14 @@ export class GuidedDiagnosticPage implements OnInit {
     }
 
     guardar(){
+      let details = "";
+      for(var atom of this.sintomasResultado){
+        details = details + atom.desc + ",";
+      }
+
       var fecha = moment().tz('America/Mexico_City').format();
       let values = new HttpParams()
-      .set('detalles', this.breadcrumb.replace(/->/g,","))
+      .set('detalles', details)
       .set('usuario', this.usuario)
       .set('padecimiento_final', this.idResultado)
       .set('visible', 'true')
