@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component} from '@angular/core';
+import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { HttpParams, HttpClient} from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { PassChangeService } from './pass-change.service';
 import {Router} from '@angular/router';

@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { LoginService } from '../login/login.service';
+import { Component} from '@angular/core';
 import {Router} from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { UtilService } from '../utils/util.service';

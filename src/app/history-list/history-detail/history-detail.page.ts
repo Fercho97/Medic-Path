@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ConsultService } from '../history-list.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { AlertsManagerService } from '../../services/alerts-manager.service';
 import { ErrorMsg } from '../../utils/error_msg.const';

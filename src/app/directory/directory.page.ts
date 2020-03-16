@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { DirectoryService } from './directory.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from "rxjs/operators";

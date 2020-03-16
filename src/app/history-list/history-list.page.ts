@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ConsultService } from './history-list.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from "rxjs/operators";

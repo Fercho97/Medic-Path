@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { ProfileService } from './profile.service';
 import { ToastrService } from 'ngx-toastr';
-import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HttpParams} from '@angular/common/http';
+import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { ErrorMsg } from '../utils/error_msg.const';
 import { NicknameValidator } from "../validators/NicknameValidator";
 import { CurrentUserService } from "../services/current-user.service";
