@@ -438,7 +438,7 @@ export class DiagnosticPage implements OnInit {
 
         checkMultipleTypes(sint:any){
           let sintoma = this.sintomas.find(symp => symp['nombre_sint']==sint);
-          let sameSynts = this.sintomas.filter(symp => symp['categoria_sint']==sintoma.categoria_sint && symp['keyWord']==sintoma.keyWord);
+          let sameSynts = this.sintomas.filter(symp => symp['categoria_sint']==sintoma.categoria_sint && symp['keyWord'].toLowerCase()==sintoma.keyWord.toLowerCase());
           return sameSynts;
         }
    
@@ -459,45 +459,46 @@ export class DiagnosticPage implements OnInit {
         }
    
         optionAnswer(opciones: any, text : any, atomos : any, answer){
-         //TODO en base a los datos de options generar los botones de manera dinámica, en base a los datos de atoms generar los atomos negados en caso de que no y el atomo aceptado en caso de que si.
-         if(opciones.length<atomos.length){
-           opciones.push('Simple');
-         }
-   
-         console.log(atomos);
-         //console.log(opciones.length);
-         if(answer==="Si"){
-           let optionSize = opciones.length;
-           this.atomos_opciones.push( atomos.slice());
-           console.log(this.atomos_opciones);
-           let buttonOptions = [];
-           for(var i = 0; i<optionSize; i++){
-             let atomo = atomos.pop();
-             let showOption = opciones.pop();
-             let sintoma = this.sintomas.find(symp => symp['nombre_sint']==atomo);
-             let button = {message: showOption, value: atomo, desc: sintoma.descripcion};
-             buttonOptions.push(button);
-           }
-           console.log(buttonOptions);
-           this.preguntas.push({message: "¿Como describiría su " + text + "?",buttons: buttonOptions, type: 'selection'});
-         }else{
-           let atomoEvaluado = this.atomosCondicion.pop();
-           atomoEvaluado.estado=false;
-           this.memoriaDeTrabajo.almacenarAtomo(atomoEvaluado);
-           atomos.forEach(atom =>{
-             if(atom!==atomoEvaluado.desc){
-               let negado = new Atomo(atom,false,false,null,null);
-               this.memoriaDeTrabajo.almacenarAtomo(negado);
-             }
-           })
-   
-         }
-         if(this.preguntas.length>0){
-           this.mostrarPregunta();
-           }else{
-           this.analize();
-           }
-       }
+          //console.log(opciones.length);
+          if(answer==="Si"){
+            let atomsSize = atomos.length;
+            this.atomos_opciones.push( atomos.slice());
+            console.log(this.atomos_opciones);
+            let buttonOptions = [];
+            for(var i = 0; i<atomsSize; i++){
+              let showOption  = "";
+              let atomo = atomos.pop();
+    
+              if(opciones.length!=0){
+              showOption = opciones.pop();
+              }else{
+                showOption = "General";
+              }
+              let sintoma = this.sintomas.find(symp => symp['nombre_sint']==atomo);
+              let button = {message: showOption, value: atomo, desc: sintoma.descripcion};
+              buttonOptions.push(button);
+            }
+            console.log(buttonOptions);
+            let messageShow = questions.MULTIQUESTIONS[text.toLowerCase()];
+            this.preguntas.push({message: messageShow[0].message,buttons: buttonOptions, type: 'selection'});
+          }else{
+            let atomoEvaluado = this.atomosCondicion.pop();
+            atomoEvaluado.estado=false;
+            this.memoriaDeTrabajo.almacenarAtomo(atomoEvaluado);
+            atomos.forEach(atom =>{
+              if(atom!==atomoEvaluado.desc){
+                let negado = new Atomo(atom,false,false,null,null);
+                this.memoriaDeTrabajo.almacenarAtomo(negado);
+              }
+            })
+    
+          }
+          if(this.preguntas.length>0){
+            this.mostrarPregunta();
+            }else{
+            this.analize();
+            }
+        }
    
        showInfo(label : any){
         console.log(label);

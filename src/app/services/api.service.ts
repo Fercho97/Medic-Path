@@ -9,8 +9,8 @@ import { CurrentUserService } from './current-user.service'
 
 const API_STORAGE_KEY = 'newKey';
 
-const apiUrl = //'https://medicpath.herokuapp.com/';
-               'http://localhost:3000/'
+const apiUrl = 'https://medicpath.herokuapp.com/';
+               //'http://localhost:3000/'
 
 const saveHistory = apiUrl + 'historial/create';
 
