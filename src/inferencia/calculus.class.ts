@@ -41,7 +41,7 @@ export class Calculus{
            }
          });
          percentage = commonAtoms * 100 / atomsInRule;
-         if(percentage > 10 && percentage != 100){
+         if(percentage > 70 && percentage != 100){
            let showPercentage = percentage*0.01;
            let closeness = {padecimiento: element.partesConclusion[0].desc, porcentaje: Math.floor(percentage), showPorcentaje: showPercentage.toFixed(1)};
           console.log(closeness);

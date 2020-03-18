@@ -143,7 +143,7 @@ export class DiagnosticPage implements OnInit {
     mostrarPregunta(){
       this.question = this.preguntas.pop();
       console.log(this.question);
-      if(this.question.type==='boolean' || this.question.type==='numeric'){
+      if(this.question.type==='boolean'){
       let id = this.descs.pop();
       console.log(id);
       
@@ -409,7 +409,7 @@ export class DiagnosticPage implements OnInit {
           this.painIndex=1;
           if(this.preguntas.length>0){
             this.mostrarPregunta();
-            }else if(this.fromSelected=true){
+            }else if(this.fromSelected==true){
               this.iniciarDiagnostico();
             }else{
             this.analize();
