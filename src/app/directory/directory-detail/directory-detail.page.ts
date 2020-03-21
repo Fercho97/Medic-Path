@@ -25,7 +25,7 @@ export class DirectoryDetailPage implements OnInit {
 
       if(res.imagen_perfil==null || res.imagen_perfil==""){
         this.hasInfo = true;
-        this.url = ""
+        this.url = "/assets/default-image.jpg";
       }else{
         this.hasInfo = true;
         this.url = res.imagen_perfil.toString();

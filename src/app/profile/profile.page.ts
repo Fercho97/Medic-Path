@@ -27,7 +27,7 @@ export class ProfilePage{
   usuario = {} as any;
   soloVista : boolean = true;
   hasImage : boolean = false;
-  public url : string = "";
+  public url : string = "/assets/default-image.jpg";
   public originalValue : string = "";
   constructor(private profileServ : ProfileService, private toast : ToastrService, 
               private nickVal : NicknameValidator, private sessionServ : CurrentUserService,

@@ -15,13 +15,19 @@ import { HistoryOfflineManagerService } from '../services/history-offline-manage
 import { NetworkService, ConnectionStatus } from '../services/network.service';
 import { CurrentUserService } from "../services/current-user.service";
 import { AlertsManagerService} from '../services/alerts-manager.service'
+import { ModalController } from '@ionic/angular';
+import { ModalPage } from '../modal/modal.page';
+import { DiagnosticService } from './diagnostic.service';
 import * as moment from 'moment-timezone';
+import { Platform } from '@ionic/angular';
 moment.locale('es');
+import  imageMapResize  from 'image-map-resizer'
+
 @Component({
   selector: 'app-diagnostic',
   templateUrl: './diagnostic.page.html',
   styleUrls: ['./diagnostic.page.scss'],
-  providers: [HistoryOfflineManagerService, ApiService, NetworkService,CurrentUserService]
+  providers: [HistoryOfflineManagerService, ApiService, NetworkService,CurrentUserService, DiagnosticService]
 })
 export class DiagnosticPage implements OnInit {
 
@@ -57,21 +63,66 @@ export class DiagnosticPage implements OnInit {
   public atomos_opciones : any = [];
   public isSelection : boolean = false;
   public fromSelected = false;
+  public sintomasCabeza : any = [];
+  public sintomasAbdomen : any = [];
+  public sintomasCorporales : any = [];
+  public headSelect : any = [];
+  public abSelect : any = [];
+  public sintomasShow : any  = [];
+  public headCoord = "";
+  public abCoord = "";
   constructor(private histServ : HistoryOfflineManagerService, private toast : ToastrService,
               private router : Router, private nav : NavController,
               private api : ApiService, private network : NetworkService, private session : CurrentUserService,
-              private alertServ : AlertsManagerService) { 
+              private alertServ : AlertsManagerService, private modalContr : ModalController, 
+              private diagServ : DiagnosticService, private platform : Platform) { 
     this.numeric = new FormGroup({
       temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
     });
+    this.headCoord="210,10,150,70";
+    this.abCoord= "230,270,130,120";
+    this.InitiatePlatformIfReady();
+    
   }
 
   ngOnInit() {
     this.api.getAllSymptoms().subscribe(res =>{
       this.sintomas = res;
       this.selectableSymptoms = this.sintomas.filter(sintoma => sintoma['compuesto']==false);
+      this.sintomasCabeza = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']=="Cabeza");
+      this.sintomasAbdomen = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']=="Abdomen");
+      this.sintomasCorporales = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']=="Corporal");
+      
       console.log(this.sintomas);
     })
+  }
+
+  ionViewWillEnter() {
+    imageMapResize();
+   /**  let width = window.innerWidth;
+    console.log(width);
+    if(width>=320 && width<375){
+      console.log("abr");
+      this.headCoord = "150,10,110,50";
+      this.abCoord = "180,160,90,110";
+    }else if(width>=375 && width<425){
+      this.headCoord = "180,20,140,80";
+      this.abCoord = "110,140,210,200";
+    }else if(width>=425 && width<475){
+      this.headCoord = "210,25,150,70";
+      this.abCoord = "130,110,190,210";
+    }*/
+  }
+
+  InitiatePlatformIfReady() {
+    this.platform.ready().then(() => {
+      imageMapResize();
+      console.log('before subscribe');
+      this.platform.resize.subscribe(() => {
+        console.log('resized');
+        imageMapResize();
+      });
+    });
   }
 
   iniciarDiagnostico(){
@@ -296,15 +347,15 @@ export class DiagnosticPage implements OnInit {
     }
 
     fromSintomasIniciales(){
-      console.log(this.sintomasSeleccionados);
+      this.sintomasSeleccionados = this.headSelect.concat(this.abSelect);
       this.sintomasSeleccionados.forEach(element => {
-        //Generar atomo//TODO get sintoma id;
-        let atomoRegla = new Atomo(element,true,false,null,null);
-        let sintoma = this.sintomas.find(sint => sint['nombre_sint'] == element);
+        let sintoma = this.sintomas.find(sint => sint['idSint'] == element);
+        let atomoRegla = new Atomo(sintoma.nombre_sint,true,false,null,sintoma.idSint);
+        
       
         //Guardar en memoria de trabajo
         this.memoriaDeTrabajo.almacenarAtomo(atomoRegla);
-        this.breadcrumb = this.breadcrumb + element + "->"
+        this.breadcrumb = this.breadcrumb + sintoma.nombre_sint + "->"
         this.evaluateSypmtom(sintoma.idSint);
       });
       this.avoidUnnecesaryQuestions();
@@ -538,5 +589,47 @@ export class DiagnosticPage implements OnInit {
            }else{
            this.analize();
            }
+       }
+
+       async presentModal(options: any, selected: any, label : any){
+         const modal = await this.modalContr.create({
+            component: ModalPage,
+            componentProps: {
+              sintomas : options,
+              sintomasSeleccionados: selected,
+              label: label
+            }
+         });
+         modal.onDidDismiss().then((data) =>{
+           console.log(data);
+          if(label=="Cabeza"){
+            this.headSelect = data.data;
+          }else{
+            this.abSelect = data.data;
+          }
+          this.showSymptoms();
+         });
+         return await modal.present();
+       }
+
+       selectSintomas(value : any){
+        let options = [];
+        let selected = [];
+         if(value=="Cabeza"){
+          options = this.sintomasCabeza;
+          selected = this.headSelect;
+          }else{
+            options = this.sintomasAbdomen;
+            selected = this.abSelect;
+          }
+          console.log(options);
+         this.presentModal(options, selected, value);
+       }
+
+       showSymptoms(){
+         this.sintomasSeleccionados = this.headSelect.concat(this.abSelect);
+         
+         this.sintomasShow = this.diagServ.showSymtoms(this.sintomasSeleccionados, this.selectableSymptoms);
+         console.log(this.sintomasShow);
        }
 }

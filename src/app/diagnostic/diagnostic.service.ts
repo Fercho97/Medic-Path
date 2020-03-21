@@ -62,13 +62,13 @@ export class DiagnosticService{
       });
     }
 
-    getComponents() {
-      return this._http.get(this._urlCompList, {
-        headers: new HttpHeaders().set(
-          "Content-Type",
-          "application/x-www-form-urlencoded"
-        ),
-        observe: "response"
-      });
+    showSymtoms(seleccion : any, totales: any){
+      console.log(seleccion);
+      let selectedNames : any  = [];
+      for(let sintoma of seleccion){
+        let found = totales.find(sint => sint['idSint']==sintoma);
+        selectedNames.push(found.nombre_sint);
+      }
+      return selectedNames;
     }
 }

@@ -12,7 +12,7 @@ import { ErrorMsg } from '../../utils/error_msg.const';
 })
 export class HistoryDetailPage {
   historial = {} as any;
-  public url : string = '';
+  public url : string = "/assets/default-image.jpg";
   sintomas = [] as any;
   niveles = "";
   public nivelesInfo = ErrorMsg.LEVEL_EXPLAIN;

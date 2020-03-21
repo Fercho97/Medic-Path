@@ -12,23 +12,37 @@
       <ion-card>
           <ion-item>
               <p>Bienvenido a la herramienta de diagnostico. 
-                 Para comenzar simplemente haga click en el siguiente botón o bien seleccione algunos de sus sintomas para comenzar</p>
+                 Para comenzar simplemente haga click en comenzar para iniciar un diagnostico desde 0
+                  o bien seleccione el area en donde tenga la mayor cantidad de molestias y seleccione sintomas</p>
           </ion-item>
           <ion-card-content>
               <ion-button size="medium" color="success" expand="block" slot="end" (click)="iniciarDiagnostico()">Comenzar</ion-button>              
-              <ion-button color="success" (click)="selection()" expand="block" slot="end">Seleccionar sintomas iniciales</ion-button>
-               
+              <ion-button color="success" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnostico con sintomas iniciales</ion-button>
         </ion-card-content>
-
-        <ion-card-content *ngIf="isSelection">
-            <ion-select placeholder="Eliga sus sintomas" multiple="true" [(ngModel)] = "sintomasSeleccionados">
-                <ion-select-option *ngFor="let ini of selectableSymptoms" value="{{ini.nombre_sint}}" >{{ini.nombre_sint}}</ion-select-option>
-            </ion-select>
-        </ion-card-content>
+        <div *ngIf="sintomasShow.length>0">
+            <label >Mis sintomas seleccionados:</label>
+            <div style="overflow-y: auto; height: 100px;">
+                <ion-item *ngFor="let sintoma of sintomasShow">
+                    <ion-label>{{sintoma}}</ion-label>
+                </ion-item>
+            </div>
+            
+        </div>
+            <div>
+                <div>
+                <img src="/assets/Body.PNG" usemap="#mapname" class="imgcent" width="100%">
+                
+                <map name="mapname" id="map_ID">
+                    <area class="point" shape="rect" [coords]="headCoord" (click)="selectSintomas('Cabeza')" title="Cabeza">
+                    <area class="point" shape="rect" [coords]="abCoord" (click)="selectSintomas('Abdomen')" title="Abdomen">
+                </map>
+            </div>
+            
+            </div>
 
         <ion-button color="error" *ngIf="isSelection" (click)="cancel()"  expand="block" slot="end">Cancelar</ion-button>
         <br>
-        <ion-button color="success" *ngIf="isSelection" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnostico con sintomas iniciales</ion-button>
+        
         <br>
         </ion-card>
 

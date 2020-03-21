@@ -33,6 +33,7 @@
     "cordova-plugin-network-information": "^2.0.2",
     "cordova-sqlite-storage": "^4.0.0",
     "core-js": "^2.5.4",
+    "image-map-resizer": "^1.0.10",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",
     "ngx-toastr": "^11.2.0",
