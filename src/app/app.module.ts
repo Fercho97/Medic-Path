@@ -19,16 +19,16 @@ import { PassResetPage } from './pass-reset/pass-reset.page'
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptorService } from "./auth/interceptor-service";
 import { Network } from '@ionic-native/network/ngx';
-
+import { ModalPage } from './modal/modal.page';
 @NgModule({
-  declarations: [AppComponent,LoginPage,RegisterPage,PassResetPage],
-  entryComponents: [],
+  declarations: [AppComponent,LoginPage,RegisterPage,PassResetPage,ModalPage],
+  entryComponents: [ModalPage],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
     ],
   providers: [
     StatusBar,
