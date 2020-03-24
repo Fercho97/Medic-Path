@@ -23,7 +23,8 @@
             <label >Mis sintomas seleccionados:</label>
             <div style="overflow-y: auto; height: 100px;">
                 <ion-item *ngFor="let sintoma of sintomasShow">
-                    <ion-label>{{sintoma}}</ion-label>
+                    <ion-label>{{sintoma.name}}</ion-label>
+                    <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(sintoma.descripcion)"></ion-icon>
                 </ion-item>
             </div>
             
@@ -34,6 +35,7 @@
                 
                 <map name="mapname" id="map_ID">
                     <area class="point" shape="rect" [coords]="headCoord" (click)="selectSintomas('Cabeza')" title="Cabeza">
+                    <area class="point" shape="rect" [coords]="pecCoord" (click)="selectSintomas('Pecho')" title="Pecho">
                     <area class="point" shape="rect" [coords]="abCoord" (click)="selectSintomas('Abdomen')" title="Abdomen">
                 </map>
             </div>

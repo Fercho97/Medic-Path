@@ -67,7 +67,7 @@ export class DiagnosticService{
       let selectedNames : any  = [];
       for(let sintoma of seleccion){
         let found = totales.find(sint => sint['idSint']==sintoma);
-        selectedNames.push(found.nombre_sint);
+        selectedNames.push({name: found.nombre_sint, descripcion: found.descripcion});
       }
       return selectedNames;
     }

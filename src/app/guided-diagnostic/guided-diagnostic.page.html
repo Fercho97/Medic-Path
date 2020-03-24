@@ -21,22 +21,34 @@
               </ion-select>
           </ion-item>
           <ion-card-content>
-              <ion-button color="success" (click)="selection()" *ngIf="selectedUser"  expand="block" slot="end">Seleccionar sintomas iniciales</ion-button>
-                          
+            <ion-button color="medium" *ngIf="selectedUser" (click)="iniciarDiagnostico()"  expand="block" slot="end">Iniciar diagnostico desde 0</ion-button>
+            <ion-label *ngIf="selectedUser">o bien seleccione el area en donde el paciente tenga la mayor cantidad de sintomas y seleccionelos</ion-label>
+            <ion-button color="success" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnostico con sintomas iniciales</ion-button>
           </ion-card-content>
+          <div *ngIf="sintomasShow.length>0">
+            <ion-label>Sintomas seleccionados:</ion-label>
+            <div style="overflow-y: auto; height: 100px;">
+                <ion-item *ngFor="let sintoma of sintomasShow">
+                    <ion-label>{{sintoma.name}}</ion-label>
+                    <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(sintoma.descripcion)"></ion-icon>
+                </ion-item>
+            </div>
+            
+        </div>
+        <div>
+            <div>
+            <img src="/assets/Body.PNG" usemap="#mapname" class="imgcent" width="100%">
+            
+            <map name="mapname" id="map_ID">
+                <area class="point" shape="rect" [coords]="headCoord" (click)="selectSintomas('Cabeza')" title="Cabeza">
+                <area class="point" shape="rect" [coords]="pecCoord" (click)="selectSintomas('Pecho')" title="Pecho">
+                <area class="point" shape="rect" [coords]="abCoord" (click)="selectSintomas('Abdomen')" title="Abdomen">
+            </map>
+        </div>
+        
+        </div>
 
-          <ion-card-content *ngIf="isSelection">
-              <ion-select placeholder="Eliga los sintomas" multiple="true" [(ngModel)] = "sintomasSeleccionados">
-                  <ion-select-option *ngFor="let ini of sintomas" value="{{ini.nombre_sint}}" >{{ini.nombre_sint}}</ion-select-option>
-              </ion-select>
-          </ion-card-content>
-
-          <ion-button color="error" *ngIf="isSelection" (click)="cancel()"  expand="block" slot="end">Cancelar</ion-button>
-          <br>
-          <ion-button color="success" *ngIf="isSelection" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnostico con sintomas iniciales</ion-button>
-          <br>
-          <ion-button color="medium" *ngIf="selectedUser" (click)="iniciarDiagnostico()"  expand="block" slot="end">Iniciar diagnostico desde 0</ion-button>
-
+          
         </ion-card>
 
 </div>

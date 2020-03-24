@@ -63,14 +63,13 @@ export class DiagnosticPage implements OnInit {
   public atomos_opciones : any = [];
   public isSelection : boolean = false;
   public fromSelected = false;
-  public sintomasCabeza : any = [];
-  public sintomasAbdomen : any = [];
-  public sintomasCorporales : any = [];
-  public headSelect : any = [];
-  public abSelect : any = [];
-  public sintomasShow : any  = [];
+  public sintomasZona : any = [];
+  public zoneSelection : any = [];
+  public sintomasShow : any = [];
+  public zone_options = ErrorMsg.Zone_options.options;
   public headCoord = "";
   public abCoord = "";
+  public pecCoord = "";
   constructor(private histServ : HistoryOfflineManagerService, private toast : ToastrService,
               private router : Router, private nav : NavController,
               private api : ApiService, private network : NetworkService, private session : CurrentUserService,
@@ -80,7 +79,8 @@ export class DiagnosticPage implements OnInit {
       temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
     });
     this.headCoord="210,10,150,70";
-    this.abCoord= "230,270,130,120";
+    this.abCoord= "230,270,130,140";
+    this.pecCoord= "230,140,130,90";
     this.InitiatePlatformIfReady();
     
   }
@@ -89,11 +89,11 @@ export class DiagnosticPage implements OnInit {
     this.api.getAllSymptoms().subscribe(res =>{
       this.sintomas = res;
       this.selectableSymptoms = this.sintomas.filter(sintoma => sintoma['compuesto']==false);
-      this.sintomasCabeza = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']=="Cabeza");
-      this.sintomasAbdomen = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']=="Abdomen");
-      this.sintomasCorporales = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']=="Corporal");
-      
-      console.log(this.sintomas);
+      for( var zona of this.zone_options){
+        let zone_sints = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']==zona);
+        this.sintomasZona.push({zone: zona, sintomas: zone_sints});
+        this.zoneSelection.push({zone: zona, sintomas: []});
+      }
     })
   }
 
@@ -194,7 +194,7 @@ export class DiagnosticPage implements OnInit {
     mostrarPregunta(){
       this.question = this.preguntas.pop();
       console.log(this.question);
-      if(this.question.type==='boolean'){
+      if(this.question.type==='boolean' || this.question.type==='option'){
       let id = this.descs.pop();
       console.log(id);
       
@@ -347,7 +347,6 @@ export class DiagnosticPage implements OnInit {
     }
 
     fromSintomasIniciales(){
-      this.sintomasSeleccionados = this.headSelect.concat(this.abSelect);
       this.sintomasSeleccionados.forEach(element => {
         let sintoma = this.sintomas.find(sint => sint['idSint'] == element);
         let atomoRegla = new Atomo(sintoma.nombre_sint,true,false,null,sintoma.idSint);
@@ -518,12 +517,16 @@ export class DiagnosticPage implements OnInit {
             let buttonOptions = [];
             for(var i = 0; i<atomsSize; i++){
               let showOption  = "";
-              let atomo = atomos.pop();
-    
+              let atomo = "";
+
               if(opciones.length!=0){
               showOption = opciones.pop();
+              let index = atomos.findIndex(atom => atom.includes(showOption));
+              let found = atomos.splice(index,1);
+              atomo = found[0];
               }else{
                 showOption = "General";
+                atomo = atomos.pop();
               }
               let sintoma = this.sintomas.find(symp => symp['nombre_sint']==atomo);
               let button = {message: showOption, value: atomo, desc: sintoma.descripcion};
@@ -601,11 +604,10 @@ export class DiagnosticPage implements OnInit {
             }
          });
          modal.onDidDismiss().then((data) =>{
-           console.log(data);
-          if(label=="Cabeza"){
-            this.headSelect = data.data;
-          }else{
-            this.abSelect = data.data;
+           for(let zone of this.zoneSelection){
+            if(zone['zone']===label){
+              zone['sintomas'] = data.data;
+            }
           }
           this.showSymptoms();
          });
@@ -615,20 +617,23 @@ export class DiagnosticPage implements OnInit {
        selectSintomas(value : any){
         let options = [];
         let selected = [];
-         if(value=="Cabeza"){
-          options = this.sintomasCabeza;
-          selected = this.headSelect;
-          }else{
-            options = this.sintomasAbdomen;
-            selected = this.abSelect;
-          }
-          console.log(options);
+        let zoneSints = this.sintomasZona.find(zone => zone['zone']==value);
+        let selectedZone = this.zoneSelection.find(zone => zone['zone']==value);
+      
+        console.log(zoneSints['sintomas']);
+        options = zoneSints.sintomas;
+        selected = selectedZone.sintomas;
          this.presentModal(options, selected, value);
        }
 
        showSymptoms(){
-         this.sintomasSeleccionados = this.headSelect.concat(this.abSelect);
-         
+        let zones : any = [];
+        for(let zone of this.zoneSelection){
+          zones = zones.concat(zone.sintomas);
+        }
+        console.log(zones);
+        this.sintomasSeleccionados = zones;
+         console.log(this.sintomasSeleccionados.length)
          this.sintomasShow = this.diagServ.showSymtoms(this.sintomasSeleccionados, this.selectableSymptoms);
          console.log(this.sintomasShow);
        }

@@ -15,7 +15,11 @@ import { ApiService } from '../services/api.service';
 import { HistoryOfflineManagerService } from '../services/history-offline-manager.service';
 import { NetworkService, ConnectionStatus } from '../services/network.service';
 import { Calculus } from '../../inferencia/calculus.class';
-import { AlertsManagerService} from '../services/alerts-manager.service'
+import { AlertsManagerService} from '../services/alerts-manager.service';
+import  imageMapResize  from 'image-map-resizer';
+import { Platform } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { ModalPage } from '../modal/modal.page';
 @Component({
   selector: 'app-guided-diagnostic',
   templateUrl: './guided-diagnostic.page.html',
@@ -58,12 +62,25 @@ export class GuidedDiagnosticPage implements OnInit {
   public color = "secondary";
   public atomos_opciones : any = [];
   public fromSelected = false;
+  public sintomasZona : any = [];
+  public zoneSelection : any = [];
+  public sintomasShow : any = [];
+  public zone_options = ErrorMsg.Zone_options.options;
+  public headCoord = "";
+  public abCoord = "";
+  public pecCoord = "";
   constructor(private diagServ : DiagnosticService, private toast : ToastrService,
               private router : Router, private api : ApiService, private network : NetworkService,
-              private histServ : HistoryOfflineManagerService, private alertServ : AlertsManagerService) { 
+              private histServ : HistoryOfflineManagerService, private alertServ : AlertsManagerService,
+              private platform : Platform, private modalContr : ModalController) { 
                 this.numeric = new FormGroup({
                   temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
                 });
+
+                this.headCoord="210,10,150,70";
+                this.abCoord= "230,270,130,140";
+                this.pecCoord= "230,140,130,90";
+                this.InitiatePlatformIfReady();
               }
 
   ngOnInit() {
@@ -72,12 +89,33 @@ export class GuidedDiagnosticPage implements OnInit {
       this.usuarios = res;
     })
 
+    
     this.api.getAllSymptoms().subscribe(res =>{
       console.log(res);
       this.allSymptoms = res;
       this.sintomas = this.allSymptoms.filter(sintoma => sintoma['compuesto']==false);
+      for( var zona of this.zone_options){
+        let zone_sints = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']==zona);
+        this.sintomasZona.push({zone: zona, sintomas: zone_sints});
+        this.zoneSelection.push({zone: zona, sintomas: []});
+      }
     })
     
+  }
+
+  ionViewWillEnter() {
+    imageMapResize();
+  }
+
+  InitiatePlatformIfReady() {
+    this.platform.ready().then(() => {
+      imageMapResize();
+      console.log('before subscribe');
+      this.platform.resize.subscribe(() => {
+        console.log('resized');
+        imageMapResize();
+      });
+    });
   }
 
   iniciarDiagnostico(){
@@ -132,7 +170,7 @@ export class GuidedDiagnosticPage implements OnInit {
             if(question!=null){
               this.preguntas.push(question);
             }else{
-            this.preguntas.push({message: "¿Su paciente tiene o ha tenido" + element.desc + " ?", type: "boolean"});
+            this.preguntas.push({message: "¿Su paciente tiene o ha tenido " + element.desc + " ?", type: "boolean"});
             }
              this.descs.push(element.sintoma);
             }
@@ -152,7 +190,7 @@ export class GuidedDiagnosticPage implements OnInit {
     mostrarPregunta(){
       this.question = this.preguntas.pop();
       console.log(this.question);
-      if(this.question.type==='boolean'){
+      if(this.question.type==='boolean' || this.question.type==='option'){
       let id = this.descs.pop();
       console.log(id);
       
@@ -275,13 +313,13 @@ export class GuidedDiagnosticPage implements OnInit {
     fromSintomasIniciales(){
       console.log(this.sintomasSeleccionados);
       this.sintomasSeleccionados.forEach(element => {
-        //Generar atomo//TODO get sintoma id;
-        let atomoRegla = new Atomo(element,true,false,null,null);
-        let sintoma = this.allSymptoms.find(sint => sint['nombre_sint'] == element);
+        let sintoma = this.sintomas.find(sint => sint['idSint'] == element);
+        let atomoRegla = new Atomo(sintoma.nombre_sint,true,false,null,sintoma.idSint);
+        
       
         //Guardar en memoria de trabajo
         this.memoriaDeTrabajo.almacenarAtomo(atomoRegla);
-        this.breadcrumb = this.breadcrumb + element + "->"
+        this.breadcrumb = this.breadcrumb + sintoma.nombre_sint + "->"
         this.evaluateSypmtom(sintoma.idSint);
       });
       this.avoidUnnecesaryQuestions();
@@ -471,12 +509,16 @@ export class GuidedDiagnosticPage implements OnInit {
               let buttonOptions = [];
               for(var i = 0; i<atomsSize; i++){
                 let showOption  = "";
-                let atomo = atomos.pop();
-      
+                let atomo = "";
+
                 if(opciones.length!=0){
                 showOption = opciones.pop();
+                let index = atomos.findIndex(atom => atom.includes(showOption));
+                let found = atomos.splice(index,1);
+                atomo = found[0];
                 }else{
                   showOption = "General";
+                  atomo = atomos.pop();
                 }
                 let sintoma = this.sintomas.find(symp => symp['nombre_sint']==atomo);
                 let button = {message: showOption, value: atomo, desc: sintoma.descripcion};
@@ -542,4 +584,50 @@ export class GuidedDiagnosticPage implements OnInit {
              this.analize();
              }
          }
+    
+         async presentModal(options: any, selected: any, label : any){
+          const modal = await this.modalContr.create({
+             component: ModalPage,
+             componentProps: {
+               sintomas : options,
+               sintomasSeleccionados: selected,
+               label: label
+             }
+          });
+          modal.onDidDismiss().then((data) =>{
+            for(let zone of this.zoneSelection){
+             if(zone['zone']===label){
+               zone['sintomas'] = data.data;
+             }
+           }
+           this.showSymptoms();
+          });
+          return await modal.present();
+        }
+ 
+        selectSintomas(value : any){
+        if(this.selectedUser==true){
+         let options = [];
+         let selected = [];
+         let zoneSints = this.sintomasZona.find(zone => zone['zone']==value);
+         let selectedZone = this.zoneSelection.find(zone => zone['zone']==value);
+       
+         console.log(zoneSints['sintomas']);
+         options = zoneSints.sintomas;
+         selected = selectedZone.sintomas;
+          this.presentModal(options, selected, value);
+        }
+        }
+ 
+        showSymptoms(){
+         let zones : any = [];
+         for(let zone of this.zoneSelection){
+           zones = zones.concat(zone.sintomas);
+         }
+         console.log(zones);
+         this.sintomasSeleccionados = zones;
+          console.log(this.sintomasSeleccionados.length)
+          this.sintomasShow = this.diagServ.showSymtoms(this.sintomasSeleccionados, this.sintomas);
+          console.log(this.sintomasShow);
+        }
 }
