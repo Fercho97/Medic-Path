@@ -169,5 +169,24 @@
       <p><ion-progress-bar color="primary" value="{{sints.showPorcentaje}}"></ion-progress-bar></p>
     </li>
 </ul>
+
+<div>
+    <div>
+    <h3>Conforme sus sintomas le recomendamos asistir con:</h3>
+    <ion-item>
+        <ion-label color="primary">
+        {{doc_recomendacion[0].espe}}
+        </ion-label>
+    </ion-item>
+    </div>
+    <div *ngIf="doc_recomendacion.length>0">
+        <h3>o bien con un:</h3>
+        <ion-item>
+            <ion-label color="primary">
+            {{doc_recomendacion[1].espe}}
+            </ion-label>
+        </ion-item>
+    </div>
+</div>
 </div>
 </ion-content>

@@ -121,4 +121,48 @@ export class Calculus{
         }
         return bestStart-1;
       }
+
+      calculateRecommendation(memoriaDeTrabajo: any, sintomas: any){
+        let resultados = [];
+        console.log(memoriaDeTrabajo.atomosAfirmados);
+        memoriaDeTrabajo.atomosAfirmados.forEach((element:Atomo) => {
+            let sintoma = sintomas.find(sint => sint.idSint == element.sintoma);
+            if(sintoma!=undefined){
+              if(sintoma.porcentages!=null){
+              let porcentage = JSON.parse(sintoma.porcentages);
+              
+              porcentage.forEach(element => {
+                let category = resultados.find(res => res['espe'] == element.nombre_esp);
+                console.log(category);
+                if(category===undefined){
+                  resultados.push({espe: element.nombre_esp, value: element.porcentaje});
+                }else{
+                  category.value = category.value + element.porcentaje;
+                }
+              });
+            }
+            }
+        });
+        let totales = memoriaDeTrabajo.atomosAfirmados.length-1;
+        resultados.forEach(element => {
+          let finalValue = Math.floor(element.value/totales);
+          element.value = finalValue;
+        });
+
+        console.log(resultados);
+
+        resultados.sort(this.compare);
+
+        return resultados;
+      }
+
+       compare(a,b){
+        if(a.value < b.value){
+            return 1;
+        }
+        if(a.value > b.value){
+            return -1;
+        }
+        return 0;
+    }
 }

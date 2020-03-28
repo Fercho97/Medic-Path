@@ -70,6 +70,7 @@ export class DiagnosticPage implements OnInit {
   public headCoord = "";
   public abCoord = "";
   public pecCoord = "";
+  public doc_recomendacion : any = [];
   constructor(private histServ : HistoryOfflineManagerService, private toast : ToastrService,
               private router : Router, private nav : NavController,
               private api : ApiService, private network : NetworkService, private session : CurrentUserService,
@@ -303,6 +304,7 @@ export class DiagnosticPage implements OnInit {
       this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo);
       console.log(this.sintomasExtras);
       this.checkUrgencyLevels();
+      this.doc_recomendacion = this.calculusClass.calculateRecommendation(this.memoriaDeTrabajo,this.sintomas);
         this.guardar();
       
     }
