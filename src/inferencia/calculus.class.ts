@@ -152,7 +152,9 @@ export class Calculus{
         console.log(resultados);
 
         resultados.sort(this.compare);
-
+        if(resultados.length>2){
+          resultados.length=2;
+        }
         return resultados;
       }
 

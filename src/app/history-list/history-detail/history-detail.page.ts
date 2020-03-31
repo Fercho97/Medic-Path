@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { AlertsManagerService } from '../../services/alerts-manager.service';
 import { ErrorMsg } from '../../utils/error_msg.const';
+import { ToastrService } from 'ngx-toastr';
+import { HttpParams} from '@angular/common/http';
 @Component({
   selector: 'app-history-detail',
   templateUrl: './history-detail.page.html',
@@ -16,8 +18,10 @@ export class HistoryDetailPage {
   sintomas = [] as any;
   niveles = "";
   public nivelesInfo = ErrorMsg.LEVEL_EXPLAIN;
+  public recomendaciones : any = [];
+  public seleccionado = "";
   constructor(private api : ApiService, private route : ActivatedRoute,
-              private alertServ : AlertsManagerService) { }
+              private alertServ : AlertsManagerService, private toast : ToastrService) { }
 
   ionViewWillEnter() {
     console.log(this.nivelesInfo)
@@ -31,6 +35,13 @@ export class HistoryDetailPage {
       if(this.historial.url_imagen_pad!= null){
       this.url = this.historial.url_imagen_pad.toString();
       }
+      if(this.historial.recomendaciones_especialista!=null){
+        this.recomendaciones = JSON.parse(this.historial.recomendaciones_especialista);
+      }
+
+      if(this.historial.especialista_seleccionado!=null){
+        this.seleccionado = this.historial.especialista_seleccionado;
+      }
       console.log(res.body);
     },
   error =>{
@@ -42,6 +53,20 @@ export class HistoryDetailPage {
     console.log(label);
     let mensaje = this.nivelesInfo[label].message;
     this.alertServ.infoAlert(mensaje);
+  }
+
+  actualizar(){
+
+    let values = new HttpParams()
+      .set('seleccion', this.seleccionado)
+    this.api.actualizacionEspecialista(this.historial.hashId, values).subscribe( (res: any) =>{
+      sessionStorage.setItem('token',res.body.token);
+      this.toast.success('Gracias por su retroalimentación!', 'Guardado exitoso!');
+  }, error =>{
+      console.log("Error", error.error);
+      this.toast.error(error.error.message, 'Error');
+  }
+    );
   }
 
 }

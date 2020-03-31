@@ -39,6 +39,8 @@ const _urlActSintomas = apiUrl + 'sintomas/news/lastCreations';
 const urlLogin = apiUrl + 'usuarios/login';
 
 const urlLogout = apiUrl + 'usuarios/logout';
+
+const urlEspecialista = apiUrl + 'historial/selectedEspecializacion/';
 @Injectable({
   providedIn: 'root'
 })
@@ -267,6 +269,15 @@ getLastSymptoms(){
     this.setLocalData('updates', res);
   }));
   }
+}
+
+actualizacionEspecialista(hash : any, value){
+  return this.http.put(urlEspecialista + encodeURIComponent(hash), value.toString(),
+  {
+      headers: new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded'),
+      observe : 'response' 
+  });
 }
 
 checkLogin(valores : HttpParams){

@@ -274,7 +274,8 @@ export class DiagnosticPage implements OnInit {
       .set('padecimiento_final', this.idResultado)
       .set('visible', "true")
       .set('fecha', fecha.toString())
-      .set('detalles_especificos', JSON.stringify(this.niveles));
+      .set('detalles_especificos', JSON.stringify(this.niveles))
+      .set('recomendations', JSON.stringify(this.doc_recomendacion));
       
       this.api.guardarHistorial(values).subscribe(res =>{
         if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
