@@ -69,6 +69,7 @@ export class GuidedDiagnosticPage implements OnInit {
   public headCoord = "";
   public abCoord = "";
   public pecCoord = "";
+  public doc_recomendacion : any = [];
   constructor(private diagServ : DiagnosticService, private toast : ToastrService,
               private router : Router, private api : ApiService, private network : NetworkService,
               private histServ : HistoryOfflineManagerService, private alertServ : AlertsManagerService,
@@ -267,6 +268,7 @@ export class GuidedDiagnosticPage implements OnInit {
          }
       });
       this.checkUrgencyLevels();
+      this.doc_recomendacion = this.calculusClass.calculateRecommendation(this.memoriaDeTrabajo,this.sintomas);
         this.guardar();
       
     }
@@ -284,7 +286,8 @@ export class GuidedDiagnosticPage implements OnInit {
       .set('padecimiento_final', this.idResultado)
       .set('visible', 'true')
       .set('fecha', fecha.toString())
-      .set('detalles_especificos', JSON.stringify(this.niveles));
+      .set('detalles_especificos', JSON.stringify(this.niveles))
+      .set('recomendations', JSON.stringify(this.doc_recomendacion));
 
       this.api.guardarHistorial(values).subscribe(res =>{
         if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){

@@ -272,12 +272,17 @@ getLastSymptoms(){
 }
 
 actualizacionEspecialista(hash : any, value){
+  if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Offline){
+
+    return from(this.offlineManager.storeRequest(urlEspecialista + encodeURIComponent(hash), 'PUT', value.toString()));
+  }else{
   return this.http.put(urlEspecialista + encodeURIComponent(hash), value.toString(),
   {
       headers: new HttpHeaders()
       .set('Content-Type', 'application/x-www-form-urlencoded'),
       observe : 'response' 
   });
+}
 }
 
 checkLogin(valores : HttpParams){

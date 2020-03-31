@@ -14,7 +14,9 @@ interface History {
   descripcion: string,
   url_imagen_pad: string,
   nombre_esp: string,
-  detalles_especificos: string
+  detalles_especificos: string,
+  recomendaciones_especialista: string,
+  especialista_seleccionado: string,
 }
 
 @Injectable({
@@ -24,7 +26,7 @@ export class HistoryOfflineManagerService {
 
   constructor(private storage: Storage) { }
 
-  addHistoryToLocal(fecha,descripcion,padecimiento,detalles){
+  addHistoryToLocal(fecha,descripcion,padecimiento,detalles,hash,recomendacion){
     let result;
     this.storage.get(STORAGE_PAD_KEY).then(padecimientos =>{
       console.log(padecimientos);
@@ -33,13 +35,15 @@ export class HistoryOfflineManagerService {
                 let action: History = {
                   detalles: descripcion,
                   fecha_consulta: moment(fecha).tz('America/Mexico_City').format('LLL').toString(),
-                  hashId: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0,5),
+                  hashId: hash,
                   categoria: element.categoria,
                   nombre_pad: element.nombre_pad,
                   descripcion: element.descripcion,
                   url_imagen_pad: element.url_imagen_pad,
                   nombre_esp: element.nombre_esp,
-                  detalles_especificos: detalles
+                  detalles_especificos: detalles,
+                  recomendaciones_especialista: recomendacion,
+                  especialista_seleccionado: null
               };
             
               return this.storage.get(STORAGE_REQ_KEY).then(storesOperations =>{
@@ -56,6 +60,19 @@ export class HistoryOfflineManagerService {
               });
           }
       });
+    });
+  }
+
+  addFeedback(hash, feedback){
+    
+    this.storage.get(STORAGE_REQ_KEY).then(historiales =>{
+      
+      var foundIndex = historiales.findIndex(hist => hist.hashId == hash);
+
+      historiales[foundIndex].especialista_seleccionado = feedback;
+
+      this.storage.set(STORAGE_REQ_KEY, historiales);
+
     });
   }
 }

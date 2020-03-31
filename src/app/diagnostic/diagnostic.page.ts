@@ -22,7 +22,7 @@ import * as moment from 'moment-timezone';
 import { Platform } from '@ionic/angular';
 moment.locale('es');
 import  imageMapResize  from 'image-map-resizer'
-
+import bcrypt from 'bcryptjs';
 @Component({
   selector: 'app-diagnostic',
   templateUrl: './diagnostic.page.html',
@@ -268,6 +268,7 @@ export class DiagnosticPage implements OnInit {
 
       var fecha = moment().tz('America/Mexico_City').format();
       var user = await this.session.obtainSessionId();
+      var hash = encodeURIComponent(bcrypt.hashSync(fecha+user, 12))
       let values = new HttpParams()
       .set('detalles', details)
       .set('usuario', user)
@@ -275,14 +276,15 @@ export class DiagnosticPage implements OnInit {
       .set('visible', "true")
       .set('fecha', fecha.toString())
       .set('detalles_especificos', JSON.stringify(this.niveles))
-      .set('recomendations', JSON.stringify(this.doc_recomendacion));
+      .set('recomendations', JSON.stringify(this.doc_recomendacion))
+      .set('hash', hash);
       
       this.api.guardarHistorial(values).subscribe(res =>{
         if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
         this.toast.success('Se ha guardado con éxito en su historial', 'Guardado Exitoso!');
         
         }else{
-         this.histServ.addHistoryToLocal(fecha.toString(),details,this.idResultado,JSON.stringify(this.niveles));
+         this.histServ.addHistoryToLocal(fecha.toString(),details,this.idResultado,JSON.stringify(this.niveles), hash, JSON.stringify(this.doc_recomendacion));
         }
     }, error =>{
         console.log("Error", error.error);
