@@ -6,11 +6,13 @@ import { AlertsManagerService } from '../../services/alerts-manager.service';
 import { ErrorMsg } from '../../utils/error_msg.const';
 import { ToastrService } from 'ngx-toastr';
 import { HttpParams} from '@angular/common/http';
+import { NetworkService, ConnectionStatus } from '../../services/network.service';
+import { HistoryOfflineManagerService } from '../../services/history-offline-manager.service';
 @Component({
   selector: 'app-history-detail',
   templateUrl: './history-detail.page.html',
   styleUrls: ['./history-detail.page.scss'],
-  providers: [ConsultService]
+  providers: [ConsultService,NetworkService,HistoryOfflineManagerService]
 })
 export class HistoryDetailPage {
   historial = {} as any;
@@ -21,7 +23,8 @@ export class HistoryDetailPage {
   public recomendaciones : any = [];
   public seleccionado = "";
   constructor(private api : ApiService, private route : ActivatedRoute,
-              private alertServ : AlertsManagerService, private toast : ToastrService) { }
+              private alertServ : AlertsManagerService, private toast : ToastrService,
+              private network : NetworkService,private histServ : HistoryOfflineManagerService) { }
 
   ionViewWillEnter() {
     console.log(this.nivelesInfo)
@@ -60,8 +63,12 @@ export class HistoryDetailPage {
     let values = new HttpParams()
       .set('seleccion', this.seleccionado)
     this.api.actualizacionEspecialista(this.historial.hashId, values).subscribe( (res: any) =>{
-      sessionStorage.setItem('token',res.body.token);
-      this.toast.success('Gracias por su retroalimentación!', 'Guardado exitoso!');
+      if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
+        this.toast.success('Gracias por su retroalimentación!', 'Guardado exitoso!'); 
+      }else{
+        this.histServ.addFeedback(this.historial.hashId, this.seleccionado);
+      }
+      
   }, error =>{
       console.log("Error", error.error);
       this.toast.error(error.error.message, 'Error');
