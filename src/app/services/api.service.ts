@@ -41,6 +41,8 @@ const urlLogin = apiUrl + 'usuarios/login';
 const urlLogout = apiUrl + 'usuarios/logout';
 
 const urlEspecialista = apiUrl + 'historial/selectedEspecializacion/';
+
+const withFeedback = apiUrl + 'historial/withFeedBack/returnFeedback';
 @Injectable({
   providedIn: 'root'
 })
@@ -307,6 +309,16 @@ logout(token : any){
          observe : 'response'
        },
      )
+}
+
+withFeedback(){
+  return this.http.get(withFeedback,
+    {
+      headers: new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded'),
+      observe : 'response'
+    },
+)
 }
 
 private setLocalData(key, data){

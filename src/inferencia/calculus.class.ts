@@ -167,4 +167,40 @@ export class Calculus{
         }
         return 0;
     }
+
+    userFeedbackRecommendation(historiales, sintomasUsuario){
+
+      let parecidos = [];
+      let sintomasUser = sintomasUsuario.split(',');
+      let especializaciones = [];
+      let sintomasComun;
+      let resultadoFinal;
+      historiales.forEach(element => {
+      sintomasComun = 0;
+      let sintomas = element.detalles_ids.split(",");
+      sintomasUser.forEach(userSint =>{
+        if(sintomas.some(atom => atom === userSint)){
+          sintomasComun++;
+        }
+      })
+      let porcentage = sintomasComun * 100 / sintomas.length;
+      if(porcentage > 70){
+        parecidos.push(element);
+      }
+      });
+      
+      parecidos.forEach(element =>{
+        let category = especializaciones.find(res => res['espe'] == element.especialista_seleccionado);
+                console.log(category);
+                if(category===undefined){
+                  especializaciones.push({espe: element.especialista_seleccionado, value: 1});
+                }else{
+                  category.value = category.value + 1;
+                }
+      })
+
+      especializaciones.sort(this.compare);
+
+      return especializaciones;
+    }
 }
