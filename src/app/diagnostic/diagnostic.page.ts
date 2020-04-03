@@ -463,11 +463,11 @@ export class DiagnosticPage implements OnInit {
            evaluateSypmtom(symp : any){
             let atomSymp = this.sintomas.find(item => item['idSint'].toString() === symp.toString());
             let sympIndex = this.sintomas.findIndex(item => item['idSint'].toString() === symp.toString());
-            if(atomSymp.nivel_urgencia==0.4){
+            if(atomSymp.nivel_urgencia==0.4 || atomSymp.nivel_urgencia==0.6){
               let question = "";
               let hasSpecificQuestion = questions.SPECIFIC_NUMERIC_QUESTION[atomSymp.nombre_sint];
               if(hasSpecificQuestion!=null){
-                question = hasSpecificQuestion.message;
+                question = hasSpecificQuestion[0].message;
               }else{
                 question = 'Del 1 al 10 que rango de molestia le causa el tener ' + atomSymp.nombre_sint
               }
