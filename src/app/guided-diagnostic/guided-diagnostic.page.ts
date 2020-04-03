@@ -279,7 +279,12 @@ export class GuidedDiagnosticPage implements OnInit {
       this.memoriaDeTrabajo.atomosAfirmados.forEach(atomo =>{
         if(atomo.obj==false){
           details = details + atomo.desc +  ",";
-          detailsIds = detailsIds + atomo.sintoma + ",";
+          if(atomo.sintoma!=null){
+            detailsIds = detailsIds + atomo.sintoma + ",";
+            }else{
+              let found = this.allSymptoms.find(item => item['nombre_sint'] == atomo.desc);
+              detailsIds = detailsIds + found.idSint + ",";
+            }
         }
       });
 
