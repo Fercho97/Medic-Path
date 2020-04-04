@@ -29,7 +29,17 @@ export class questions {
         ],
         'pérdida del apetito' : [
           {message: '¿Ultimamente ha tenido menos hambre de lo usual, o bien al comer siente que se llena más rápido?', type: "boolean"}
+        ],
+        'Ganglios inflamados(cuello)' : [
+          {message: '¿Al tocarse el cuello ha sentido inflamación o bien al hacer presión cerca de la parte superior del mismo le duele?', type: "boolean"}
+        ],
+        'Manchas en amígdalas' : [
+          {message: '¿Ha notado manchas en la parte posterior de la garganta?', type: "boolean"}
+        ],
+        'Inflamación amígdalas' : [
+          {message: '¿Ha notado inflamación en la parte posterior de la garganta?', type: "boolean"}
         ]
+
       }
 
       public static MULTIQUESTIONS = {
@@ -57,11 +67,20 @@ export class questions {
       }
 
       public static SPECIFIC_NUMERIC_QUESTION = {
-        'Deshidratación' : [
+        'deshidratación' : [
           {message: 'Del 1 al 10 tanto se ve afectado por la falta de agua'}
         ],
-        'Debilidad': [
+        'debilidad': [
           {message: 'Del 1 al 10 indique que tanto afecta su vida diaria esta sensación de debilidad'}
+        ],
+        'ganglios inflamados(cuello)' : [
+          {message: 'En escala de 1 al 10 ¿Qué tanto dolor siente en esa zona del cuello?'}
+        ],
+        'inflamación amígdalas' : [
+          {message: 'En escala del 1 al 10 ¿Qué tanta molestia le causa la inflamación?'}
+        ],
+        'escalofrios' : [
+          {message: 'En escala del 1 al 10 ¿Cómo describiria la intensidad de sus escalofrios?'}
         ]
       }
 }

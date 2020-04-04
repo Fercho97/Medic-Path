@@ -70,6 +70,7 @@ export class DiagnosticPage implements OnInit {
   public headCoord = "";
   public abCoord = "";
   public pecCoord = "";
+  public throatCoord = "";
   public doc_recomendacion : any = [];
   public compare_historiales : any = [];
   public user_recommendation : any = [];
@@ -81,9 +82,10 @@ export class DiagnosticPage implements OnInit {
     this.numeric = new FormGroup({
       temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
     });
-    this.headCoord="210,10,150,70";
+    this.headCoord="210,10,150,68";
     this.abCoord= "230,270,130,140";
     this.pecCoord= "230,140,130,90";
+    this.throatCoord= "210,70,150,89";
     this.InitiatePlatformIfReady();
     
   }
@@ -471,7 +473,7 @@ export class DiagnosticPage implements OnInit {
             let sympIndex = this.sintomas.findIndex(item => item['idSint'].toString() === symp.toString());
             if(atomSymp.nivel_urgencia==0.4 || atomSymp.nivel_urgencia==0.6){
               let question = "";
-              let hasSpecificQuestion = questions.SPECIFIC_NUMERIC_QUESTION[atomSymp.nombre_sint];
+              let hasSpecificQuestion = questions.SPECIFIC_NUMERIC_QUESTION[atomSymp.nombre_sint.toLowerCase()];
               if(hasSpecificQuestion!=null){
                 question = hasSpecificQuestion[0].message;
               }else{
