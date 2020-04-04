@@ -22,6 +22,7 @@ export class HistoryDetailPage {
   public nivelesInfo = ErrorMsg.LEVEL_EXPLAIN;
   public recomendaciones : any = [];
   public seleccionado = "";
+  public hasOneSelected = false;
   constructor(private api : ApiService, private route : ActivatedRoute,
               private alertServ : AlertsManagerService, private toast : ToastrService,
               private network : NetworkService,private histServ : HistoryOfflineManagerService) { }
@@ -44,6 +45,7 @@ export class HistoryDetailPage {
 
       if(this.historial.especialista_seleccionado!=null){
         this.seleccionado = this.historial.especialista_seleccionado;
+        this.hasOneSelected=true;
       }
       console.log(res.body);
     },
@@ -65,6 +67,7 @@ export class HistoryDetailPage {
     this.api.actualizacionEspecialista(this.historial.hashId, values).subscribe( (res: any) =>{
       if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
         this.toast.success('Gracias por su retroalimentación!', 'Guardado exitoso!'); 
+        this.hasOneSelected=true;
       }else{
         this.histServ.addFeedback(this.historial.hashId, this.seleccionado);
       }

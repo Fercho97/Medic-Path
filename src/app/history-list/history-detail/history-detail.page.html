@@ -73,7 +73,7 @@
         </ion-list>
       </div>
         </div>
-        <div *ngIf="recomendaciones!=''">
+        <div *ngIf="recomendaciones!='' && hasOneSelected==false">
           <ion-label color="primary">Especialista consultado</ion-label>
           <br>
           <ion-label>En caso de ya haber asistido con un médico favor de elegir el especialista que le haya ayudado con su {{historial.nombre_pad}}</ion-label>
@@ -81,8 +81,12 @@
             <ion-select-option *ngFor="let recomendacion of recomendaciones" [value]="recomendacion.espe">{{recomendacion.espe}}</ion-select-option>
           </ion-select>
     
-          <ion-button type="button" *ngIf="seleccionado!=''" class="secondary" (click)="actualizar()">Guardar</ion-button>
-        </div>  
+          <ion-button type="button" *ngIf="seleccionado!='' || hasOneSelected==false" class="secondary" (click)="actualizar()">Guardar</ion-button>
+        </div> 
+        <div *ngIf="hasOneSelected==true">
+          <ion-label class="title">Especialista consultado</ion-label>
+          <ion-input type="text"  value="{{seleccionado}}" disabled ></ion-input>
+        </div> 
     </ion-card-content>
   </ion-card>
 </ion-content>

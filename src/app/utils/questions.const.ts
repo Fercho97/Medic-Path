@@ -14,6 +14,21 @@ export class questions {
         ],
         'sangrado durante cepillado' : [
           {message: '¿Al cepillarse los dientes ha detectado sangrado?', type: "boolean"}
+        ],
+        'reacción alimentaria' : [
+          {message: '¿Ha consumido algún alimento ultimamente que sienta que le haya caido mal?', type: "boolean"}
+        ],
+        'accesos en los dientes' : [
+          {message: '¿Nota un agujero a simple vista en alguna pieza dental?', type: "boolean"}
+        ],
+        'reacción alérgenos' : [
+          {message: '¿Ha estado en contacto con algún alérgenico ultimamente(polvo,polen,etc)?', type: "boolean"}
+        ],
+        'dientes manchados' : [
+          {message: '¿Ha notado algúna mancha en sus dientes que persiste aún después de la limpieza?', type: "boolean"}
+        ],
+        'pérdida del apetito' : [
+          {message: '¿Ultimamente ha tenido menos hambre de lo usual, o bien al comer siente que se llena más rápido?', type: "boolean"}
         ]
       }
 

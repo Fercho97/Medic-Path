@@ -267,10 +267,10 @@ export class DiagnosticPage implements OnInit {
       }
     }
 
-    async guardar(details,detailsIds){
+    guardar(details,detailsIds,user){
 
       var fecha = moment().tz('America/Mexico_City').format();
-      var user = await this.session.obtainSessionId();
+      
       var hash = encodeURIComponent(bcrypt.hashSync(fecha+user, 12))
       let values = new HttpParams()
       .set('detalles', details)
@@ -296,7 +296,7 @@ export class DiagnosticPage implements OnInit {
     })
     }
 
-    showWhy(){
+    async showWhy(){
       console.log(this.reglaEvaluar.partesConclusion[0].desc)
       this.question={message: "Usted padece de : " + this.reglaEvaluar.partesConclusion[0].desc }
       this.hasResult=true;
@@ -319,13 +319,14 @@ export class DiagnosticPage implements OnInit {
           if(atomo.sintoma!=null){
             detailsIds = detailsIds + atomo.sintoma + ",";
             }else{
-              let found = this.allSymptoms.find(item => item['nombre_sint'] == atomo.desc);
+              let found = this.sintomas.find(item => item['nombre_sint'] == atomo.desc);
               detailsIds = detailsIds + found.idSint + ",";
             }
         }
       });
-        this.guardar(details,detailsIds);
-        this.user_recommendation = this.calculusClass.userFeedbackRecommendation(this.compare_historiales,detailsIds);
+      var user = await this.session.obtainSessionId();
+        this.guardar(details,detailsIds,user);
+        this.user_recommendation = this.calculusClass.userFeedbackRecommendation(this.compare_historiales,detailsIds,user);
     }
 
     hasMiddleAtom(){
