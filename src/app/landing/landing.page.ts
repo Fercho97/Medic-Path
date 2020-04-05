@@ -37,7 +37,9 @@ export class LandingPage {
         this.symptomsNew = res;
       });
     }else{
-      this.api.getRoosterUpdates().subscribe((res:any) =>{
+      let id = await this.session.obtainSessionId();
+      console.log(id);
+      this.api.getNotifications(id).subscribe((res:any) =>{
         
         this.roosterNews = res;
       })

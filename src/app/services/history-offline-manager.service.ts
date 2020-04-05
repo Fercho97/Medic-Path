@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 const STORAGE_REQ_KEY = "newKey-historiales";
 const STORAGE_PAD_KEY = "newKey-padecimientos";
+const STORAGE_NOTIF_KEY = "newKey-notifications";
 import * as moment from 'moment-timezone';
 moment.locale('es');
 
@@ -72,6 +73,20 @@ export class HistoryOfflineManagerService {
       historiales[foundIndex].especialista_seleccionado = feedback;
 
       this.storage.set(STORAGE_REQ_KEY, historiales);
+
+    });
+  }
+
+  removeFromLocalNotifications(hash){
+
+    this.storage.get(STORAGE_NOTIF_KEY).then(notificaciones =>{
+      
+      var foundIndex = notificaciones.findIndex(hist => hist.hashId == hash);
+
+      if(foundIndex!=null || foundIndex!=undefined){
+       notificaciones.splice(foundIndex,1);
+      }
+      this.storage.set(STORAGE_NOTIF_KEY, notificaciones);
 
     });
   }

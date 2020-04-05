@@ -16,7 +16,7 @@ const saveHistory = apiUrl + 'historial/create';
 
 const _urlListado = apiUrl + 'historial/historialComplete/';
 
-const _urlActDoctors = apiUrl + 'usuarios/news/latestDoctors';
+const _urlNotifications = apiUrl + 'historial/notification/withoutFeedback/';
 
 const _url = apiUrl + 'consulta/getReglas';
 
@@ -106,20 +106,20 @@ guardarHistorial(valores : HttpParams){
     }
 }
 
-getRoosterUpdates(){
+getNotifications(id: any){
   if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Offline){
-    return from(this.getLocalData('newsDocs'));
+    return from(this.getLocalData('notifications'));
   }else{
   const headers = new HttpHeaders({'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
   
-  return this.http.get(_urlActDoctors,
+  return this.http.get(_urlNotifications + id,
       {
         headers: headers,
         observe : 'response'
       },
   ).pipe(map(res => res['body']['resultados']),
   tap(res =>{
-    this.setLocalData('newsDocs', res);
+    this.setLocalData('notifications', res);
   }))
 }
 }
@@ -330,7 +330,6 @@ private getLocalData(key){
 }
 
 updateLocalDatabase(){
-  this.getRoosterUpdates().subscribe();
   this.consulta('any').subscribe();
   this.getAllSymptoms().subscribe();
   this.getAllAilments().subscribe();

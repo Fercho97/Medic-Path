@@ -72,15 +72,15 @@
     </ion-card>
   </div>
   <div *ngIf="!isDoctor" class="ion-text-center">
-    <h4>Ultimas noticias</h4>
-    <p *ngIf="roosterNews.length==0">Por el momento no hay noticias para mostrar</p>
+    <h4>Notificaciones</h4>
+    <p *ngIf="roosterNews.length==0">Por el momento no tiene notificaciones</p>
     <ion-card *ngFor="let new of roosterNews" class="items">
       <ion-card-header>
-        <ion-card-subtitle>Se ha unido un nuevo médico al sistema</ion-card-subtitle>
-        <ion-card-title>{{new.nombres + " " + new.apellidos}}</ion-card-title>
+        <ion-card-subtitle>Es necesaria su retroalimentacion para su consulta del día: </ion-card-subtitle>
+        <ion-card-title>{{new.filter_date}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p>{{new.since}}</p>
+        <ion-button routerLink="/history-detail/{{new.hashId}}" size="small" color="primary" >Acceder</ion-button>
       </ion-card-content>
     </ion-card>
   </div>
