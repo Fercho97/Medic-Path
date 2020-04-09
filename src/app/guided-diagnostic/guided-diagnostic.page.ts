@@ -20,6 +20,7 @@ import  imageMapResize  from 'image-map-resizer';
 import { Platform } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
+import { Catalogos } from '../utils/catalogos.const';
 @Component({
   selector: 'app-guided-diagnostic',
   templateUrl: './guided-diagnostic.page.html',
@@ -71,6 +72,7 @@ export class GuidedDiagnosticPage implements OnInit {
   public pecCoord = "";
   public throatCoord = "";
   public doc_recomendacion : any = [];
+  public divisions = Catalogos.LETTERS;
   constructor(private diagServ : DiagnosticService, private toast : ToastrService,
               private router : Router, private api : ApiService, private network : NetworkService,
               private histServ : HistoryOfflineManagerService, private alertServ : AlertsManagerService,
@@ -90,6 +92,7 @@ export class GuidedDiagnosticPage implements OnInit {
     this.api.obtenerUsuarios().subscribe((res: any) =>{
 
       this.usuarios = res;
+      this.usuarios = this.calculusClass.orderByFirstLetter(this.usuarios);
     })
 
     

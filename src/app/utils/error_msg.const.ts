@@ -64,6 +64,6 @@ export class ErrorMsg{
       }
 
       public static Zone_options = {
-        'options' : ["Cabeza","Abdomen","Corporal","Pecho"]
+        'options' : ["Cabeza","Abdomen","Corporal","Pecho","Garganta y Cuello"]
       }
 }
