@@ -204,7 +204,7 @@ export class DiagnosticPage implements OnInit {
     mostrarPregunta(){
       this.question = this.preguntas.pop();
       console.log(this.question);
-      if(this.question.type==='boolean' || this.question.type==='option'){
+      if(this.question.type==='boolean' || this.question.type==='numeric'){
       let id = this.descs.pop();
       console.log(id);
       

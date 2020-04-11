@@ -61,7 +61,7 @@
     <ion-card>
         <ion-card-header>
           <ion-card-subtitle>Sus sintomas: {{breadcrumb}}</ion-card-subtitle>
-          <ion-card-title *ngIf="!hasResult || question.type==='boolean'">{{descripcion}}</ion-card-title>
+          <ion-card-title *ngIf="!hasResult && question.type==='boolean'">{{descripcion}}</ion-card-title>
           <ion-card-title>{{question.message}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>

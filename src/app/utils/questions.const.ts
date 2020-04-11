@@ -30,14 +30,20 @@ export class questions {
         'pérdida del apetito' : [
           {message: '¿Ultimamente ha tenido menos hambre de lo usual, o bien al comer siente que se llena más rápido?', type: "boolean"}
         ],
-        'Ganglios inflamados(cuello)' : [
+        'ganglios inflamados(cuello)' : [
           {message: '¿Al tocarse el cuello ha sentido inflamación o bien al hacer presión cerca de la parte superior del mismo le duele?', type: "boolean"}
         ],
-        'Manchas en amígdalas' : [
+        'manchas en amígdalas' : [
           {message: '¿Ha notado manchas en la parte posterior de la garganta?', type: "boolean"}
         ],
-        'Inflamación amígdalas' : [
+        'inflamación amígdalas' : [
           {message: '¿Ha notado inflamación en la parte posterior de la garganta?', type: "boolean"}
+        ],
+        'orina color oscuro' : [
+          {message: '¿Ha notado que su orina ha sido de un color más oscuro últimamente?', type: "boolean"}
+        ],
+        'ictericia' : [
+          {message: '¿Presenta una coloración amarillenta en alguna parte de la piel o bien en los ojos?', type: "boolean"}
         ]
 
       }
@@ -73,14 +79,20 @@ export class questions {
         'pérdida del apetito' : [
           {message: '¿Su paciente indica que ultimamente ha tenido menos hambre de lo usual, o bien al comer siente que se llena más rápido?', type: "boolean"}
         ],
-        'Ganglios inflamados(cuello)' : [
+        'ganglios inflamados(cuello)' : [
           {message: '¿Al palpar el cuello del paciente este presenta inflamación o bien al hacer presión cerca de la parte superior del mismo le duele?', type: "boolean"}
         ],
-        'Manchas en amígdalas' : [
+        'manchas en amígdalas' : [
           {message: '¿Se visualizan manchas en la parte posterior de la garganta de la garganta?', type: "boolean"}
         ],
-        'Inflamación amígdalas' : [
+        'inflamación amígdalas' : [
           {message: '¿Se puede notar inflamación en la parte posterior de la garganta del paciente?', type: "boolean"}
+        ],
+        'orina color oscuro' : [
+          {message: '¿Su paciente ha notado que su orina es de un color más oscuro de lo habitual últimamente?', type: "boolean"}
+        ],
+        'ictericia' : [
+          {message: '¿Su paciente tiene una coloración amarillenta perceptible en alguna parte de la piel o bien en los ojos?', type: "boolean"}
         ]
 
       }
