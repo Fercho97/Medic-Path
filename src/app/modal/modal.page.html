@@ -3,13 +3,13 @@
     <ion-buttons slot="start">
       <ion-button (click)="dismiss()" ><ion-icon name="arrow-back"></ion-icon></ion-button>
     </ion-buttons>
-  <ion-title>Selección de sintomas en {{label}}</ion-title>
+  <ion-title>Selección de síntomas en {{label}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <br>
-  <ion-label>Sintomas</ion-label>
+  <ion-label>Síntomas</ion-label>
   <ion-select placeholder="Eliga los sintomas" multiple="true" [(ngModel)] = "sintomasSeleccionados">
     <ion-select-option *ngFor="let ini of sintomas" value="{{ini.idSint}}" >{{ini.nombre_sint}}</ion-select-option>
 </ion-select>

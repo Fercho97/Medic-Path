@@ -11,16 +11,16 @@
   <div  *ngIf="!hasPregunta">
       <ion-card>
           <ion-item>
-              <p>Bienvenido a la herramienta de diagnostico. 
-                 Para comenzar simplemente haga click en comenzar para iniciar un diagnostico desde 0
-                  o bien seleccione el area en donde tenga la mayor cantidad de molestias y seleccione sintomas</p>
+              <p>Bienvenido a la herramienta de diagnóstico. 
+                 Para comenzar simplemente haga click en comenzar para iniciar un diagnóstico desde 0
+                  o bien seleccione el área en donde tenga la mayor cantidad de molestias y seleccione síntomas</p>
           </ion-item>
           <ion-card-content>
               <ion-button size="medium" color="success" expand="block" slot="end" (click)="iniciarDiagnostico()">Comenzar</ion-button>              
               <ion-button color="success" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnostico con sintomas iniciales</ion-button>
         </ion-card-content>
         <div *ngIf="sintomasShow.length>0">
-            <label >Mis sintomas seleccionados:</label>
+            <label >Mis síntomas seleccionados:</label>
             <div style="overflow-y: auto; height: 100px;">
                 <ion-item *ngFor="let sintoma of sintomasShow">
                     <ion-label>{{sintoma.name}}</ion-label>
@@ -54,7 +54,7 @@
 <div [hidden]="!hasPregunta">
     <ion-card>
         <ion-card-header>
-          <ion-card-subtitle>Sus sintomas: {{breadcrumb}}</ion-card-subtitle>
+          <ion-card-subtitle>Sus síntomas: {{breadcrumb}}</ion-card-subtitle>
           <ion-card-subtitle *ngIf="!hasResult && question.type==='boolean'">Descripción: {{descripcion}}</ion-card-subtitle>
           <ion-card-title>{{question.message}}</ion-card-title>
          </ion-card-header>
@@ -114,7 +114,7 @@
 </div>
 
 <div  *ngIf="hasResult">
-    <ion-list *ngIf="hasResult"><p>Sintomas pertenecientes a su resultado:</p>
+    <ion-list *ngIf="hasResult"><p>Síntomas pertenecientes a su resultado:</p>
         <ion-item *ngFor="let sintoma of sintomasResultado">
             <ion-label>{{sintoma.desc}}</ion-label>
         </ion-item>
@@ -123,7 +123,7 @@
 
     <div>
         <div *ngIf="niveles.Medio.length>0">
-            <ion-item color="medium">Sintomas destacados  <ion-icon name="help-circle" slot="end" (click)="showInfo('medio')"></ion-icon></ion-item>
+            <ion-item color="medium">Síntomas destacados  <ion-icon name="help-circle" slot="end" (click)="showInfo('medio')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Medio">
                     <ion-label>{{niv.sintoma}}</ion-label>
@@ -131,7 +131,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Ninguno.length>0">
-            <ion-item color="medium">Sintomas sin urgencia  <ion-icon name="help-circle" slot="end" (click)="showInfo('ninguno')"></ion-icon></ion-item>
+            <ion-item color="medium">Síntomas sin urgencia  <ion-icon name="help-circle" slot="end" (click)="showInfo('ninguno')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Ninguno">
                     <ion-label>{{niv.sintoma}}</ion-label>
@@ -139,7 +139,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Bajo.length>0">
-            <ion-item color="medium">Sintomas de baja urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('bajo')"></ion-icon></ion-item>
+            <ion-item color="medium">Síntomas de baja urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('bajo')"></ion-icon></ion-item>
             <ion-list inset=true>
                     <ion-item *ngFor="let niv of niveles.Bajo">
                         <ion-label>{{niv.sintoma}}</ion-label>
@@ -147,7 +147,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Alto.length>0">
-            <ion-item color="medium">Sintomas de alta urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('alto')"></ion-icon></ion-item>
+            <ion-item color="medium">Síntomas de alta urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('alto')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Alto">
                     <ion-label>{{niv.sintoma}}</ion-label>
@@ -155,7 +155,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Severo.length>0">
-            <ion-item color="medium">Sintomas de severidad <ion-icon name="help-circle" slot="end" (click)="showInfo('severo')"></ion-icon></ion-item>
+            <ion-item color="medium">Síntomas de severidad <ion-icon name="help-circle" slot="end" (click)="showInfo('severo')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Severo">
                     <ion-label>{{niv.sintoma}}</ion-label>
@@ -164,7 +164,7 @@
           </div>
     </div>
   <ul *ngIf="sintomasExtras.length>0">
-    <h2>Sin embargo presento sintomas que pueden concordar con las siguientes enfermedades: </h2>
+    <h2>Sin embargo presento síntomas que pueden concordar con las siguientes enfermedades: </h2>
     <li *ngFor="let sints of sintomasExtras">
       {{sints.padecimiento + " " + sints.porcentaje}} 
       <p><ion-progress-bar color="primary" value="{{sints.showPorcentaje}}"></ion-progress-bar></p>
@@ -173,7 +173,7 @@
 
 <div>
     <div>
-    <h3>Conforme sus sintomas le recomendamos asistir con:</h3>
+    <h3>Conforme sus síntomas le recomendamos asistir con:</h3>
     <ion-item>
         <ion-label color="primary">
         {{doc_recomendacion[0].espe}}
@@ -192,7 +192,7 @@
 <div>
     <div *ngIf="user_recommendation.length>0">
         <div>
-        <h3>Pacientes con sintomas similares a los suyos suelen asistir con:</h3>
+        <h3>Pacientes con síntomas similares a los suyos suelen asistir con:</h3>
             <legend class="response">
             {{user_recommendation[0].espe}}
             </legend>

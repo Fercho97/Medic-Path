@@ -24,12 +24,12 @@
               </ion-select>
           </ion-item>
           <ion-card-content>
-            <ion-button color="medium" *ngIf="selectedUser" (click)="iniciarDiagnostico()"  expand="block" slot="end">Iniciar diagnostico desde 0</ion-button>
-            <ion-label *ngIf="selectedUser">o bien seleccione el area en donde el paciente tenga la mayor cantidad de sintomas y seleccionelos</ion-label>
-            <ion-button color="success" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnostico con sintomas iniciales</ion-button>
+            <ion-button color="medium" *ngIf="selectedUser" (click)="iniciarDiagnostico()"  expand="block" slot="end">Iniciar diagnóstico desde 0</ion-button>
+            <ion-label *ngIf="selectedUser">o bien seleccione el área en donde el paciente tenga la mayor cantidad de síntomas y selecciónelos</ion-label>
+            <ion-button color="success" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnóstico con síntomas iniciales</ion-button>
           </ion-card-content>
           <div *ngIf="sintomasShow.length>0">
-            <ion-label>Sintomas seleccionados:</ion-label>
+            <ion-label>Síntomas seleccionados:</ion-label>
             <div style="overflow-y: auto; height: 100px;">
                 <ion-item *ngFor="let sintoma of sintomasShow">
                     <ion-label>{{sintoma.name}}</ion-label>
@@ -60,7 +60,7 @@
 <div [hidden]="!hasPregunta">
     <ion-card>
         <ion-card-header>
-          <ion-card-subtitle>Sus sintomas: {{breadcrumb}}</ion-card-subtitle>
+          <ion-card-subtitle>Sus síntomas: {{breadcrumb}}</ion-card-subtitle>
           <ion-card-title *ngIf="!hasResult && question.type==='boolean'">{{descripcion}}</ion-card-title>
           <ion-card-title>{{question.message}}</ion-card-title>
         </ion-card-header>
@@ -120,7 +120,7 @@
  
 </div>
 <div  *ngIf="hasResult">
-    <ion-list *ngIf="hasResult"><p>Sintomas pertenecientes a su resultado:</p>
+    <ion-list *ngIf="hasResult"><p>Síntomas pertenecientes a su resultado:</p>
         <ion-item *ngFor="let sintoma of sintomasResultado">
             <ion-label>{{sintoma.desc}}</ion-label>
         </ion-item>
@@ -128,7 +128,7 @@
     
     <div>
         <div *ngIf="niveles.Medio.length>0">
-            <ion-item color="medium">Sintomas destacados  <ion-icon name="help-circle" slot="end" (click)="showInfo('medio')"></ion-icon></ion-item>
+            <ion-item color="medium">Síntomas destacados  <ion-icon name="help-circle" slot="end" (click)="showInfo('medio')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Medio">
                     <ion-label>{{niv.sintoma}}</ion-label>
@@ -136,7 +136,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Ninguno.length>0">
-            <ion-item color="medium">Sintomas sin urgencia  <ion-icon name="help-circle" slot="end" (click)="showInfo('ninguno')"></ion-icon></ion-item>
+            <ion-item color="medium">Síntomas sin urgencia  <ion-icon name="help-circle" slot="end" (click)="showInfo('ninguno')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Ninguno">
                     <ion-label>{{niv.sintoma}}</ion-label>
@@ -144,7 +144,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Bajo.length>0">
-            <ion-item color="medium">Sintomas de baja urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('bajo')"></ion-icon></ion-item>
+            <ion-item color="medium">Síntomas de baja urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('bajo')"></ion-icon></ion-item>
             <ion-list inset=true>
                     <ion-item *ngFor="let niv of niveles.Bajo">
                         <ion-label>{{niv.sintoma}}</ion-label>
@@ -152,7 +152,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Alto.length>0">
-            <ion-item color="medium">Sintomas de alta urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('alto')"></ion-icon></ion-item>
+            <ion-item color="medium">Síntomas de alta urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('alto')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Alto">
                     <ion-label>{{niv.sintoma}}</ion-label>
@@ -160,7 +160,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Severo.length>0">
-            <ion-item color="medium">Sintomas de severidad <ion-icon name="help-circle" slot="end" (click)="showInfo('severo')"></ion-icon></ion-item>
+            <ion-item color="medium">Síntomas de severidad <ion-icon name="help-circle" slot="end" (click)="showInfo('severo')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Severo">
                     <ion-label>{{niv.sintoma}}</ion-label>
