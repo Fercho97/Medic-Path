@@ -42,6 +42,49 @@ export class questions {
 
       }
 
+      public static QUESTIONS_DOC = {
+        'fiebre' : [
+          {type: 'numeric', message: '¿Cuál es o ha sido la temperatura de su paciente?', validValue: 37},
+        ],
+        'default' : [
+          {type: 'boolean', message: ''},
+        ],
+        'deshidratación' : [
+          {message: "¿La secreción de liquidos(vomito,diarrea,sudoración) de su paciente ha sido mayor a la cantidad de agua que ha ingerido ultimamente?", type: "boolean"}
+        ],
+        'encías color rojizo' : [
+          {message: '¿Se le nota un color rojizo o bien diferente al color normal en las encias?', type: "boolean"}
+        ],
+        'sangrado durante cepillado' : [
+          {message: '¿Su paciente al cepillarse los dientes ha notado sangrado?', type: "boolean"}
+        ],
+        'reacción alimentaria' : [
+          {message: '¿Su paciente identifica o noto que hubo algún alimento que le haya caido mal?', type: "boolean"}
+        ],
+        'accesos en los dientes' : [
+          {message: '¿Nota un agujero a simple vista en alguna pieza dental del paciente?', type: "boolean"}
+        ],
+        'reacción alérgenos' : [
+          {message: '¿Su paciente indica que ha estado en contacto con algún alérgenico ultimamente(polvo,polen,etc)?', type: "boolean"}
+        ],
+        'dientes manchados' : [
+          {message: '¿Nota manchas visibles en los dientes de su paciente, las cuales no son provenientes de alimento?', type: "boolean"}
+        ],
+        'pérdida del apetito' : [
+          {message: '¿Su paciente indica que ultimamente ha tenido menos hambre de lo usual, o bien al comer siente que se llena más rápido?', type: "boolean"}
+        ],
+        'Ganglios inflamados(cuello)' : [
+          {message: '¿Al palpar el cuello del paciente este presenta inflamación o bien al hacer presión cerca de la parte superior del mismo le duele?', type: "boolean"}
+        ],
+        'Manchas en amígdalas' : [
+          {message: '¿Se visualizan manchas en la parte posterior de la garganta de la garganta?', type: "boolean"}
+        ],
+        'Inflamación amígdalas' : [
+          {message: '¿Se puede notar inflamación en la parte posterior de la garganta del paciente?', type: "boolean"}
+        ]
+
+      }
+
       public static MULTIQUESTIONS = {
         'dolor de cabeza': [
           {message: '¿Como describiría su dolor de cabeza?'}
@@ -81,6 +124,24 @@ export class questions {
         ],
         'escalofrios' : [
           {message: 'En escala del 1 al 10 ¿Cómo describiria la intensidad de sus escalofrios?'}
+        ]
+      }
+
+      public static SPECIFIC_NUMERIC_QUESTION_DOC = {
+        'deshidratación' : [
+          {message: '¿Del 1 al 10 que tanto se ve afectado su paciente por la deshidratación?'}
+        ],
+        'debilidad': [
+          {message: 'En escala de 1 al 10 ¿Qué tanto indica su paciente que le afecta la pérdida de fuerza?'}
+        ],
+        'ganglios inflamados(cuello)' : [
+          {message: 'En escala de 1 al 10 ¿Qué tanto dolor siente en esa zona del cuello su paciente?'}
+        ],
+        'inflamación amígdalas' : [
+          {message: 'En escala del 1 al 10 ¿Qué tanta molestia le causa la inflamación en las amigdalas a su paciente?'}
+        ],
+        'escalofrios' : [
+          {message: 'En escala del 1 al 10 ¿Qué tan intensos son los escalofrios en su paciente?'}
         ]
       }
 }
