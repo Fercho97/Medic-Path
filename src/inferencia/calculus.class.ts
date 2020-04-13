@@ -1,6 +1,7 @@
 import {Atomo} from './atomo.class';
 import {Regla} from './regla.class';
-import { Catalogos} from '../app/utils/catalogos.const';
+import {Catalogos} from '../app/utils/catalogos.const';
+import * as moment from 'moment-timezone';
 export class Calculus{
 
      calculateCloseness(conocimientoEvaluado,baseConocimiento,memoriaDeTrabajo){
@@ -169,25 +170,33 @@ export class Calculus{
         return 0;
     }
 
-    userFeedbackRecommendation(historiales, sintomasUsuario,usuarioActual){
-
+    userFeedbackRecommendation(historiales, sintomasUsuario,usuarioActual,resultado){
+      console.log(resultado);
       let parecidos = [];
       let sintomasUser = sintomasUsuario.split(',');
       let especializaciones = [];
       let sintomasComun;
       let resultadoFinal;
       historiales.forEach(element => {
-        if(element.usuario!=usuarioActual){
-      sintomasComun = 0;
-      let sintomas = element.detalles_ids.split(",");
-      sintomasUser.forEach(userSint =>{
-        if(sintomas.some(atom => atom === userSint)){
-          sintomasComun++;
-        }
-      })
-      let porcentage = sintomasComun * 100 / sintomas.length;
-      if(porcentage > 70){
-        parecidos.push(element);
+        if(element.usuario!=usuarioActual && element.padecimiento_final===resultado){
+
+        let sameOnTheArray = parecidos.filter(item => item.usuario === element.usuario);
+
+        console.log(sameOnTheArray);
+
+        let viable = this.checkPeriod(element.fecha_consulta,sameOnTheArray);
+        if(viable==true){
+          sintomasComun = 0;
+          let sintomas = element.detalles_ids.split(",");
+          sintomasUser.forEach(userSint =>{
+            if(sintomas.some(atom => atom === userSint)){
+              sintomasComun++;
+            }
+          })
+          let porcentage = sintomasComun * 100 / sintomas.length;
+          if(porcentage > 70){
+            parecidos.push(element);
+          }
       }
       }
       });
@@ -220,5 +229,23 @@ export class Calculus{
         order[index.index].push(element);
       });
       return order;
+    }
+
+    checkPeriod(date:any,compareTo:any){
+      let formattedComparison = moment(moment(date).tz('America/Mexico_City').format('L'));
+      let isViable = true;
+      console.log(formattedComparison);
+
+      compareTo.forEach(element => {
+          let dateToCompare = moment(moment(element.fecha_consulta).tz('America/Mexico_City').format('L'));
+
+          let daysDiff = Math.abs(formattedComparison.diff(dateToCompare, 'days'))+1
+
+          if(daysDiff<=3){
+            isViable=false;
+          }
+      });
+      console.log(isViable);
+      return isViable;
     }
 }
