@@ -328,7 +328,9 @@ export class DiagnosticPage implements OnInit {
       });
       var user = await this.session.obtainSessionId();
         this.guardar(details,detailsIds,user);
+        if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
         this.user_recommendation = this.calculusClass.userFeedbackRecommendation(this.compare_historiales,detailsIds,user,this.idResultado);
+        }
     }
 
     hasMiddleAtom(){

@@ -1,3 +1,46 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu contentId="content" color="primary" side="end">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title color="primary">Menú</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle auto-hide="false" *ngIf="!isDoctor">
+        <ion-item routerLink="/history-list" replaceUrl="true" color="primary">
+            Mi Historial <ion-icon name="paper" slot="end"></ion-icon>
+        </ion-item>
+        </ion-menu-toggle> 
+        <ion-menu-toggle auto-hide="false" *ngIf="isDoctor">
+          <ion-item routerLink="/guided-diagnostic" replaceUrl="true" color="primary">
+              Diagnóstico Guiado<ion-icon name="clipboard" slot="end"></ion-icon>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide="false" *ngIf="!isDoctor">
+            <ion-item routerLink="/diagnostic" replaceUrl="true" color="primary">
+               <ion-label> Diagnóstico</ion-label> <ion-icon name="clipboard" slot="end"></ion-icon>
+            </ion-item>
+          </ion-menu-toggle>
+        <ion-menu-toggle auto-hide="false">
+        <ion-item routerLink="/profile" replaceUrl="true" color="primary">
+            Perfil <ion-icon name="person" slot="end"></ion-icon>
+        </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide="false">
+        <ion-item routerLink="/directory" replaceUrl="true" color="primary">
+          Directorio Médico <ion-icon name="people" slot="end"></ion-icon>
+        </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide="false">
+          <ion-item (click)="logout()" color="primary">
+            Logout <ion-icon name="log-out" slot="end"></ion-icon>
+          </ion-item>
+          </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="content"></ion-router-outlet>
 </ion-app>
