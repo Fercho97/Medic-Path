@@ -288,9 +288,9 @@ export class DiagnosticPage implements OnInit {
         if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
         this.toast.success('Se ha guardado con éxito en su historial', 'Guardado Exitoso!');
         
-        }else{
-         this.histServ.addHistoryToLocal(fecha.toString(),details,this.idResultado,JSON.stringify(this.niveles), hash, JSON.stringify(this.doc_recomendacion));
         }
+         this.histServ.addHistoryToLocal(fecha.toString(),details,this.idResultado,JSON.stringify(this.niveles), hash, JSON.stringify(this.doc_recomendacion));
+        
     }, error =>{
         console.log("Error", error.error);
         this.toast.error(error.error, 'Error');
