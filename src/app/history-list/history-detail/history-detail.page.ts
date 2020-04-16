@@ -67,12 +67,11 @@ export class HistoryDetailPage {
     this.api.actualizacionEspecialista(this.historial.hashId, values).subscribe( (res: any) =>{
       if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
         this.toast.success('Gracias por su retroalimentación!', 'Guardado exitoso!'); 
-        this.hasOneSelected=true;
-      }else{
+      }
         this.histServ.addFeedback(this.historial.hashId, this.seleccionado);
         this.histServ.removeFromLocalNotifications(this.historial.hashId);
         this.hasOneSelected=true;
-      }
+      
       
   }, error =>{
       console.log("Error", error.error);
