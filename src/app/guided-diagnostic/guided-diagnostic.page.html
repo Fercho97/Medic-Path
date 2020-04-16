@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-button routerLink="/landing" replaceUrl="true"><ion-icon name="arrow-back"></ion-icon></ion-button>
+      <ion-button routerLink="/landing" replaceUrl="true"><ion-icon name="arrow-back"></ion-icon>Menú Principal</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
-    <ion-title class="ion-text-center">Diágnostico Guiado</ion-title>
+    <ion-title class="ion-text-center">Diagnóstico Guiado</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -21,7 +21,7 @@
               <ion-label>Paciente a diagnosticar</ion-label>
               <ion-select placeholder="Eliga el paciente" (ionChange)="selectUser($event)" interface=popover>
                 <ng-container *ngFor="let letter of divisions">
-                    <ion-select-option disabled="true" class="hola">{{letter.value.toUpperCase()}}</ion-select-option>
+                    <ion-select-option disabled="true">{{letter.value.toUpperCase()}}</ion-select-option>
                     <ion-select-option *ngFor="let usuario of usuarios[letter.index]" value="{{usuario.id}}" >{{usuario.fullname}}</ion-select-option>
                 </ng-container>
               </ion-select>

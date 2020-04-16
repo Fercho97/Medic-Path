@@ -25,3 +25,8 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 @import '../node_modules/ngx-toastr/toastr.css';
+
+.sc-ion-select-popover-md.md.in-item.interactive.radio-disabled.hydrated{
+    --color:transparent !important;
+    --color-checked: transparent !important;
+}

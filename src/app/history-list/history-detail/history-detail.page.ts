@@ -71,6 +71,7 @@ export class HistoryDetailPage {
       }else{
         this.histServ.addFeedback(this.historial.hashId, this.seleccionado);
         this.histServ.removeFromLocalNotifications(this.historial.hashId);
+        this.hasOneSelected=true;
       }
       
   }, error =>{

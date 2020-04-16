@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color=primary>
     <ion-buttons slot="start">
-      <ion-button routerLink="/landing"><ion-icon name="arrow-back"></ion-icon></ion-button>
+      <ion-button routerLink="/landing"><ion-icon name="arrow-back"></ion-icon>Menú Principal</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
@@ -20,10 +20,14 @@
   <ion-list *ngIf="historialesFromDb.length>0">
   <ion-item-sliding *ngFor="let hist of historiales">
         <ion-item class="item item-block item-md">
-            <ion-label><h2>Consulta del día {{hist.fecha_consulta}}</h2>
-              <ion-label ><p><ion-text color="primary">Sintomas:</ion-text></p><p *ngFor="let sint of hist.detalles.split(',')">{{sint}}</p></ion-label>
-                                              </ion-label>
-            
+            <ion-label><h3>Consulta del día {{hist.fecha_consulta}}</h3>
+              <ion-label ><ion-text color="primary">Sintomas:</ion-text></ion-label>
+                <ng-container *ngFor="let sint of hist.detalles.split(','); let i=index">
+                  <p *ngIf="i<3">{{sint}}</p>
+                  <p *ngIf="i==4">...</p>
+                </ng-container>
+            </ion-label>
+            <ion-label><ion-text color="primary">Padecimiento:</ion-text><p>{{hist.nombre_pad}}</p></ion-label>
          </ion-item>
         <ion-item-options>
           <button ion-button color="light" icon-start routerLink="/history-detail/{{hist.hashId}}">

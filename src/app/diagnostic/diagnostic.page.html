@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-button routerLink="/landing" replaceUrl="true" ><ion-icon name="arrow-back"></ion-icon></ion-button>
+      <ion-button routerLink="/landing" replaceUrl="true" ><ion-icon name="arrow-back"></ion-icon>Menú Principal</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
@@ -176,15 +176,17 @@
 
 <div>
     <div>
-    <h3>Conforme sus síntomas le recomendamos asistir con:</h3>
-    <ion-item>
-        <ion-label color="primary">
-        {{doc_recomendacion[0].espe}}
-        </ion-label>
-    </ion-item>
+    <ion-item color="primary">Conforme sus síntomas le recomendamos asistir con:</ion-item>
+    <ion-list>
+        <ion-item>
+            <ion-label color="primary">
+            {{doc_recomendacion[0].espe}}
+            </ion-label>
+        </ion-item>
+    </ion-list>
     </div>
     <div *ngIf="doc_recomendacion.length>0">
-        <h3>o bien con un:</h3>
+        <ion-item color="primary">o bien con un:</ion-item>
         <ion-item>
             <ion-label color="primary">
             {{doc_recomendacion[1].espe}}
@@ -195,7 +197,7 @@
 <div>
     <div *ngIf="user_recommendation.length>0">
         <div>
-        <h3>Pacientes con síntomas similares a los suyos suelen asistir con:</h3>
+        <ion-item color="primary">Pacientes con síntomas similares a los suyos suelen asistir con:</ion-item>
             <legend class="response">
             {{user_recommendation[0].espe}}
             </legend>

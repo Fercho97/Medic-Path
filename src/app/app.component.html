@@ -8,6 +8,7 @@
 
     <ion-content>
       <ion-list>
+        <ion-menu-toggle *ngIf="getUserType()"></ion-menu-toggle>
         <ion-menu-toggle auto-hide="false" *ngIf="!isDoctor">
         <ion-item routerLink="/history-list" replaceUrl="true" color="primary">
             Mi Historial <ion-icon name="paper" slot="end"></ion-icon>

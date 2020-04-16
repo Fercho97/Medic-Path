@@ -8,12 +8,14 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { OfflineRequestsManager } from './services/offline-manager.service';
 import { ApiService } from './services/api.service';
 import {Router} from '@angular/router';
+import { CurrentUserService } from './services/current-user.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  isDoctor : boolean;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -23,7 +25,8 @@ export class AppComponent {
     private router : Router, 
     private alertCtr : AlertController, 
     private storage : Storage,
-    private api : ApiService
+    private api : ApiService,
+    private session : CurrentUserService
   ) {
     this.initializeApp();
   }
@@ -78,5 +81,16 @@ export class AppComponent {
     });
 
     await alert.present();
+  }
+
+  getUserType(){
+    this.isDoctor = false;
+    
+    
+    let userType = localStorage.getItem('tipoUsuario');
+  
+    if(userType=="2"){
+      this.isDoctor=true;
+    }
   }
 }
