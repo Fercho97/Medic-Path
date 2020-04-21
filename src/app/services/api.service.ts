@@ -301,6 +301,10 @@ checkLogin(valores : HttpParams){
 logout(token : any){
   const values = new HttpParams()
    .set('token', token)
+   if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Offline){
+
+    return from(this.offlineManager.storeRequest(urlLogout, 'POST', values.toString()));
+  }else{
    return this.http.post(urlLogout,
        values.toString(),
        {
@@ -309,6 +313,7 @@ logout(token : any){
          observe : 'response'
        },
      )
+  }
 }
 
 withFeedback(){
