@@ -5,16 +5,17 @@ import { ToastrService } from 'ngx-toastr';
 import { Storage } from '@ionic/storage';
 import { ApiService } from '../services/api.service';
 import { CurrentUserService } from '../services/current-user.service';
+import { LoadingService } from "../services/loading.service";
 @Component({
   selector: 'app-login',
   templateUrl: 'login.page.html',
   styleUrls: ['login.page.scss'],
-  providers: [ApiService]
+  providers: [ApiService, LoadingService]
 })
 export class LoginPage {
   private values : HttpParams;
   constructor(private api: ApiService,private toast : ToastrService, private router : Router, 
-              private storage : Storage, private session : CurrentUserService) {}
+              private storage : Storage, private session : CurrentUserService, private loadServ : LoadingService) {}
 
  ionViewWillEnter(){
   this.storage.get('newKey-currentUser').then(user =>{
@@ -25,7 +26,7 @@ export class LoginPage {
  }
 
   login(form){
-    console.log(form.value.email);
+    this.loadServ.present();
     this.values = new HttpParams()
     .set('nickOrEmail', form.value.email)
     .set('password', form.value.password)
@@ -34,8 +35,9 @@ export class LoginPage {
       
     if(res.body.message=="Verificacion"){
       this.toast.info('Su cuenta aun no se encuentra verificada, favor de verificarla mediante su correo.', 'Cuenta sin verificar');
+      this.loadServ.dismiss();
     }else{
-      console.log(res.body);
+      this.loadServ.dismiss();
       window.localStorage.setItem('username',res.body.usuario.nickname);
       window.localStorage.setItem('id', res.body.usuario.id);
       window.localStorage.setItem('token', res.body.token);
