@@ -28,9 +28,9 @@ export class HistoryDetailPage {
               private network : NetworkService,private histServ : HistoryOfflineManagerService) { }
 
   ionViewWillEnter() {
-    console.log(this.nivelesInfo)
+    //console.log(this.nivelesInfo)
     this.api.getHistory(this.route.snapshot.params.id).subscribe( (res: any) =>{
-      console.log(res);
+      //console.log(res);
       this.historial = res;
       this.sintomas = res.detalles.split(",").filter(item => item);
       if(this.historial.detalles_especificos!=null){
@@ -47,15 +47,15 @@ export class HistoryDetailPage {
         this.seleccionado = this.historial.especialista_seleccionado;
         this.hasOneSelected=true;
       }
-      console.log(res.body);
+      //console.log(res.body);
     },
   error =>{
-      console.log(error);
+      //console.log(error);
   })
   }
 
   showInfo(label : any){
-    console.log(label);
+    //console.log(label);
     let mensaje = this.nivelesInfo[label].message;
     this.alertServ.infoAlert(mensaje);
   }
@@ -74,7 +74,7 @@ export class HistoryDetailPage {
       
       
   }, error =>{
-      console.log("Error", error.error);
+      //console.log("Error", error.error);
       this.toast.error(error.error.message, 'Error');
   }
     );

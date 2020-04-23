@@ -38,7 +38,7 @@ export class LandingPage {
       });
     }else{
       let id = await this.session.obtainSessionId();
-      console.log(id);
+      //console.log(id);
       this.api.getNotifications(id).subscribe((res:any) =>{
         
         this.roosterNews = res;
@@ -78,7 +78,7 @@ export class LandingPage {
             this.router.navigate([''])
           },
         error =>{
-            console.log(error);
+            //console.log(error);
         })
         }
       }

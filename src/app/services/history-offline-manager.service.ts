@@ -30,7 +30,7 @@ export class HistoryOfflineManagerService {
   addHistoryToLocal(fecha,descripcion,padecimiento,detalles,hash,recomendacion){
     let result;
     this.storage.get(STORAGE_PAD_KEY).then(padecimientos =>{
-      console.log(padecimientos);
+      //console.log(padecimientos);
       padecimientos.forEach(element => {
           if(padecimiento==element.idPad){
                 let action: History = {

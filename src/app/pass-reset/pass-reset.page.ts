@@ -25,7 +25,7 @@ export class PassResetPage implements OnInit {
       this.toastr.info("Se ha enviado un correo a la dirección que indico, llegara en un momento", "Enviado");
       this.router.navigate(['']);
     }, error =>{
-      console.log(error);
+      //console.log(error);
       this.router.navigate(['']);
     })
     

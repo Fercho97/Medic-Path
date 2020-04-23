@@ -50,7 +50,7 @@ export class PassChangePage {
         this.reset.reset();
         this.logout();
       }, error =>{
-          console.log("Error", error.error.message);
+          //console.log("Error", error.error.message);
           this.toast.error(error.error.message, 'Error');
       })
     
@@ -87,7 +87,7 @@ export class PassChangePage {
       this.storage.remove("newKey-currentUser");
       this.router.navigate([''])
     }, error =>{
-      console.log("Error", error.error.message);
+      //console.log("Error", error.error.message);
       this.toast.error(error.error.message, 'Error');
   })
   }

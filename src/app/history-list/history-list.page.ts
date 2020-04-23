@@ -25,17 +25,17 @@ export class HistoryListPage{
 
   async ionViewWillEnter(){
     let hash = await this.sessionServ.obtainSessionHash();
-    console.log(hash);
+    //console.log(hash);
     this.loadServ.present();
     //console.log(this.id);
     this.api.historyList(hash).subscribe( (res: any) =>{
-      console.log(res);
+      //console.log(res);
       this.historialesFromDb = res;
       this.historiales = this.historialesFromDb;
       this.loadServ.dismiss();
     },
   error =>{
-      console.log(error);
+      //console.log(error);
   })
 
   this.searchControl.valueChanges.pipe(debounceTime(800))
@@ -46,7 +46,7 @@ export class HistoryListPage{
   }
 
   filter(search : any){
-    console.log(this.historialesFromDb);
+    //console.log(this.historialesFromDb);
     this.historiales = this.historialesFromDb.filter(hist =>{
         return hist.fecha_consulta.toLowerCase().indexOf(search.toLowerCase()) > -1;
     });

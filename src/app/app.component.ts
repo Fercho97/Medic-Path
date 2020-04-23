@@ -73,7 +73,7 @@ export class AppComponent {
             this.router.navigate([''])
           },
         error =>{
-            console.log(error);
+            //console.log(error);
         })
         }
       }

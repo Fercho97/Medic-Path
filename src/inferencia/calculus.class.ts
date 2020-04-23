@@ -46,7 +46,7 @@ export class Calculus{
          if(percentage > 70 && percentage != 100){
            let showPercentage = percentage*0.01;
            let closeness = {padecimiento: element.partesConclusion[0].desc, porcentaje: Math.floor(percentage), showPorcentaje: showPercentage.toFixed(1)};
-          console.log(closeness);
+          //console.log(closeness);
            sintomasExtras.push(closeness);
          }
        }
@@ -69,7 +69,7 @@ export class Calculus{
         
         result.push(differences);
         let text = samewords.join(' ');
-        console.log(text);
+        //console.log(text);
         result.push(text);
         return result;
       }
@@ -80,7 +80,7 @@ export class Calculus{
         names.forEach(element => {
           if(element!==sint){
           let compareElement = element.split(" ");
-          console.log(compareElement);
+          //console.log(compareElement);
             compareElement.forEach(word => {
               let index = compareTo.indexOf(word);
               if(index!=-1){
@@ -126,7 +126,7 @@ export class Calculus{
 
       calculateRecommendation(memoriaDeTrabajo: any, sintomas: any){
         let resultados = [];
-        console.log(memoriaDeTrabajo.atomosAfirmados);
+        //console.log(memoriaDeTrabajo.atomosAfirmados);
         memoriaDeTrabajo.atomosAfirmados.forEach((element:Atomo) => {
             let sintoma = sintomas.find(sint => sint.idSint == element.sintoma);
             if(sintoma!=undefined){
@@ -135,7 +135,7 @@ export class Calculus{
               
               porcentage.forEach(element => {
                 let category = resultados.find(res => res['espe'] == element.nombre_esp);
-                console.log(category);
+                //console.log(category);
                 if(category===undefined){
                   resultados.push({espe: element.nombre_esp, value: element.porcentaje});
                 }else{
@@ -151,7 +151,7 @@ export class Calculus{
           element.value = finalValue;
         });
 
-        console.log(resultados);
+        //console.log(resultados);
 
         resultados.sort(this.compare);
         if(resultados.length>2){
@@ -171,7 +171,7 @@ export class Calculus{
     }
 
     userFeedbackRecommendation(historiales, sintomasUsuario,usuarioActual,resultado){
-      console.log(resultado);
+      //console.log(resultado);
       let parecidos = [];
       let sintomasUser = sintomasUsuario.split(',');
       let especializaciones = [];
@@ -182,7 +182,7 @@ export class Calculus{
 
         let sameOnTheArray = parecidos.filter(item => item.usuario === element.usuario);
 
-        console.log(sameOnTheArray);
+        //console.log(sameOnTheArray);
 
         let viable = this.checkPeriod(element.fecha_consulta,sameOnTheArray);
         if(viable==true){
@@ -203,7 +203,7 @@ export class Calculus{
       
       parecidos.forEach(element =>{
         let category = especializaciones.find(res => res['espe'] == element.especialista_seleccionado);
-                console.log(category);
+                //console.log(category);
                 if(category===undefined){
                   especializaciones.push({espe: element.especialista_seleccionado, value: 1});
                 }else{
@@ -234,7 +234,7 @@ export class Calculus{
     checkPeriod(date:any,compareTo:any){
       let formattedComparison = moment(moment(date).tz('America/Mexico_City').format('L'));
       let isViable = true;
-      console.log(formattedComparison);
+      //console.log(formattedComparison);
 
       compareTo.forEach(element => {
           let dateToCompare = moment(moment(element.fecha_consulta).tz('America/Mexico_City').format('L'));
@@ -245,7 +245,7 @@ export class Calculus{
             isViable=false;
           }
       });
-      console.log(isViable);
+      //console.log(isViable);
       return isViable;
     }
 }

@@ -18,7 +18,7 @@ export class NetworkService{
     constructor(private network: Network, private toastController: ToastController, private plt: Platform){
         this.plt.ready().then(() =>{
             //this.isBrowser = this.plt.is('mobileweb');
-            console.log(window.navigator.onLine);
+            //console.log(window.navigator.onLine);
             this.initializeNetworkEvents();
             let status = null;
            // if(this.isBrowser==false){
@@ -28,7 +28,7 @@ export class NetworkService{
            // }
             
             this.status.next(status);
-            console.log(this.status.getValue());
+            //console.log(this.status.getValue());
         });
     }
 
@@ -36,28 +36,26 @@ export class NetworkService{
       //  if(this.isBrowser=false){
         this.network.onDisconnect().subscribe(() =>{
             if (this.status.getValue() === ConnectionStatus.Online){
-                console.log("OFFLINE");
+                //console.log("OFFLINE");
                 this.updateNetworkStatus(ConnectionStatus.Offline);
             }
         });
 
         this.network.onConnect().subscribe(() =>{
             if(this.status.getValue() === ConnectionStatus.Offline){
-                console.log("Online");
+                //console.log("Online");
                 this.updateNetworkStatus(ConnectionStatus.Online);
             }
         });
     /**}else{
         window.addEventListener('online', () =>{
             if(this.status.getValue() === ConnectionStatus.Offline){
-                console.log("Online");
                 this.updateNetworkStatus(ConnectionStatus.Online);
             }
         })
 
         window.addEventListener('offline', () =>{
             if (this.status.getValue() === ConnectionStatus.Online){
-                console.log("OFFLINE");
                 this.updateNetworkStatus(ConnectionStatus.Offline);
             }
         })

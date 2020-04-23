@@ -31,13 +31,13 @@ objetivo : Boolean;
                 pila.push(verdadInicial);
         }
         else if(condicion=== "~"){
-            console.log("Tiene un atomo negado");
+            //console.log("Tiene un atomo negado");
                 verdadInicial=pila.datos.pop();
                 verdadInicial=!verdadInicial;
                 pila.push(verdadInicial);
         }
         else if(condicion=== "&"){
-            console.log("Tiene conjunción");
+            //console.log("Tiene conjunción");
 
             verdadInicial=pila.datos.pop();
 
@@ -60,7 +60,7 @@ objetivo : Boolean;
 }
 
 disparadorReglas(mt){
-    console.log("Se llego al disparador");
+    //console.log("Se llego al disparador");
     let atomoTemporal=null;
     let esObjetivo=false;
     this.disparo=true;
@@ -74,7 +74,7 @@ disparadorReglas(mt){
             atomoTemporal.estado=!atomoTemporal.estado;
         }
     };
-    console.log("Termina Disparador");
+    //console.log("Termina Disparador");
     return atomos;
 }
 

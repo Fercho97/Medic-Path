@@ -40,7 +40,7 @@ export class OfflineRequestsManager{
                     })
                 );
             } else {
-                console.log('No hay datos locales que sincronizar');
+                //console.log('No hay datos locales que sincronizar');
                 return of(false);
             }
             })
@@ -62,8 +62,8 @@ export class OfflineRequestsManager{
             time: new Date().getTime(),
             id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0,5)
         };
-        console.log(action);
-        console.log(this.storage.get(STORAGE_REQ_KEY));
+        //console.log(action);
+        //console.log(this.storage.get(STORAGE_REQ_KEY));
         return this.storage.get(STORAGE_REQ_KEY).then(storesOperations =>{
             let storeObj = JSON.parse(storesOperations);
 
@@ -83,10 +83,10 @@ export class OfflineRequestsManager{
         let obs = [];
 
         for(let op of operations){
-            console.log(op.data);
+            //console.log(op.data);
             let oneObs = this.http.request(op.type,op.url, {body:op.data,headers: new HttpHeaders()
                 .set('Content-Type', 'application/x-www-form-urlencoded')});
-            console.log(oneObs);
+            //console.log(oneObs);
             obs.push(oneObs);
 
         }

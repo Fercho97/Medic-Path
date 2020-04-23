@@ -97,7 +97,7 @@ export class GuidedDiagnosticPage implements OnInit {
 
     
     this.api.getAllSymptoms().subscribe(res =>{
-      console.log(res);
+      //console.log(res);
       this.allSymptoms = res;
       this.sintomas = this.allSymptoms.filter(sintoma => sintoma['compuesto']==false);
       for( var zona of this.zone_options){
@@ -116,9 +116,9 @@ export class GuidedDiagnosticPage implements OnInit {
   InitiatePlatformIfReady() {
     this.platform.ready().then(() => {
       imageMapResize();
-      console.log('before subscribe');
+      //console.log('before subscribe');
       this.platform.resize.subscribe(() => {
-        console.log('resized');
+        //console.log('resized');
         imageMapResize();
       });
     });
@@ -126,18 +126,18 @@ export class GuidedDiagnosticPage implements OnInit {
 
   iniciarDiagnostico(){
     this.fromSelected=false;
-    console.log(this.allSymptoms)
+    //console.log(this.allSymptoms)
     let mira : string = "";
     this.api.consulta(mira).subscribe((res : any)  =>{
       //this.hasPregunta = true;
-      console.log(res);
+      //console.log(res);
       
      res.forEach(element => {
         let rule = new Regla();
         this.baseConocimiento.push(rule.desgloseReglas(element));
       });
 
-      console.log(this.baseConocimiento);
+      //console.log(this.baseConocimiento);
       this.hasPregunta = true;
       this.inferencia();
     }, error =>{
@@ -169,7 +169,7 @@ export class GuidedDiagnosticPage implements OnInit {
             let almacenado = null;
 
             almacenado =  this.memoriaDeTrabajo.estaAlmacenado(element);
-            console.log("evaluando" + element.desc)
+            //console.log("evaluando" + element.desc)
             if(almacenado===false){
             this.atomosCondicion.push(new Atomo(element.desc,element.estado,element.obj,element.padecimiento,element.sintoma));
             let question = this.questionGen(element.desc); 
@@ -195,10 +195,10 @@ export class GuidedDiagnosticPage implements OnInit {
 
     mostrarPregunta(){
       this.question = this.preguntas.pop();
-      console.log(this.question);
+      //console.log(this.question);
       if(this.question.type==='boolean' || this.question.type==='numeric'){
       let id = this.descs.pop();
-      console.log(id);
+      //console.log(id);
       
       let found = this.sintomas.find(item => item['idSint'].toString() === id);
 
@@ -231,7 +231,7 @@ export class GuidedDiagnosticPage implements OnInit {
     analize(){
       let condicion = false;
       condicion = this.reglaEvaluar.checarCondicion(this.memoriaDeTrabajo)
-      console.log(condicion);
+      //console.log(condicion);
       if(condicion===true){
         let atomos = this.reglaEvaluar.disparadorReglas(this.memoriaDeTrabajo)
         for(var atomo of atomos){
@@ -244,16 +244,16 @@ export class GuidedDiagnosticPage implements OnInit {
           this.showWhy();
         }
       }else{
-        console.log("No se cumplio: " + this.reglaEvaluar.partesConclusion)
+        //console.log("No se cumplio: " + this.reglaEvaluar.partesConclusion)
         for(var noCumplido of this.reglaEvaluar.partesConclusion){
           let atomoNoCumplido = new Atomo(noCumplido.desc,false,noCumplido.obj,noCumplido.padecimiento,noCumplido.sintoma);
           this.memoriaDeTrabajo.almacenarAtomo(atomoNoCumplido);
         }
       }
       
-      console.log(this.memoriaDeTrabajo)
-      console.log(this.contador);
-      console.log(this.baseConocimiento.length);
+      //console.log(this.memoriaDeTrabajo)
+      //console.log(this.contador);
+      //console.log(this.baseConocimiento.length);
       if(this.contador<this.baseConocimiento.length && this.hasResult==false){
       this.inferencia();
       }else if(this.hasResult==false){
@@ -262,7 +262,7 @@ export class GuidedDiagnosticPage implements OnInit {
     }
 
     showWhy(){
-      console.log(this.reglaEvaluar.partesConclusion[0].desc)
+      //console.log(this.reglaEvaluar.partesConclusion[0].desc)
       this.question={message: "Su paciente padece de : " + this.reglaEvaluar.partesConclusion[0].desc }
       this.hasResult=true;
       this.idResultado=this.reglaEvaluar.partesConclusion[0].padecimiento;
@@ -309,7 +309,7 @@ export class GuidedDiagnosticPage implements OnInit {
           this.toast.success('Se ha guardado con éxito en el historial del paciente', 'Guardado Exitoso!');
         }
     }, error =>{
-        console.log("Error", error.error);
+        //console.log("Error", error.error);
         this.toast.error(error.error, 'Error');
         this.router.navigate(['/landing'])
     })
@@ -329,7 +329,7 @@ export class GuidedDiagnosticPage implements OnInit {
     }
 
     fromSintomasIniciales(){
-      console.log(this.sintomasSeleccionados);
+      //console.log(this.sintomasSeleccionados);
       this.sintomasSeleccionados.forEach(element => {
         let sintoma = this.sintomas.find(sint => sint['idSint'] == element);
         let atomoRegla = new Atomo(sintoma.nombre_sint,true,false,null,sintoma.idSint);
@@ -341,7 +341,7 @@ export class GuidedDiagnosticPage implements OnInit {
         this.evaluateSypmtom(sintoma.idSint);
       });
       this.avoidUnnecesaryQuestions();
-      console.log(this.memoriaDeTrabajo);
+      //console.log(this.memoriaDeTrabajo);
       if(this.preguntas.length>0){
         this.hasPregunta = true;
         this.fromSelected=true;
@@ -358,7 +358,7 @@ export class GuidedDiagnosticPage implements OnInit {
         if(multiOption.length>1){
           multiOption.forEach(option =>{
             let atomo = new Atomo(option.nombre_sint,false,false,null,null);
-            console.log(this.memoriaDeTrabajo.estaAfirmado(atomo));
+            //console.log(this.memoriaDeTrabajo.estaAfirmado(atomo));
             if(this.memoriaDeTrabajo.estaAlmacenado(atomo)===false){
               this.memoriaDeTrabajo.almacenarAtomo(atomo);
             }
@@ -368,7 +368,7 @@ export class GuidedDiagnosticPage implements OnInit {
     }
 
     hasMiddleAtom(){
-      console.log(this.reglaEvaluar);
+      //console.log(this.reglaEvaluar);
       let previousRuleIndex;
        this.reglaEvaluar.partesCondicion.forEach(condition => {
          if(!this.memoriaDeTrabajo.estaAlmacenado(condition)){
@@ -403,7 +403,7 @@ export class GuidedDiagnosticPage implements OnInit {
             this.memoriaDeTrabajo.atomosAfirmados.forEach(atomo =>{
               let atomSymp = this.allSymptoms.find(item => item['nombre_sint'].toString() === atomo.desc);
               if(atomSymp!=null){
-              console.log(atomSymp.nivel_urgencia);
+              //console.log(atomSymp.nivel_urgencia);
               let sympLev = {sintoma: atomSymp.nombre_sint, descripcion: atomSymp.descripcion};
               if(atomSymp.nivel_urgencia>=0 && atomSymp.nivel_urgencia<0.2){
                 this.niveles.Ninguno.push(sympLev);
@@ -458,7 +458,7 @@ export class GuidedDiagnosticPage implements OnInit {
       }
 
       evaluateSypmtom(symp : any){
-        console.log(symp);
+        //console.log(symp);
       let atomSymp = this.allSymptoms.find(item => item['idSint'].toString() === symp.toString());
       let sympIndex = this.allSymptoms.findIndex(item => item['idSint'].toString() === symp.toString());
       if(atomSymp.nivel_urgencia==0.4 || atomSymp.nivel_urgencia==0.6){
@@ -504,7 +504,7 @@ export class GuidedDiagnosticPage implements OnInit {
         
           checkMultipleTypes(sint:any){
             let sintoma = this.sintomas.find(symp => symp['nombre_sint']==sint);
-            console.log(sintoma);
+            //console.log(sintoma);
             let sameSynts = this.sintomas.filter(symp => symp['categoria_sint']==sintoma.categoria_sint && symp['keyWord'].toLowerCase()==sintoma.keyWord.toLowerCase());
             return sameSynts;
           }
@@ -530,7 +530,7 @@ export class GuidedDiagnosticPage implements OnInit {
             if(answer==="Si"){
               let atomsSize = atomos.length;
               this.atomos_opciones.push( atomos.slice());
-              console.log(this.atomos_opciones);
+              //console.log(this.atomos_opciones);
               let buttonOptions = [];
               for(var i = 0; i<atomsSize; i++){
                 let showOption  = "";
@@ -549,7 +549,7 @@ export class GuidedDiagnosticPage implements OnInit {
                 let button = {message: showOption, value: atomo, desc: sintoma.descripcion};
                 buttonOptions.push(button);
               }
-              console.log(buttonOptions);
+              //console.log(buttonOptions);
               let messageShow = questions.MULTIQUESTIONS_DOC[text.toLowerCase()];
               this.preguntas.push({message: messageShow[0].message,buttons: buttonOptions, type: 'selection'});
             }else{
@@ -572,7 +572,7 @@ export class GuidedDiagnosticPage implements OnInit {
           }
      
          showInfo(label : any){
-          console.log(label);
+          //console.log(label);
           let mensaje = this.nivelesInfo[label].message;
           this.alertServ.infoAlert(mensaje);
         }
@@ -602,7 +602,7 @@ export class GuidedDiagnosticPage implements OnInit {
              }
            })
            this.evaluateSypmtom(atomId);
-           console.log(this.memoriaDeTrabajo)
+           //console.log(this.memoriaDeTrabajo)
            if(this.preguntas.length>0){
              this.mostrarPregunta();
              }else{
@@ -637,7 +637,7 @@ export class GuidedDiagnosticPage implements OnInit {
          let zoneSints = this.sintomasZona.find(zone => zone['zone']==value);
          let selectedZone = this.zoneSelection.find(zone => zone['zone']==value);
        
-         console.log(zoneSints['sintomas']);
+         //console.log(zoneSints['sintomas']);
          options = zoneSints.sintomas;
          selected = selectedZone.sintomas;
           this.presentModal(options, selected, value);
@@ -649,10 +649,10 @@ export class GuidedDiagnosticPage implements OnInit {
          for(let zone of this.zoneSelection){
            zones = zones.concat(zone.sintomas);
          }
-         console.log(zones);
+         //console.log(zones);
          this.sintomasSeleccionados = zones;
-          console.log(this.sintomasSeleccionados.length)
+          //console.log(this.sintomasSeleccionados.length)
           this.sintomasShow = this.diagServ.showSymtoms(this.sintomasSeleccionados, this.sintomas);
-          console.log(this.sintomasShow);
+          //console.log(this.sintomasShow);
         }
 }

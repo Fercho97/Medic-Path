@@ -29,11 +29,11 @@ export class DirectoryPage implements OnInit {
       this.tipo = this.route.snapshot.params.type
       this.hasEspe = true;
     }
-    console.log(this.tipo);
+    //console.log(this.tipo);
     this.api.getDoctors(this.tipo).subscribe((res: any) =>{
-      console.log(res);
+      //console.log(res);
       this.medicos = res;
-      console.log(this.medicos);
+      //console.log(this.medicos);
       this.medicosFilter = this.medicos;
       this.loadServ.dismiss();
     });

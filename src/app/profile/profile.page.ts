@@ -67,14 +67,14 @@ export class ProfilePage{
       this.datos_perfil.controls['apellidos'].setValue(this.usuario.apellidos, {onlySelf : true});
     },
   error =>{
-      console.log(error);
+      //console.log(error);
   })
   }
 
   createFormData(event){
     this.selectedFile = <File>event.target.files[0];
     this.formDataImg.append('image', this.selectedFile, this.selectedFile.name);
-    console.log(this.formDataImg.get('image'));
+    //console.log(this.formDataImg.get('image'));
     this.hasImage=true;
   }
 
@@ -87,7 +87,7 @@ export class ProfilePage{
   }
 
   actualizarDatos(){
-    console.log(this.datos_perfil.value);
+    //console.log(this.datos_perfil.value);
     this.formData.append('nickname', this.datos_perfil.value.nickname);
     this.formData.append('nombres', this.datos_perfil.value.nombres);
     this.formData.append('apellidos', this.datos_perfil.value.apellidos);
@@ -98,7 +98,7 @@ export class ProfilePage{
           this.formData = new FormData();
         },
       error =>{
-        console.log(error.message);
+        //console.log(error.message);
           this.toast.error(error.error.message,'Error');
       })
     
@@ -111,16 +111,16 @@ export class ProfilePage{
       this.toast.success('Imagen cambiada con éxito!', 'Modificación Exitosa!');
     },
   error =>{
-    console.log(error.message);
+    //console.log(error.message);
       this.toast.error(error.error.message,'Error');
   })
 
 }
 
   check(){
-    console.log("check")
+    //console.log("check")
     if(this.originalValue.toLowerCase()!=this.datos_perfil.get('nickname').value.toString().toLowerCase()){
-      console.log("lol")
+      //console.log("lol")
       this.datos_perfil.get('nickname').updateValueAndValidity();
       this.datos_perfil.get('nickname').setAsyncValidators(this.nickVal.existingNickname());
       

@@ -49,7 +49,7 @@ export class LoginPage {
     this.router.navigate(['/landing']);
     }
   }, error =>{
-      console.log("Error", error.error.message);
+      //console.log("Error", error.error.message);
       this.toast.error(error.error.message, 'Error');
   })
   }

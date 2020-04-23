@@ -18,7 +18,7 @@ export class DirectoryDetailPage implements OnInit {
 
   ngOnInit() {
     this.api.getDoctorInfo(this.route.snapshot.params.hash).subscribe( (res : any) =>{
-      console.log(res);
+      //console.log(res);
 
       this.infoDoc = res;
       this.especializaciones = res.especializacions;

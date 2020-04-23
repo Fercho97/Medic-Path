@@ -13,7 +13,7 @@ export class ModalPage implements OnInit {
   constructor(private modalCtrl : ModalController) { }
 
   ngOnInit() {
-    console.log(this.sintomas);
+    //console.log(this.sintomas);
   }
 
   dismiss(){

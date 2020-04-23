@@ -127,16 +127,16 @@ export class DiagnosticPage implements OnInit {
   InitiatePlatformIfReady() {
     this.platform.ready().then(() => {
       imageMapResize();
-      console.log('before subscribe');
+      //console.log('before subscribe');
       this.platform.resize.subscribe(() => {
-        console.log('resized');
+        //console.log('resized');
         imageMapResize();
       });
     });
   }
 
   iniciarDiagnostico(){
-    console.log("inicia")
+    //console.log("inicia")
     let mira : string = "";
     this.api.consulta(mira).subscribe((res : any)  =>{
       //this.hasPregunta = true;
@@ -203,10 +203,10 @@ export class DiagnosticPage implements OnInit {
 
     mostrarPregunta(){
       this.question = this.preguntas.pop();
-      console.log(this.question);
+      //console.log(this.question);
       if(this.question.type==='boolean' || this.question.type==='numeric'){
       let id = this.descs.pop();
-      console.log(id);
+      //console.log(id);
       
       let found = this.sintomas.find(item => item['idSint'].toString() === id);
 
@@ -238,7 +238,7 @@ export class DiagnosticPage implements OnInit {
 
     analize(){
       let condicion = false;
-      console.log(this.reglaEvaluar);
+      //console.log(this.reglaEvaluar);
       condicion = this.reglaEvaluar.checarCondicion(this.memoriaDeTrabajo)
      // console.log(condicion);
       if(condicion===true){
@@ -253,7 +253,7 @@ export class DiagnosticPage implements OnInit {
           this.showWhy();
         }
       }else{
-        console.log("No se cumplio: " + this.reglaEvaluar.partesConclusion)
+        //console.log("No se cumplio: " + this.reglaEvaluar.partesConclusion)
         for(var noCumplido of this.reglaEvaluar.partesConclusion){
           let atomoNoCumplido = new Atomo(noCumplido.desc,false,noCumplido.obj,noCumplido.padecimiento,noCumplido.sintoma);
           this.memoriaDeTrabajo.almacenarAtomo(atomoNoCumplido);
@@ -292,14 +292,14 @@ export class DiagnosticPage implements OnInit {
          this.histServ.addHistoryToLocal(fecha.toString(),details,this.idResultado,JSON.stringify(this.niveles), hash, JSON.stringify(this.doc_recomendacion));
         
     }, error =>{
-        console.log("Error", error.error);
+        //console.log("Error", error.error);
         this.toast.error(error.error, 'Error');
         this.router.navigate(['/landing'])
     })
     }
 
     async showWhy(){
-      console.log(this.reglaEvaluar.partesConclusion[0].desc)
+      //console.log(this.reglaEvaluar.partesConclusion[0].desc)
       this.question={message: "Usted padece de : " + this.reglaEvaluar.partesConclusion[0].desc }
       this.hasResult=true;
       this.idResultado=this.reglaEvaluar.partesConclusion[0].padecimiento;
@@ -310,7 +310,7 @@ export class DiagnosticPage implements OnInit {
          }
       });
       this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo);
-      console.log(this.sintomasExtras);
+      //console.log(this.sintomasExtras);
       this.checkUrgencyLevels();
       this.doc_recomendacion = this.calculusClass.calculateRecommendation(this.memoriaDeTrabajo,this.sintomas);
       let details = "";
@@ -384,7 +384,7 @@ export class DiagnosticPage implements OnInit {
         this.evaluateSypmtom(sintoma.idSint);
       });
       this.avoidUnnecesaryQuestions();
-      console.log(this.memoriaDeTrabajo);
+      //console.log(this.memoriaDeTrabajo);
       if(this.preguntas.length>0){
         this.hasPregunta = true;
         this.fromSelected=true;
@@ -401,7 +401,7 @@ export class DiagnosticPage implements OnInit {
         if(multiOption.length>1){
           multiOption.forEach(option =>{
             let atomo = new Atomo(option.nombre_sint,false,false,null,null);
-            console.log(this.memoriaDeTrabajo.estaAfirmado(atomo));
+            //console.log(this.memoriaDeTrabajo.estaAfirmado(atomo));
             if(this.memoriaDeTrabajo.estaAlmacenado(atomo)===false){
               this.memoriaDeTrabajo.almacenarAtomo(atomo);
             }
@@ -415,7 +415,7 @@ export class DiagnosticPage implements OnInit {
             this.memoriaDeTrabajo.atomosAfirmados.forEach(atomo =>{
               let atomSymp = this.sintomas.find(item => item['nombre_sint'].toString() === atomo.desc);
               if(atomSymp!=null){
-              console.log(atomSymp.nivel_urgencia);
+              //console.log(atomSymp.nivel_urgencia);
               let sympLev = {sintoma: atomSymp.nombre_sint, descripcion: atomSymp.descripcion};
               if(atomSymp.nivel_urgencia>=0 && atomSymp.nivel_urgencia<0.2){
                 this.niveles.Ninguno.push(sympLev);
@@ -546,7 +546,7 @@ export class DiagnosticPage implements OnInit {
           if(answer==="Si"){
             let atomsSize = atomos.length;
             this.atomos_opciones.push( atomos.slice());
-            console.log(this.atomos_opciones);
+            //console.log(this.atomos_opciones);
             let buttonOptions = [];
             for(var i = 0; i<atomsSize; i++){
               let showOption  = "";
@@ -565,7 +565,7 @@ export class DiagnosticPage implements OnInit {
               let button = {message: showOption, value: atomo, desc: sintoma.descripcion};
               buttonOptions.push(button);
             }
-            console.log(buttonOptions);
+            //console.log(buttonOptions);
             let messageShow = questions.MULTIQUESTIONS[text.toLowerCase()];
             this.preguntas.push({message: messageShow[0].message,buttons: buttonOptions, type: 'selection'});
           }else{
@@ -588,7 +588,7 @@ export class DiagnosticPage implements OnInit {
         }
    
        showInfo(label : any){
-        console.log(label);
+        //console.log(label);
         let mensaje = this.nivelesInfo[label].message;
         this.alertServ.infoAlert(mensaje);
       }
@@ -619,7 +619,7 @@ export class DiagnosticPage implements OnInit {
          })
    
          this.evaluateSypmtom(atomId);
-         console.log(this.memoriaDeTrabajo)
+         //console.log(this.memoriaDeTrabajo)
          if(this.preguntas.length>0){
            this.mostrarPregunta();
            }else{
@@ -653,7 +653,7 @@ export class DiagnosticPage implements OnInit {
         let zoneSints = this.sintomasZona.find(zone => zone['zone']==value);
         let selectedZone = this.zoneSelection.find(zone => zone['zone']==value);
       
-        console.log(zoneSints['sintomas']);
+        //console.log(zoneSints['sintomas']);
         options = zoneSints.sintomas;
         selected = selectedZone.sintomas;
          this.presentModal(options, selected, value);
@@ -664,10 +664,10 @@ export class DiagnosticPage implements OnInit {
         for(let zone of this.zoneSelection){
           zones = zones.concat(zone.sintomas);
         }
-        console.log(zones);
+        //console.log(zones);
         this.sintomasSeleccionados = zones;
-         console.log(this.sintomasSeleccionados.length)
+         //console.log(this.sintomasSeleccionados.length)
          this.sintomasShow = this.diagServ.showSymtoms(this.sintomasSeleccionados, this.selectableSymptoms);
-         console.log(this.sintomasShow);
+         //console.log(this.sintomasShow);
        }
 }

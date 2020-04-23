@@ -59,7 +59,7 @@ export class ApiService {
       return from(this.getLocalData('historiales'));
     }else{
     const headers = new HttpHeaders({'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
-    console.log(_urlListado);
+    //console.log(_urlListado);
     return this.http.get(_urlListado + encodeURIComponent(user),
         {
           headers: headers,
@@ -90,7 +90,7 @@ getHistory(id : any){
 }
 
 guardarHistorial(valores : HttpParams){
-  console.log(valores.toString());
+  //console.log(valores.toString());
   if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Offline){
 
     return from(this.offlineManager.storeRequest(saveHistory, 'POST', valores.toString()));
@@ -341,6 +341,6 @@ updateLocalDatabase(){
   this.getDoctors('all').subscribe();
 
   this.obtenerUsuarios().subscribe();
-  console.log('updated');
+  //console.log('updated');
 }
 }

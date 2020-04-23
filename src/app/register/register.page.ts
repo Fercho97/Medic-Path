@@ -63,7 +63,7 @@ export class RegisterPage implements OnInit {
   }
 
   registry() {
-    console.log(this.datos_registro.value.genero)
+    //console.log(this.datos_registro.value.genero)
     this.values = new HttpParams()
     .set('nickname', this.datos_registro.value.nickname)
     .set('email', this.datos_registro.value.email)
@@ -75,11 +75,11 @@ export class RegisterPage implements OnInit {
     .set('tipoUsuario', '1')
     .set('fecha_nacimiento', this.datos_registro.value.fecha_nacimiento);
     this.regServ.checkRegister(this.values).subscribe(res =>{
-      console.log("Ok", res)
+      //console.log("Ok", res)
       this.toast.success('Le hemos enviado un correo para confirmar su cuenta', 'Registro Exitoso!');
     this.router.navigate([''])
   }, error =>{
-      console.log("Error", error.error);
+      //console.log("Error", error.error);
       this.toast.error(error.error, 'Error');
       this.router.navigate([''])
   })
@@ -87,7 +87,7 @@ export class RegisterPage implements OnInit {
 
   radioSelection(event){
     this.sexo = event.detail.value;
-    console.log(this.sexo);
+    //console.log(this.sexo);
   }
 
   equalPasswords(formGroup : FormGroup){

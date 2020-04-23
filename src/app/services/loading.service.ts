@@ -16,7 +16,7 @@ export class LoadingService {
     }).then(load =>{
       load.present().then(() =>{
         if (!this.loading){
-          load.dismiss().then(() => console.log('not present'));
+          load.dismiss().then(() => console.log());
         }
       })
     })
@@ -24,6 +24,6 @@ export class LoadingService {
 
   async dismiss(){
     this.loading = false;
-    return await this.loadingContr.dismiss().then(() => console.log('Exited'));
+    return await this.loadingContr.dismiss().then(() => console.log());
   }
 }
