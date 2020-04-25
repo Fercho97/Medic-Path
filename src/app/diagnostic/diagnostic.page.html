@@ -115,7 +115,7 @@
 </div>
 
 <div  *ngIf="hasResult">
-    <ion-list *ngIf="hasResult"><p>Síntomas pertenecientes a su resultado:</p>
+    <ion-list *ngIf="hasResult && idResultado!=''"><p>Síntomas pertenecientes a su resultado:</p>
         <ion-item *ngFor="let sintoma of sintomasResultado">
             <ion-label>{{sintoma.desc}}</ion-label>
         </ion-item>

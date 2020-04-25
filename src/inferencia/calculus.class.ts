@@ -119,7 +119,8 @@ export class Calculus{
           }
         });
         if(bestStart==undefined){
-        bestStart = Math.floor(Math.random() * baseConocimiento.length) + 1;
+          return null;
+        //bestStart = Math.floor(Math.random() * baseConocimiento.length) + 1;
         }
         return bestStart-1;
       }

@@ -158,8 +158,11 @@ export class DiagnosticPage implements OnInit {
       let indice;
       if(this.nextObjective.length==0){
       indice = this.calculusClass.pathSelection(this.baseConocimiento,this.memoriaDeTrabajo);
-      
+      if(indice==null){
+        this.noResultEnd();
+      }else{
       this.reglaEvaluar = this.baseConocimiento[indice];
+      }
       }else{
         this.reglaEvaluar = this.nextObjective.pop();
         indice = this.searchNextObjectiveCurrentIndex();
@@ -262,11 +265,15 @@ export class DiagnosticPage implements OnInit {
       if(this.baseConocimiento.length!=0 && this.hasResult==false){
       this.inferencia();
       }else if(this.hasResult==false){
-        this.question={message: "Lo sentimos, no se pudo encontrar un padecimiento en concreto conforme sus respuestas"};
+       this.noResultEnd();
+      }
+    }
+
+    noResultEnd(){
+      this.question={message: "Lo sentimos, no se pudo encontrar su padecimiento conforme sus respuestas"};
         this.hasResult=true;
         this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo);
-      
-      }
+        this.doc_recomendacion = this.calculusClass.calculateRecommendation(this.memoriaDeTrabajo,this.sintomas);
     }
 
     guardar(details,detailsIds,user){
