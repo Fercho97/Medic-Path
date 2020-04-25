@@ -15,7 +15,7 @@
       <ion-card>
           <ion-item>
               <p>Bienvenido a la herramienta de diagnóstico. 
-                 Para comenzar simplemente seleccione un paciente</p>
+                 Para comenzar simplemente seleccione un paciente y a continuación los síntomas que presenta</p>
           </ion-item>
           <ion-item>
               <ion-label>Paciente a diagnosticar</ion-label>
@@ -27,8 +27,8 @@
               </ion-select>
           </ion-item>
           <ion-card-content>
-            <ion-button color="medium" *ngIf="selectedUser" (click)="iniciarDiagnostico()"  expand="block" slot="end">Iniciar diagnóstico desde 0</ion-button>
-            <ion-label *ngIf="selectedUser">o bien seleccione el área en donde el paciente tenga la mayor cantidad de síntomas y selecciónelos</ion-label>
+            <!---<ion-button color="medium" *ngIf="selectedUser" (click)="iniciarDiagnostico()"  expand="block" slot="end">Iniciar diagnóstico desde 0</ion-button>--->
+            <ion-label *ngIf="selectedUser">Seleccione el área en donde el paciente tenga la mayor cantidad de molestia y seleccione los síntomas que detecte</ion-label>
             <ion-button color="success" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnóstico con síntomas iniciales</ion-button>
           </ion-card-content>
           <div *ngIf="sintomasShow.length>0">

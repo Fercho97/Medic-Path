@@ -262,7 +262,7 @@ export class DiagnosticPage implements OnInit {
       if(this.baseConocimiento.length!=0 && this.hasResult==false){
       this.inferencia();
       }else if(this.hasResult==false){
-        this.question={message: "Lo sentimos, no se pudo encontrar su padecimiento conforme sus respuestas"};
+        this.question={message: "Lo sentimos, no se pudo encontrar un padecimiento en concreto conforme sus respuestas"};
         this.hasResult=true;
         this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo);
       

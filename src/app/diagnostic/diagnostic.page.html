@@ -15,11 +15,9 @@
       <ion-card>
           <ion-item>
               <p>Bienvenido a la herramienta de diagnóstico. 
-                 Para comenzar simplemente haga click en comenzar para iniciar un diagnóstico desde 0
-                  o bien seleccione el área en donde tenga la mayor cantidad de molestias y seleccione síntomas</p>
+                 Para comenzar es necesario que seleccione el área en donde tenga la mayor cantidad de molestias y seleccione al menos un síntoma</p>
           </ion-item>
-          <ion-card-content>
-              <ion-button size="medium" color="success" expand="block" slot="end" (click)="iniciarDiagnostico()">Comenzar</ion-button>              
+          <ion-card-content>             
               <ion-button color="success" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnostico con sintomas iniciales</ion-button>
         </ion-card-content>
         <div *ngIf="sintomasShow.length>0">
