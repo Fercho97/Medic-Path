@@ -43,6 +43,13 @@ const urlLogout = apiUrl + 'usuarios/logout';
 const urlEspecialista = apiUrl + 'historial/selectedEspecializacion/';
 
 const withFeedback = apiUrl + 'historial/withFeedBack/returnFeedback';
+
+const signupUrl = apiUrl +'usuarios/create';
+
+const checkUserName = apiUrl + 'usuarios/checkUsername/';
+
+const checkEmail = apiUrl + 'usuarios/checkEmail/';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -324,6 +331,35 @@ withFeedback(){
       observe : 'response'
     },
 )
+}
+
+checkRegister(valores : HttpParams){
+  return this.http.post(signupUrl,
+      valores.toString(),
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded'),
+        observe : 'response'
+      },
+    )
+}
+
+checkNickname(nickname : any){
+  return this.http.get(checkUserName + nickname,
+  {
+      headers: new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded'),
+    observe : 'response'
+  })
+}
+
+checkEmail(email : any){
+  return this.http.get(checkEmail + email,
+  {
+      headers: new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded'),
+    observe : 'response'
+  })
 }
 
 private setLocalData(key, data){

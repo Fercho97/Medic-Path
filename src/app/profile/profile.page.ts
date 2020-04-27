@@ -100,6 +100,7 @@ export class ProfilePage{
       error =>{
         //console.log(error.message);
           this.toast.error(error.error.message,'Error');
+          this.formData = new FormData();
       })
     
   }
@@ -113,6 +114,7 @@ export class ProfilePage{
   error =>{
     //console.log(error.message);
       this.toast.error(error.error.message,'Error');
+      this.formData = new FormData();
   })
 
 }

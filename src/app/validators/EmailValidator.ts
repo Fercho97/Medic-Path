@@ -3,8 +3,7 @@ import { AbstractControl, AsyncValidatorFn } from "@angular/forms";
 import{ Observable, of } from "rxjs";
 import { map, debounceTime, take, switchMap} from "rxjs/operators";
 
-import { RegisterService } from '../register/register.service';
-
+import { ApiService} from '../services/api.service';
 function isEmptyInputValue(value: any): boolean {
     return value === null || value.length === 0;
 }
@@ -13,7 +12,7 @@ function isEmptyInputValue(value: any): boolean {
     providedIn: "root"
 })
 export class EmailValidator {
-    constructor(private regisServ: RegisterService){}
+    constructor(private apiServ: ApiService){}
 
     existingEmail(initialValue: string = "") : AsyncValidatorFn{
         return (control: AbstractControl): | Promise<{ [key: string]: any} | null>
@@ -26,7 +25,7 @@ export class EmailValidator {
                                                    return control.valueChanges.pipe(
                                                        debounceTime(500),
                                                        take(1),
-                                                       switchMap(_ => this.regisServ
+                                                       switchMap(_ => this.apiServ
                                                         .checkEmail(control.value)
                                                         .pipe(map((json:any) =>  json.body.message=="Libre" ? null : {emailTaken: true}))
                                                     )

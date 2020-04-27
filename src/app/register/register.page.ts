@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { RegisterService } from './register.service';
 import {Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorMsg } from '../utils/error_msg.const';
 import { NicknameValidator } from "../validators/NicknameValidator";
 import { EmailValidator } from "../validators/EmailValidator";
 import { DateValidator } from "../validators/DateValidator";
+import { ApiService } from '../services/api.service';
+import { LoadingService } from "../services/loading.service";
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -23,9 +23,9 @@ export class RegisterPage implements OnInit {
   sexo : string = "";
   private values : HttpParams;
   public samePass : boolean = true;
-  constructor(private regServ : RegisterService, private toast : ToastrService,
-              private router : Router, private nickVal : NicknameValidator,
-              private emailVal : EmailValidator) {
+  constructor(private toast : ToastrService, private router : Router, 
+              private nickVal : NicknameValidator, private loadServ : LoadingService, 
+              private emailVal : EmailValidator, private apiServ : ApiService) {
 
     this.datos_registro = new FormGroup({
       nombres : new FormControl('', [
@@ -74,11 +74,14 @@ export class RegisterPage implements OnInit {
     .set('passwordVerif', this.datos_registro.value.password_validations.passwordVerif)
     .set('tipoUsuario', '1')
     .set('fecha_nacimiento', this.datos_registro.value.fecha_nacimiento);
-    this.regServ.checkRegister(this.values).subscribe(res =>{
+    this.loadServ.present();
+    this.apiServ.checkRegister(this.values).subscribe(res =>{
+      this.loadServ.dismiss();
       //console.log("Ok", res)
       this.toast.success('Le hemos enviado un correo para confirmar su cuenta', 'Registro Exitoso!');
     this.router.navigate([''])
   }, error =>{
+    this.loadServ.dismiss();
       //console.log("Error", error.error);
       this.toast.error(error.error, 'Error');
       this.router.navigate([''])
