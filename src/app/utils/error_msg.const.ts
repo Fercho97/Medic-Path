@@ -4,17 +4,20 @@ export class ErrorMsg{
           {type: 'required', message: 'El campo de nickname es requerido'},
           {type: 'minlength', message: 'El nickname debe ser mayor a 3 caracteres'},
           {type: 'maxlength', message: 'El nickname debe ser menor a 20 caracteres'},
-          {type: 'userTaken', message: 'Usuario en uso, intente con otro'}
+          {type: 'userTaken', message: 'Usuario en uso, intente con otro'},
+          {type: 'pattern', message: 'El nombre de usuario solo puede contener letras y números, evitando caracteres especiales o puros espacios'}
         ],
         'nombres' : [
           {type: 'required', message: 'El nombre no se puede quedar vacio'},
           {type: 'minlength', message: 'La longitud debe ser mayor a 3 caracteres'},
-          {type: 'maxlength', message: 'La longitud debe ser menor a 50 caracteres'}
+          {type: 'maxlength', message: 'La longitud debe ser menor a 50 caracteres'},
+          {type: 'pattern', message: 'El nombre debe contener letras, evitando números, caracteres especiales o bien puros espacios'}
         ],
         'apellidos' : [
           {type: 'required', message: 'Los apellidos no pueden quedar vacios'},
           {type: 'minlength', message: 'La longitud debe ser mayor a 3 caracteres'},
-          {type: 'maxlength', message: 'La longitud debe ser menor a 50 caracteres'}
+          {type: 'maxlength', message: 'La longitud debe ser menor a 50 caracteres'},
+          {type: 'pattern', message: 'El apellido debe contener letras, evitando números, caracteres especiales o bien puros espacios'}
         ],
         'email' : [
           {type: 'required', message: 'Es necesario ingresar un correo'},
