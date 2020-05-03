@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-button routerLink="/landing" replaceUrl="true"><ion-icon name="arrow-back"></ion-icon>Menú Principal</ion-button>
+      <ion-button routerLink="/landing" replaceUrl="true" class="back"><ion-icon name="arrow-back"></ion-icon>Menú Principal</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
@@ -134,7 +134,8 @@
             <ion-item color="medium">Síntomas destacados  <ion-icon name="help-circle" slot="end" (click)="showInfo('medio')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Medio">
-                    <ion-label>{{niv.sintoma}}</ion-label>
+                    <ion-label *ngIf="niv.reason==''" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
+                    <ion-label *ngIf="niv.reason!=''" class="ion-text-wrap">{{niv.sintoma}} - {{niv.reason}}</ion-label>
                 </ion-item>
             </ion-list>
           </div>
@@ -142,7 +143,8 @@
             <ion-item color="medium">Síntomas sin urgencia  <ion-icon name="help-circle" slot="end" (click)="showInfo('ninguno')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Ninguno">
-                    <ion-label>{{niv.sintoma}}</ion-label>
+                    <ion-label *ngIf="niv.reason==''" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
+                    <ion-label *ngIf="niv.reason!=''" class="ion-text-wrap">{{niv.sintoma}} - {{niv.reason}}</ion-label>
                 </ion-item>
             </ion-list>
           </div>
@@ -150,7 +152,8 @@
             <ion-item color="medium">Síntomas de baja urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('bajo')"></ion-icon></ion-item>
             <ion-list inset=true>
                     <ion-item *ngFor="let niv of niveles.Bajo">
-                        <ion-label>{{niv.sintoma}}</ion-label>
+                     <ion-label *ngIf="niv.reason==''" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
+                     <ion-label *ngIf="niv.reason!=''" class="ion-text-wrap">{{niv.sintoma}} - {{niv.reason}}</ion-label>
                     </ion-item>
             </ion-list>
           </div>
@@ -158,7 +161,8 @@
             <ion-item color="medium">Síntomas de alta urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('alto')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Alto">
-                    <ion-label>{{niv.sintoma}}</ion-label>
+                    <ion-label *ngIf="niv.reason==''" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
+                    <ion-label *ngIf="niv.reason!=''" class="ion-text-wrap">{{niv.sintoma}} - {{niv.reason}}</ion-label>
                 </ion-item>
             </ion-list>
           </div>
@@ -166,7 +170,8 @@
             <ion-item color="medium">Síntomas de severidad <ion-icon name="help-circle" slot="end" (click)="showInfo('severo')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Severo">
-                    <ion-label>{{niv.sintoma}}</ion-label>
+                    <ion-label *ngIf="niv.reason==''" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
+                    <ion-label *ngIf="niv.reason!=''" class="ion-text-wrap">{{niv.sintoma}} - {{niv.reason}}</ion-label>
                 </ion-item>
             </ion-list>
           </div>

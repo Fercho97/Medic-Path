@@ -7,3 +7,27 @@ ion-title{
     text-align: center;
     transform: translateX(-50%);
    }
+
+ion-button{
+    font-size: 10px;
+}
+
+@media(max-width: 420px){
+    .back{
+        font-size: 10px;
+    }
+
+    ion-title{
+        font-size: 10px
+    }
+}
+
+@media(max-width: 350px){
+    .back{
+        font-size: 9px;
+    }
+
+    ion-title{
+        font-size: 9px
+    }
+}

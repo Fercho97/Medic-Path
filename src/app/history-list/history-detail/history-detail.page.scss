@@ -13,3 +13,9 @@ ion-title{
     text-align: center;
     transform: translateX(-50%);
    }
+
+   @media(max-width: 590px){
+    ion-title{
+        font-size: 10px
+    }
+}
