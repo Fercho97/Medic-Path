@@ -170,7 +170,7 @@
           </div>
     </div>
   <ul *ngIf="sintomasExtras.length>0">
-    <h2>Sin embargo presento síntomas que pueden concordar con las siguientes enfermedades: </h2>
+    <h2>Sin embargo conforme los síntomas que indico notamos que concuerdan con las siguientes enfermedades con un porcentaje: </h2>
     <li *ngFor="let sints of sintomasExtras">
       {{sints.padecimiento + " " + sints.porcentaje}} 
       <p><ion-progress-bar color="primary" value="{{sints.showPorcentaje}}"></ion-progress-bar></p>
@@ -188,7 +188,7 @@
         </ion-item>
     </ion-list>
     </div>
-    <div *ngIf="doc_recomendacion.length>0">
+    <div *ngIf="doc_recomendacion.length>1">
         <ion-item color="primary">o bien con un:</ion-item>
         <ion-item>
             <ion-label color="primary">

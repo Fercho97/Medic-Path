@@ -51,7 +51,7 @@ export class Calculus{
          }
        }
        });
-  
+        sintomasExtras.sort(this.comparePorcentage);
         return sintomasExtras;
       }
 
@@ -169,6 +169,16 @@ export class Calculus{
             return -1;
         }
         return 0;
+    }
+
+    comparePorcentage(a,b){
+      if(a.porcentaje < b.porcentaje){
+        return 1;
+      }
+      if(a.porcentaje > b.porcentaje){
+        return -1;
+      }
+      return 0;
     }
 
     userFeedbackRecommendation(historiales, sintomasUsuario,usuarioActual,resultado){

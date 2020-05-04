@@ -270,10 +270,22 @@ export class DiagnosticPage implements OnInit {
     }
 
     noResultEnd(){
-      this.question={message: "Lo sentimos, no se pudo encontrar su padecimiento conforme sus respuestas"};
-        this.hasResult=true;
+      this.hasResult=true;
+        this.checkUrgencyLevels();
         this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo);
-        this.doc_recomendacion = this.calculusClass.calculateRecommendation(this.memoriaDeTrabajo,this.sintomas);
+        if(this.sintomasExtras.length==0){
+          if(this.memoriaDeTrabajo.atomosAfirmados.length<=3){
+            this.question={message: "Conforme la cantidad de síntomas que presenta no es posible llegar a una enfermedad en especifico, sin embargo es necesario que acuda con un médico si los sigue presentando o bien si estos empeoran"}
+          }else{
+          this.question={message: "Debido a sus síntomas no fue posible el encontrar un padecimiento en especifico"};
+          }
+        }else{
+          this.question={message: "Lo sentimos, no se ha podido encontrar un padecimiento en especifico conforme sus síntomas"};
+        }
+
+        if(this.memoriaDeTrabajo.atomosAfirmados.length!=0){
+          this.doc_recomendacion = this.calculusClass.calculateRecommendation(this.memoriaDeTrabajo,this.sintomas);
+        }
     }
 
     guardar(details,detailsIds,user){

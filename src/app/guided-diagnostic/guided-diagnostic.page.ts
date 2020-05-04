@@ -266,8 +266,14 @@ export class GuidedDiagnosticPage implements OnInit {
     }
 
     noResultEnd(){
-      this.question={message: "Lo sentimos, no se pudo encontrar su padecimiento conforme sus respuestas"};
-        this.hasResult=true;
+      this.hasResult=true;
+        this.checkUrgencyLevels();
+          if(this.memoriaDeTrabajo.atomosAfirmados.length<=3){
+            this.question={message: "Conforme la cantidad de síntomas que presenta no es posible llegar a una enfermedad en especifico, sin embargo es necesario que acuda con un médico si los sigue presentando o bien si estos empeoran"}
+          }else{
+          this.question={message: "Debido a sus síntomas no fue posible el encontrar un padecimiento en especifico"};
+          }
+        
     }
 
     showWhy(){
