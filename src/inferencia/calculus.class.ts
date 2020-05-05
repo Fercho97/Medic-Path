@@ -4,7 +4,7 @@ import {Catalogos} from '../app/utils/catalogos.const';
 import * as moment from 'moment-timezone';
 export class Calculus{
 
-     calculateCloseness(conocimientoEvaluado,baseConocimiento,memoriaDeTrabajo){
+     calculateCloseness(conocimientoEvaluado,baseConocimiento,memoriaDeTrabajo, minimumPorcentage){
         let atomsInRule;
         let commonAtoms;
         let bestPorcentage = 0;
@@ -23,7 +23,7 @@ export class Calculus{
            }
          });
          percentage = commonAtoms * 100 / atomsInRule;
-         if(percentage > 70 && percentage != 100){
+         if(percentage > minimumPorcentage && percentage != 100){
            let showPercentage = percentage*0.01;
            let closeness = {padecimiento: element[0].partesConclusion[0].desc, porcentaje: Math.floor(percentage), showPorcentaje: showPercentage.toFixed(1)};
            sintomasExtras.push(closeness);
@@ -43,7 +43,7 @@ export class Calculus{
            }
          });
          percentage = commonAtoms * 100 / atomsInRule;
-         if(percentage > 70 && percentage != 100){
+         if(percentage > minimumPorcentage && percentage != 100){
            let showPercentage = percentage*0.01;
            let closeness = {padecimiento: element.partesConclusion[0].desc, porcentaje: Math.floor(percentage), showPorcentaje: showPercentage.toFixed(1)};
           //console.log(closeness);

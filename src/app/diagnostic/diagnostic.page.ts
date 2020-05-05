@@ -272,7 +272,7 @@ export class DiagnosticPage implements OnInit {
     noResultEnd(){
       this.hasResult=true;
         this.checkUrgencyLevels();
-        this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo);
+        this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo,40);
         if(this.sintomasExtras.length==0){
           if(this.memoriaDeTrabajo.atomosAfirmados.length<=3){
             this.question={message: "Conforme la cantidad de síntomas que presenta no es posible llegar a una enfermedad en especifico, sin embargo es necesario que acuda con un médico si los sigue presentando o bien si estos empeoran"}
@@ -328,7 +328,7 @@ export class DiagnosticPage implements OnInit {
           this.sintomasResultado.push(this.memoriaDeTrabajo.estaAfirmado(element));
          }
       });
-      this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo);
+      this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo,70);
       //console.log(this.sintomasExtras);
       this.checkUrgencyLevels();
       this.doc_recomendacion = this.calculusClass.calculateRecommendation(this.memoriaDeTrabajo,this.sintomas);
