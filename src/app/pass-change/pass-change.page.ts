@@ -7,7 +7,8 @@ import {Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorMsg } from '../utils/error_msg.const';
 import { LoginService } from '../login/login.service';
-
+import { LoadingService } from "../services/loading.service";
+import { NetworkService, ConnectionStatus } from '../services/network.service';
 @Component({
   selector: 'app-pass-change',
   templateUrl: './pass-change.page.html',
@@ -23,7 +24,7 @@ export class PassChangePage {
   
   constructor(private passServ : PassChangeService, private logServ : LoginService, 
               private http : HttpClient, private router : Router, private toast : ToastrService,
-              private storage : Storage) {
+              private storage : Storage, private loadServ : LoadingService,private networkServ : NetworkService) {
     this.reset = new FormGroup({
       
               password_validations : new FormGroup({
@@ -40,6 +41,7 @@ export class PassChangePage {
    }
 
   changePassword(){
+      this.loadServ.present();
       this.hash = localStorage.getItem('hash');
       
         this.values = new HttpParams()
@@ -48,10 +50,16 @@ export class PassChangePage {
         this.passServ.changePassword(this.hash,this.values).subscribe( (res : any) =>{
         this.toast.success('Se ha modificado su contraseña con éxito es necesario que vuelva a iniciar sesión ', 'Éxito!');
         this.reset.reset();
+        this.loadServ.dismiss();
         this.logout();
       }, error =>{
           //console.log("Error", error.error.message);
+          this.loadServ.dismiss();
+          if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Online){
           this.toast.error(error.error.message, 'Error');
+          }else{
+            this.toast.error('No ha sido posible el cambiar su contraseña','Error');
+          }
       })
     
   }
