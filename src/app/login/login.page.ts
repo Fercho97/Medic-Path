@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { ApiService } from '../services/api.service';
 import { CurrentUserService } from '../services/current-user.service';
 import { LoadingService } from "../services/loading.service";
+import { NetworkService, ConnectionStatus } from '../services/network.service';
 @Component({
   selector: 'app-login',
   templateUrl: 'login.page.html',
@@ -15,7 +16,8 @@ import { LoadingService } from "../services/loading.service";
 export class LoginPage {
   private values : HttpParams;
   constructor(private api: ApiService,private toast : ToastrService, private router : Router, 
-              private storage : Storage, private session : CurrentUserService, private loadServ : LoadingService) {}
+              private storage : Storage, private session : CurrentUserService, private loadServ : LoadingService,
+              private networkServ : NetworkService) {}
 
  ionViewWillEnter(){
   this.storage.get('newKey-currentUser').then(user =>{
@@ -27,6 +29,7 @@ export class LoginPage {
 
   login(form){
     this.loadServ.present();
+    if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Online){
     this.values = new HttpParams()
     .set('nickOrEmail', form.value.email)
     .set('password', form.value.password)
@@ -52,5 +55,9 @@ export class LoginPage {
       //console.log("Error", error.error.message);
       this.toast.error(error.error.message, 'Error');
   })
+  }else{
+    this.loadServ.dismiss();
+    this.toast.error('En necesario tener conexión a intenet para iniciar sesión','Error');
+  }
   }
 }
