@@ -7,7 +7,8 @@ import { ErrorMsg } from '../utils/error_msg.const';
 import { NicknameValidator } from "../validators/NicknameValidator";
 import { CurrentUserService } from "../services/current-user.service";
 import { ApiService } from "../services/api.service";
-
+import { LoadingService } from "../services/loading.service";
+import { NetworkService, ConnectionStatus } from '../services/network.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -31,7 +32,8 @@ export class ProfilePage{
   public originalValue : string = "";
   constructor(private profileServ : ProfileService, private toast : ToastrService, 
               private nickVal : NicknameValidator, private sessionServ : CurrentUserService,
-              private api : ApiService) {
+              private api : ApiService, private loadServ : LoadingService,
+              private networkServ : NetworkService) {
 
     this.datos_perfil = new FormGroup({
       nombres : new FormControl('', [
@@ -70,6 +72,7 @@ export class ProfilePage{
       this.datos_perfil.controls['apellidos'].setValue(this.usuario.apellidos, {onlySelf : true});
     },
   error =>{
+    this.toast.error('Hubo un error al conseguir la información de su perfil, favor de intentarlo de nuevo', 'Error')
       //console.log(error);
   })
   }
@@ -91,6 +94,7 @@ export class ProfilePage{
 
   actualizarDatos(){
     //console.log(this.datos_perfil.value);
+    this.loadServ.present();
     this.formData.append('nickname', this.datos_perfil.value.nickname);
     this.formData.append('nombres', this.datos_perfil.value.nombres);
     this.formData.append('apellidos', this.datos_perfil.value.apellidos);
@@ -99,27 +103,35 @@ export class ProfilePage{
           window.localStorage.setItem('username',this.datos_perfil.value.nickname);
           this.toast.success('Datos Modificados con éxito', 'Modificación Exitosa!');
           this.formData = new FormData();
+          this.loadServ.dismiss();
         },
       error =>{
         //console.log(error.message);
+        if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Online){
           this.toast.error(error.error.message,'Error');
+        }else{
+          this.toast.error('Hubo un error al actualizar su información','Error');
+        }
           this.formData = new FormData();
+          this.loadServ.dismiss();
       })
     
   }
 
   guardarImg(){
-    this.profileServ.updateProfilePic(this.hash, this.formDataImg).subscribe( (res: any) =>{
-      this.formDataImg = new FormData();
-      window.location.reload();
-      this.toast.success('Imagen cambiada con éxito!', 'Modificación Exitosa!');
-    },
-  error =>{
-    //console.log(error.message);
-      this.toast.error(error.error.message,'Error');
-      this.formData = new FormData();
-  })
-
+        this.loadServ.present();
+        this.profileServ.updateProfilePic(this.hash, this.formDataImg).subscribe( (res: any) =>{
+          this.formDataImg = new FormData();
+          this.loadServ.dismiss();
+          window.location.reload();
+          this.toast.success('Imagen cambiada con éxito!', 'Modificación Exitosa!');
+        },
+      error =>{
+        //console.log(error.message);
+        this.loadServ.dismiss();
+          this.toast.error('Hubo un error al cambiar su imagen, favor de reintentarlo','Error');
+          this.formData = new FormData();
+      })
 }
 
   check(){
