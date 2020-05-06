@@ -10,6 +10,7 @@ import { EmailValidator } from "../validators/EmailValidator";
 import { DateValidator } from "../validators/DateValidator";
 import { ApiService } from '../services/api.service';
 import { LoadingService } from "../services/loading.service";
+import { NetworkService, ConnectionStatus } from '../services/network.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -25,7 +26,8 @@ export class RegisterPage implements OnInit {
   public samePass : boolean = true;
   constructor(private toast : ToastrService, private router : Router, 
               private nickVal : NicknameValidator, private loadServ : LoadingService, 
-              private emailVal : EmailValidator, private apiServ : ApiService) {
+              private emailVal : EmailValidator, private apiServ : ApiService,
+              private networkServ : NetworkService) {
 
     this.datos_registro = new FormGroup({
       nombres : new FormControl('', [
@@ -66,6 +68,8 @@ export class RegisterPage implements OnInit {
   }
 
   registry() {
+    this.loadServ.present();
+    if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Online){
     //console.log(this.datos_registro.value.genero)
     this.values = new HttpParams()
     .set('nickname', this.datos_registro.value.nickname)
@@ -77,7 +81,7 @@ export class RegisterPage implements OnInit {
     .set('passwordVerif', this.datos_registro.value.password_validations.passwordVerif)
     .set('tipoUsuario', '1')
     .set('fecha_nacimiento', this.datos_registro.value.fecha_nacimiento);
-    this.loadServ.present();
+    
     this.apiServ.checkRegister(this.values).subscribe(res =>{
       this.loadServ.dismiss();
       //console.log("Ok", res)
@@ -87,8 +91,11 @@ export class RegisterPage implements OnInit {
     this.loadServ.dismiss();
       //console.log("Error", error.error);
       this.toast.error(error.error, 'Error');
-      this.router.navigate([''])
   })
+  }else{
+    this.loadServ.dismiss();
+    this.toast.error('No se encuentra conexión para completar el registro', 'Error');
+  }
   }
 
   radioSelection(event){
