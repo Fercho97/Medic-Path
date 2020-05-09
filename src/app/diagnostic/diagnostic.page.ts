@@ -269,26 +269,47 @@ export class DiagnosticPage implements OnInit {
       }
     }
 
-    noResultEnd(){
+    async noResultEnd(){
       this.hasResult=true;
-        this.checkUrgencyLevels();
-        this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo,40);
-        if(this.sintomasExtras.length==0){
-          if(this.memoriaDeTrabajo.atomosAfirmados.length<=3){
-            this.question={message: "Conforme la cantidad de síntomas que presenta no es posible llegar a una enfermedad en especifico, sin embargo es necesario que acuda con un médico si los sigue presentando o bien si estos empeoran"}
-          }else{
-          this.question={message: "Debido a sus síntomas no fue posible el encontrar un padecimiento en especifico"};
-          }
+      this.checkUrgencyLevels();
+      if(this.memoriaDeTrabajo.atomosAfirmados.length!=0){
+        this.doc_recomendacion = this.calculusClass.calculateRecommendation(this.memoriaDeTrabajo,this.sintomas);
+      }
+      this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo, 40);
+      if(this.sintomasExtras.length==0){
+        if(this.memoriaDeTrabajo.atomosAfirmados.length<=3){
+          this.question={message: "Conforme la cantidad de síntomas que presenta no es posible llegar a una enfermedad en especifico, sin embargo es necesario que acuda con un médico si los sigue presentando o bien si estos empeoran"}
+        }else{
+        this.question={message: "Debido a sus síntomas no fue posible el encontrar un padecimiento en especifico"};
+        }
+      }else{
+        if(this.sintomasExtras[0].porcentaje>=75){
+          this.question={message: "No se encontro un resultado en especifico, sin embargo por similitud de síntomas, encontramos que usted presenta un porcentaje elevado de tener " + this.sintomasExtras[0].padecimiento + " por lo tanto se guarda para observación"}
+          this.idResultado=this.sintomasExtras[0].id;
+          let comment = "Se guardo para observación ya que presento una similitud de sintomatología del " + this.sintomasExtras[0].porcentaje + " porciento con el resultado mostrado";
+          let details = "";
+          let detailsIds = "";
+          this.memoriaDeTrabajo.atomosAfirmados.forEach(atomo =>{
+            if(atomo.obj==false){
+              details = details + atomo.desc +  ",";
+              if(atomo.sintoma!=null){
+              detailsIds = detailsIds + atomo.sintoma + ",";
+                }else{
+                  let found = this.sintomas.find(item => item['nombre_sint'] == atomo.desc);
+                  detailsIds = detailsIds + found.idSint + ",";
+                }
+            }
+          });
+          var user = await this.session.obtainSessionId();
+          this.guardar(details,detailsIds,user,comment);
+          this.user_recommendation = this.calculusClass.userFeedbackRecommendation(this.compare_historiales,detailsIds,user,this.idResultado);
         }else{
           this.question={message: "Lo sentimos, no se ha podido encontrar un padecimiento en especifico conforme sus síntomas"};
         }
+      }
+  }
 
-        if(this.memoriaDeTrabajo.atomosAfirmados.length!=0){
-          this.doc_recomendacion = this.calculusClass.calculateRecommendation(this.memoriaDeTrabajo,this.sintomas);
-        }
-    }
-
-    guardar(details,detailsIds,user){
+    guardar(details,detailsIds,user,comentario){
 
       var fecha = moment().tz('America/Mexico_City').format();
       
@@ -302,13 +323,14 @@ export class DiagnosticPage implements OnInit {
       .set('detalles_especificos', JSON.stringify(this.niveles))
       .set('recomendations', JSON.stringify(this.doc_recomendacion))
       .set('hash', hash)
-      .set('detallesIds',detailsIds);
+      .set('detallesIds',detailsIds)
+      .set('comentario',comentario);
       this.api.guardarHistorial(values).subscribe(res =>{
         if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
         this.toast.success('Se ha guardado con éxito en su historial', 'Guardado Exitoso!');
         
         }
-         this.histServ.addHistoryToLocal(fecha.toString(),details,this.idResultado,JSON.stringify(this.niveles), hash, JSON.stringify(this.doc_recomendacion));
+         this.histServ.addHistoryToLocal(fecha.toString(),details,this.idResultado,JSON.stringify(this.niveles), hash, JSON.stringify(this.doc_recomendacion),comentario);
         
     }, error =>{
         //console.log("Error", error.error);
@@ -346,7 +368,7 @@ export class DiagnosticPage implements OnInit {
         }
       });
       var user = await this.session.obtainSessionId();
-        this.guardar(details,detailsIds,user);
+        this.guardar(details,detailsIds,user,'');
         if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
         this.user_recommendation = this.calculusClass.userFeedbackRecommendation(this.compare_historiales,detailsIds,user,this.idResultado);
         }

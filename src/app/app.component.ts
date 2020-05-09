@@ -70,6 +70,9 @@ export class AppComponent {
           this.api.logout(window.localStorage.getItem('token')).subscribe( (res: any) =>{
             window.localStorage.clear();
             this.storage.remove("newKey-currentUser");
+            this.storage.remove("newKey-patients");
+            this.storage.remove("newKey-updates");
+            this.storage.remove("newKey-historiales");
             this.router.navigate([''])
           },
         error =>{

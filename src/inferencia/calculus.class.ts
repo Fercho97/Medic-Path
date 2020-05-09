@@ -25,7 +25,7 @@ export class Calculus{
          percentage = commonAtoms * 100 / atomsInRule;
          if(percentage > minimumPorcentage && percentage != 100){
            let showPercentage = percentage*0.01;
-           let closeness = {padecimiento: element[0].partesConclusion[0].desc, porcentaje: Math.floor(percentage), showPorcentaje: showPercentage.toFixed(1)};
+           let closeness = {padecimiento: element[0].partesConclusion[0].desc, id: element[0].partesConclusion[0].padecimiento, porcentaje: Math.floor(percentage), showPorcentaje: showPercentage.toFixed(1)};
            sintomasExtras.push(closeness);
          }
        }
@@ -45,7 +45,7 @@ export class Calculus{
          percentage = commonAtoms * 100 / atomsInRule;
          if(percentage > minimumPorcentage && percentage != 100){
            let showPercentage = percentage*0.01;
-           let closeness = {padecimiento: element.partesConclusion[0].desc, porcentaje: Math.floor(percentage), showPorcentaje: showPercentage.toFixed(1)};
+           let closeness = {padecimiento: element.partesConclusion[0].desc,  id: element[0].partesConclusion[0].padecimiento, porcentaje: Math.floor(percentage), showPorcentaje: showPercentage.toFixed(1)};
           //console.log(closeness);
            sintomasExtras.push(closeness);
          }

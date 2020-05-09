@@ -18,6 +18,7 @@ interface History {
   detalles_especificos: string,
   recomendaciones_especialista: string,
   especialista_seleccionado: string,
+  comentario: string
 }
 
 @Injectable({
@@ -27,7 +28,7 @@ export class HistoryOfflineManagerService {
 
   constructor(private storage: Storage) { }
 
-  addHistoryToLocal(fecha,descripcion,padecimiento,detalles,hash,recomendacion){
+  addHistoryToLocal(fecha,descripcion,padecimiento,detalles,hash,recomendacion,comentario){
     let result;
     this.storage.get(STORAGE_PAD_KEY).then(padecimientos =>{
       //console.log(padecimientos);
@@ -44,7 +45,8 @@ export class HistoryOfflineManagerService {
                   nombre_esp: element.nombre_esp,
                   detalles_especificos: detalles,
                   recomendaciones_especialista: recomendacion,
-                  especialista_seleccionado: null
+                  especialista_seleccionado: null,
+                  comentario: comentario
               };
             
               return this.storage.get(STORAGE_REQ_KEY).then(storesOperations =>{
