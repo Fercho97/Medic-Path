@@ -30,8 +30,8 @@ export class OfflineRequestsManager{
                 return this.sendRequest(storeObj).pipe(
                     finalize(() =>{
                         let toasty = this.toast.create({
-                            message: 'Se ha sincronizado la información con éxito',
-                            duration: 3000,
+                            message: 'Se ha sincronizado la información con el servidor con éxito',
+                            duration: 4000,
                             position: 'bottom'
                         });
                         toasty.then(toast => toast.present());
@@ -49,8 +49,8 @@ export class OfflineRequestsManager{
 
     storeRequest(url,type,data){
         let toasty = this.toast.create({
-            message: 'Tu información ha sido almacenada de forma local',
-            duration: 3000,
+            message: 'La información ha sido almacenada de forma local, se sincronizara en cuanto exista conexión a internet',
+            duration: 8000,
             position: 'bottom'
         });
         toasty.then(toast => toast.present());
