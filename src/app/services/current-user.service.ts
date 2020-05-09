@@ -71,6 +71,12 @@ export class CurrentUserService {
     })
   }
 
+  obtainSessionNames(){
+    return this.storage.get(STORAGE_USR_KEY).then(session =>{
+      return session.nombres;
+    })
+  }
+
   obtainSessionUserType(){
     return this.storage.get(STORAGE_USR_KEY).then(session =>{
       return session.tipo;

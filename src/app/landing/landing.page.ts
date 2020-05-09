@@ -25,7 +25,7 @@ export class LandingPage {
 
   async ionViewWillEnter(){
     this.isDoctor = false;
-    this.username= await this.session.obtainSessionUsername();
+    this.username= await this.session.obtainSessionNames();
     
     
     let userType = await this.session.obtainSessionUserType();
