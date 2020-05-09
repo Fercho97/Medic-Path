@@ -133,7 +133,9 @@ export class Calculus{
             if(sintoma!=undefined){
               if(sintoma.porcentages!=null){
               let porcentage = JSON.parse(sintoma.porcentages);
-              
+              if(porcentage.length==1){
+                porcentage[0].porcentaje = 70;
+              }
               porcentage.forEach(element => {
                 let category = resultados.find(res => res['espe'] == element.nombre_esp);
                 //console.log(category);
