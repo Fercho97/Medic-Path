@@ -93,6 +93,9 @@ export class PassChangePage {
     this.logServ.logout(window.localStorage.getItem('token')).subscribe( (res: any) =>{
       window.localStorage.clear();
       this.storage.remove("newKey-currentUser");
+      this.storage.remove("newKey-patients");
+      this.storage.remove("newKey-updates");
+      this.storage.remove("newKey-historiales");
       this.router.navigate([''])
     }, error =>{
       //console.log("Error", error.error.message);
