@@ -36,18 +36,6 @@ export class ProfilePage{
               private networkServ : NetworkService) {
 
     this.datos_perfil = new FormGroup({
-      nombres : new FormControl('', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-        Validators.pattern('^([ñÑáÁéÉíÍóÓúÚüÜa-zA-Z]+ )*[ñÑáÁéÉíÍóÓúÚüÜa-zA-Z]+$')
-      ]),
-      apellidos : new FormControl('', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-        Validators.pattern('^([ñÑáÁéÉíÍóÓúÚüÜa-zA-Z]+ )*[ñÑáÁéÉíÍóÓúÚüÜa-zA-Z]+$')
-      ]),
       nickname : new FormControl('', [
         Validators.required,
         Validators.minLength(3),
@@ -68,8 +56,6 @@ export class ProfilePage{
         this.url = this.usuario.imagen_perfil.toString();
       }
       this.datos_perfil.controls['nickname'].setValue(this.usuario.nickname, {onlySelf : true});
-      this.datos_perfil.controls['nombres'].setValue(this.usuario.nombres, {onlySelf : true});
-      this.datos_perfil.controls['apellidos'].setValue(this.usuario.apellidos, {onlySelf : true});
     },
   error =>{
     this.toast.error('Hubo un error al conseguir la información de su perfil, favor de intentarlo de nuevo', 'Error')
@@ -96,12 +82,14 @@ export class ProfilePage{
     //console.log(this.datos_perfil.value);
     this.loadServ.present();
     this.formData.append('nickname', this.datos_perfil.value.nickname);
-    this.formData.append('nombres', this.datos_perfil.value.nombres);
-    this.formData.append('apellidos', this.datos_perfil.value.apellidos);
         this.profileServ.updateUser(this.hash, this.formData).subscribe( (res: any) =>{
           this.soloVista=true;
           window.localStorage.setItem('username',this.datos_perfil.value.nickname);
-          this.toast.success('Datos Modificados con éxito', 'Modificación Exitosa!');
+          if(res.body.message=="No hubo cambios"){
+            this.toast.info('No se hicieron cambios');
+          }else{
+            this.toast.success('Datos Modificados con éxito', 'Modificación Exitosa!');
+          }
           this.formData = new FormData();
           this.loadServ.dismiss();
         },
