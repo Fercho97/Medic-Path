@@ -46,7 +46,7 @@ export class LandingPage {
     }
 
     if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Online){
-      this.api.updateLocalDatabase();
+      this.api.updateLocalDatabase(userType);
     }
   }
 

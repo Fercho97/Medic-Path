@@ -3,12 +3,13 @@ import { HttpErrorResponse, HttpInterceptor, HttpRequest, HttpHandler, HttpEvent
 import { Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
-
+import { Storage } from '@ionic/storage';
+import { ToastrService } from 'ngx-toastr';
 @Injectable({
     providedIn: 'root'
 })
 export class AuthInterceptorService implements HttpInterceptor{
-    constructor(private router:Router){
+    constructor(private router:Router, private storage : Storage, private toast : ToastrService){
 
     }
 
@@ -20,7 +21,8 @@ export class AuthInterceptorService implements HttpInterceptor{
         if(token){
             request = req.clone({
                 setHeaders:{
-                    authorization: token
+                    authorization: token,
+                    mobile : 'true'
                 }
             });
         }
@@ -30,7 +32,13 @@ export class AuthInterceptorService implements HttpInterceptor{
 
                 if(err.status === 401){
                     localStorage.clear();
+                    this.storage.remove("newKey-currentUser");
+                    this.storage.remove("newKey-patients");
+                    this.storage.remove("newKey-updates");
+                    this.storage.remove("newKey-historiales");
+                    this.storage.remove("newKey-notifications");
                     this.router.navigate(['']);
+                    this.toast.warning('Sesión terminada');
                 }
 
                 return throwError( err );

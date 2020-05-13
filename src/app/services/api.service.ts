@@ -370,13 +370,15 @@ private getLocalData(key){
   return this.storage.get(API_STORAGE_KEY+"-"+key);
 }
 
-updateLocalDatabase(){
+updateLocalDatabase(type){
   this.consulta('any').subscribe();
   this.getAllSymptoms().subscribe();
-  this.getAllAilments().subscribe();
   this.getDoctors('all').subscribe();
 
+  if(type=="2"){
+  this.getAllAilments().subscribe();
   this.obtenerUsuarios().subscribe();
+  }
   //console.log('updated');
 }
 }

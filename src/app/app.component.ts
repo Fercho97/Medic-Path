@@ -73,6 +73,7 @@ export class AppComponent {
             this.storage.remove("newKey-patients");
             this.storage.remove("newKey-updates");
             this.storage.remove("newKey-historiales");
+            this.storage.remove("newKey-notifications");
             this.router.navigate([''])
           },
         error =>{

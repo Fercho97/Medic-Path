@@ -95,6 +95,7 @@ export class ProfilePage{
         },
       error =>{
         //console.log(error.message);
+        this.soloVista=true;
         if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Online){
           this.toast.error(error.error.message,'Error');
         }else{

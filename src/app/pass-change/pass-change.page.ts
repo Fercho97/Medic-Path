@@ -96,6 +96,7 @@ export class PassChangePage {
       this.storage.remove("newKey-patients");
       this.storage.remove("newKey-updates");
       this.storage.remove("newKey-historiales");
+      this.storage.remove("newKey-notifications");
       this.router.navigate([''])
     }, error =>{
       //console.log("Error", error.error.message);
