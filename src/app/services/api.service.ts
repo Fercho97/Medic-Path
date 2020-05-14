@@ -374,9 +374,8 @@ updateLocalDatabase(type){
   this.consulta('any').subscribe();
   this.getAllSymptoms().subscribe();
   this.getDoctors('all').subscribe();
-
-  if(type=="2"){
   this.getAllAilments().subscribe();
+  if(type=="2"){
   this.obtenerUsuarios().subscribe();
   }
   //console.log('updated');
