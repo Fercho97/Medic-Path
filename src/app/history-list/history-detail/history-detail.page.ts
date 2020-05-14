@@ -30,14 +30,14 @@ export class HistoryDetailPage {
   ionViewWillEnter() {
     //console.log(this.nivelesInfo)
     this.api.getHistory(this.route.snapshot.params.id).subscribe( (res: any) =>{
-      //console.log(res);
+      console.log(res);
       this.historial = res;
       this.sintomas = res.detalles.split(",").filter(item => item);
       if(this.historial.detalles_especificos!=null){
         this.niveles = JSON.parse(this.historial.detalles_especificos);
       }
       if(this.historial.url_imagen_pad!= null){
-      this.url = this.historial.url_imagen_pad.toString();
+      this.url = this.historial.url_imagen_pad.replace('http','https');
       }
       if(this.historial.recomendaciones_especialista!=null){
         this.recomendaciones = JSON.parse(this.historial.recomendaciones_especialista);

@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ProfileService } from './profile.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpParams} from '@angular/common/http';
@@ -15,7 +15,7 @@ import { NetworkService, ConnectionStatus } from '../services/network.service';
   styleUrls: ['./profile.page.scss'],
   providers: [ProfileService]
 })
-export class ProfilePage{
+export class ProfilePage implements OnInit{
 
   datos_perfil : FormGroup;
 
@@ -46,14 +46,13 @@ export class ProfilePage{
     })
    }
 
-  async ionViewWillEnter() {
+  async ngOnInit() {
     this.hash = await this.sessionServ.obtainSessionHash();
     this.api.getUser(this.hash).subscribe( (res: any) =>{
       this.usuario = res;
       this.originalValue = res.nickname;
-
       if(this.usuario.imagen_perfil!=null && this.usuario.imagen_perfil!=""){
-        this.url = this.usuario.imagen_perfil.toString();
+        this.url = this.usuario.imagen_perfil.replace('http','https');
       }
       this.datos_perfil.controls['nickname'].setValue(this.usuario.nickname, {onlySelf : true});
     },
