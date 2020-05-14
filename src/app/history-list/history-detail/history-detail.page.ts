@@ -30,7 +30,7 @@ export class HistoryDetailPage {
   ionViewWillEnter() {
     //console.log(this.nivelesInfo)
     this.api.getHistory(this.route.snapshot.params.id).subscribe( (res: any) =>{
-      console.log(res);
+      //console.log(res);
       this.historial = res;
       this.sintomas = res.detalles.split(",").filter(item => item);
       if(this.historial.detalles_especificos!=null){
