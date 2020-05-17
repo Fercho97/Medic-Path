@@ -22,7 +22,7 @@ export class PassResetPage implements OnInit {
     .set('email', form.value.email);
 
     this.recServ.resetRequest(this.values).subscribe((res :any) =>{
-      this.toastr.info("Se ha enviado un correo a la dirección que indico, llegara en un momento", "Enviado");
+      this.toastr.info("Si la dirección que indico se encuentra registrada en el sistema se le enviará un correo", "Enviado");
       this.router.navigate(['']);
     }, error =>{
       //console.log(error);
