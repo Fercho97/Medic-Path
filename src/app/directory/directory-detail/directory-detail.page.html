@@ -13,12 +13,12 @@
       <ion-card-content>
         <ion-card-title>Doctor: {{infoDoc.apellidos + " " + infoDoc.nombres}}</ion-card-title>
         <ion-item>
-        <ion-label><p><ion-text color="primary">Especializaciones:</ion-text></p><p *ngFor="let espe of especializaciones">{{espe.nombre_esp}}</p></ion-label>
         <ion-label>
+          <p><ion-text color="primary">Especializaciones:</ion-text></p><p *ngFor="let espe of especializaciones">{{espe.nombre_esp}}</p>
           <p><ion-text color="primary">Teléfono:</ion-text> {{infoDoc.telefono}}</p>
           <p><ion-text color="primary">Dirección:</ion-text> {{infoDoc.direccion}}</p>
           <p><ion-text color="primary">Email:</ion-text> {{infoDoc.email}}</p>
-          </ion-label>
+        </ion-label>
         </ion-item>
       </ion-card-content>
   </ion-card>

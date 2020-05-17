@@ -13,6 +13,7 @@ export class LoadingService {
     this.loading = true;
     return await this.loadingContr.create({
       duration: 5000,
+      spinner: "dots"
     }).then(load =>{
       load.present().then(() =>{
         if (!this.loading){

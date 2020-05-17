@@ -1,8 +1,5 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-button (click)="dismiss()" ><ion-icon name="arrow-back"></ion-icon></ion-button>
-    </ion-buttons>
   <ion-title>Selección de síntomas en {{label}}</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,4 +10,8 @@
   <ion-select placeholder="Eliga los sintomas" multiple="true" [(ngModel)] = "sintomasSeleccionados">
     <ion-select-option *ngFor="let ini of sintomas" value="{{ini.idSint}}" >{{ini.nombre_sint}}</ion-select-option>
 </ion-select>
+<div class="ion-padding">
+  <ion-button size="medium" expand="block" (click)="dismiss()" >Continuar</ion-button>
+</div>
+
 </ion-content>
