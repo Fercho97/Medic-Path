@@ -17,18 +17,17 @@ ion-title{
 .btn-img{
     text-align: center;
 }
-   @media(max-width: 420px){
+
+@media(max-width: 370px){
     .back{
         font-size: 10px;
     }
-}
-
-@media(max-width: 350px){
-    .back{
-        font-size: 9px;
-    }
 
     ion-title{
-        font-size: 10px
+        font-size: 15px
+    }
+
+    ion-input{
+        font-size: 12px;
     }
 }

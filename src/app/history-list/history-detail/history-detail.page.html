@@ -10,7 +10,7 @@
 <ion-content>
     <ion-card>
       <ion-item>
-        <ion-label>Con resultado de {{historial.nombre_pad}}</ion-label>
+        <ion-label class="ion-text-wrap">Con resultado de {{historial.nombre_pad}}</ion-label>
         <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(historial.descripcion)"></ion-icon>
     </ion-item>
     <ion-item *ngIf="historial.comentario!=null && historial.comentario!=''">

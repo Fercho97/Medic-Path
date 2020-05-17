@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-button routerLink="/landing" class="back"><ion-icon name="arrow-back"></ion-icon>Menú Principal</ion-button>
+      <ion-button routerLink="/landing" class="back"><ion-icon name="arrow-back"></ion-icon>Inicio</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
@@ -21,10 +21,10 @@
   <ion-list *ngIf="medicos.length>0">
     <ion-item-sliding *ngFor="let medico of medicosFilter">
       <ion-item class="item item-block item-md">
-          <ion-label><h2>Doctor {{medico.nombres}}</h2>
-                     <h2>       {{medico.apellidos}}</h2>
-                                            <p><span class="title">Teléfono:</span> {{medico.telefono}}</p>
-                                            <p><span class="title">Dirección:</span> {{medico.direccion}}</p>
+          <ion-label><h2 class="ion-text-wrap">Doctor {{medico.nombres}}</h2>
+                     <h2 class="ion-text-wrap">       {{medico.apellidos}}</h2>
+                                            <p><span class="title ion-text-wrap">Teléfono:</span> {{medico.telefono}}</p>
+                                            <p><span class="title ion-text-wrap">Dirección:</span> {{medico.direccion}}</p>
                                             </ion-label>
           <ion-label *ngIf="!hasEspe"><p class="title">Especializaciones:</p><p *ngFor="let espe of medico.especializacions">{{espe.nombre_esp}}</p></ion-label>
        </ion-item>

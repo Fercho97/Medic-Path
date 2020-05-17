@@ -6,4 +6,15 @@ ion-title{
     height: 100%;
     text-align: center;
     transform: translateX(-50%);
+    font-size:12px;
    }
+
+   @media(max-width: 370px){
+    .back{
+        font-size: 10px;
+    }
+
+    ion-title{
+        font-size: 12px
+    }
+}
