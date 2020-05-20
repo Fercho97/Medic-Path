@@ -44,6 +44,12 @@ export class questions {
         ],
         'ictericia' : [
           {message: '¿Presenta una coloración amarillenta en alguna parte de la piel o bien en los ojos?', type: "boolean"}
+        ],
+        'dolor con desplazamiento hacia piernas' : [
+          {message: '¿Su dolor de espalda se ha ido esparciendo hacia la zona baja del cuerpo?', type: "boolean"}
+        ],
+        'dolor por movimiento' : [
+          {message: '¿Su dolor empeora con el movimiento?', type: "boolean"}
         ]
 
       }
@@ -93,6 +99,12 @@ export class questions {
         ],
         'ictericia' : [
           {message: '¿Su paciente tiene una coloración amarillenta perceptible en alguna parte de la piel o bien en los ojos?', type: "boolean"}
+        ],
+        'dolor con desplazamiento hacia piernas' : [
+          {message: '¿El dolor de espalda de su paciente se ha ido esparciendo hacia la zona baja del cuerpo?', type: "boolean"}
+        ],
+        'dolor por movimiento' : [
+          {message: '¿Su dolor empeora con el movimiento?', type: "boolean"}
         ]
 
       }
@@ -136,6 +148,15 @@ export class questions {
         ],
         'escalofrios' : [
           {message: 'En escala del 1 al 10 ¿Cómo describiria la intensidad de sus escalofrios?'}
+        ],
+        'dolor al tacto en espalda baja' : [
+          {message: 'En un rango del 1 al 10 ¿Qué tan intenso es el dolor al tacto?'}
+        ],
+        'dolor con desplazamiento hacia piernas' : [
+          {message: 'En un rango del 1 al 10 ¿Con que intensidad describiría dicho dolor?'}
+        ],
+        'dolor de espalda baja' : [
+          {message: 'En una escala del 1 al 10 ¿Que tan intenso es su dolor de espalda?'}
         ]
       }
 
@@ -153,7 +174,16 @@ export class questions {
           {message: 'En escala del 1 al 10 ¿Qué tanta molestia le causa la inflamación en las amigdalas a su paciente?'}
         ],
         'escalofrios' : [
-          {message: 'En escala del 1 al 10 ¿Qué tan intensos son los escalofrios en su paciente?'}
+          {message: 'En escala del 1 al 10 ¿Qué tan intensos son los escalofríos en su paciente?'}
+        ],
+        'dolor al tacto en espalda baja' : [
+          {message: 'En un rango del 1 al 10 ¿Qué tan intenso describe el dolor al tacto su paciente?'}
+        ],
+        'dolor con desplazamiento hacia piernas' : [
+          {message: 'En un rango del 1 al 10 ¿Con que intensidad describe su paciente el dolor?'}
+        ],
+        'dolor de espalda baja' : [
+          {message: 'En una escala del 1 al 10 ¿Que tan intenso es el dolor de espalda de su paciente?'}
         ]
       }
 }

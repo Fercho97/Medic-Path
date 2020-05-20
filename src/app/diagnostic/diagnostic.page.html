@@ -18,7 +18,7 @@
                  Para comenzar es necesario que seleccione el área en donde tenga la mayor cantidad de molestias y seleccione al menos un síntoma</p>
           </ion-item>
           <ion-card-content>             
-              <ion-button color="success" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnóstico con síntomas iniciales</ion-button>
+              <ion-button class="start" color="success" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnóstico</ion-button>
         </ion-card-content>
         <div *ngIf="sintomasShow.length>0">
             <label >Mis síntomas seleccionados:</label>
@@ -32,13 +32,26 @@
         </div>
             <div>
                 <div>
-                <img src="/assets/Body.PNG" usemap="#mapname" class="imgcent" width="100%">
+                <ion-slides>
+                 <ion-slide>
+                    <img src="/assets/frontbody.png" usemap="#mapname" class="imgcent" width="100%">
+                 </ion-slide>
+                 <ion-slide>
+                    <img src="/assets/backbody.png" usemap="#backside" class="imgcent" width="100%">
+                 </ion-slide>
                 
+                </ion-slides>
                 <map name="mapname" id="map_ID">
                     <area class="point" shape="rect" [coords]="headCoord" (click)="selectSintomas('Cabeza')" title="Cabeza">
                     <area class="point" shape="rect" [coords]="throatCoord" (click)="selectSintomas('Garganta y Cuello')" title="Garganta y Cuello">
                     <area class="point" shape="rect" [coords]="pecCoord" (click)="selectSintomas('Pecho')" title="Pecho">
                     <area class="point" shape="rect" [coords]="abCoord" (click)="selectSintomas('Abdomen')" title="Abdomen">
+                </map>
+
+                <map name="backside" id="map_ID">
+                    <area class="point" shape="rect" [coords]="headCoord" (click)="selectSintomas('Cabeza')" title="Cabeza">
+                    <area class="point" shape="rect" [coords]="throatCoord" (click)="selectSintomas('Garganta y Cuello')" title="Garganta y Cuello">
+                    <area class="point" shape="rect" [coords]="backCoord" (click)="selectSintomas('Espalda')" title="Espalda">
                 </map>
             </div>
             

@@ -12,7 +12,6 @@ export enum ConnectionStatus{
     providedIn: 'root'
 })
 export class NetworkService{
-    isBrowser : boolean;
     private status: BehaviorSubject<ConnectionStatus> = new BehaviorSubject(ConnectionStatus.Offline);
 
     constructor(private network: Network, private toastController: ToastController, private plt: Platform){

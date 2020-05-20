@@ -29,7 +29,7 @@ import bcrypt from 'bcryptjs';
   styleUrls: ['./diagnostic.page.scss'],
   providers: [HistoryOfflineManagerService, ApiService, NetworkService,CurrentUserService, DiagnosticService]
 })
-export class DiagnosticPage implements OnInit {
+export class DiagnosticPage{
 
   hasPregunta : boolean = false;
   question : any = {};
@@ -66,11 +66,12 @@ export class DiagnosticPage implements OnInit {
   public sintomasZona : any = [];
   public zoneSelection : any = [];
   public sintomasShow : any = [];
-  public zone_options = ErrorMsg.Zone_options.options;
+  public zone_options : any = [];
   public headCoord = "";
   public abCoord = "";
   public pecCoord = "";
   public throatCoord = "";
+  public backCoord = "";
   public doc_recomendacion : any = [];
   public compare_historiales : any = [];
   public user_recommendation : any = [];
@@ -86,18 +87,30 @@ export class DiagnosticPage implements OnInit {
     this.abCoord= "230,270,130,140";
     this.pecCoord= "230,140,130,90";
     this.throatCoord= "210,70,150,89";
+    this.backCoord= "230,250,130,90";
     this.InitiatePlatformIfReady();
     
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
+    imageMapResize();
+
+    this.api.getZones().subscribe(res =>{
+      
+      return this.zone_options = res;
+      
+     //console.log(this.compuestos);
+   }, error =>{
+     this.toast.error('Hubo un error al conseguir la información del catálogo de zonas, favor de recargar la página', 'Error');
+   })
+
     this.api.getAllSymptoms().subscribe(res =>{
       this.sintomas = res;
       this.selectableSymptoms = this.sintomas.filter(sintoma => sintoma['compuesto']==false);
       for( var zona of this.zone_options){
-        let zone_sints = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']==zona);
-        this.sintomasZona.push({zone: zona, sintomas: zone_sints});
-        this.zoneSelection.push({zone: zona, sintomas: []});
+        let zone_sints = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']==zona.body_zone);
+        this.sintomasZona.push({zone: zona.body_zone, sintomas: zone_sints});
+        this.zoneSelection.push({zone: zona.body_zone, sintomas: []});
       }
     })
 
@@ -107,9 +120,9 @@ export class DiagnosticPage implements OnInit {
     })
   }
 
-  ionViewWillEnter() {
-    imageMapResize();
-   /**  let width = window.innerWidth;
+ /** ionViewWillEnter() {
+    
+     let width = window.innerWidth;
     console.log(width);
     if(width>=320 && width<375){
       console.log("abr");
@@ -121,8 +134,8 @@ export class DiagnosticPage implements OnInit {
     }else if(width>=425 && width<475){
       this.headCoord = "210,25,150,70";
       this.abCoord = "130,110,190,210";
-    }*/
-  }
+    }
+  }*/
 
   InitiatePlatformIfReady() {
     this.platform.ready().then(() => {

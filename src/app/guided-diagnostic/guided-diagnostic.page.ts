@@ -27,7 +27,7 @@ import { Catalogos } from '../utils/catalogos.const';
   styleUrls: ['./guided-diagnostic.page.scss'],
   providers: [DiagnosticService]
 })
-export class GuidedDiagnosticPage implements OnInit {
+export class GuidedDiagnosticPage{
 
   hasPregunta : boolean = false;
   question : any = {};
@@ -66,11 +66,12 @@ export class GuidedDiagnosticPage implements OnInit {
   public sintomasZona : any = [];
   public zoneSelection : any = [];
   public sintomasShow : any = [];
-  public zone_options = ErrorMsg.Zone_options.options;
+  public zone_options : any = [];
   public headCoord = "";
   public abCoord = "";
   public pecCoord = "";
   public throatCoord = "";
+  public backCoord = "";
   public doc_recomendacion : any = [];
   public divisions = Catalogos.LETTERS;
   public sintomasExtras : any =[];
@@ -86,32 +87,38 @@ export class GuidedDiagnosticPage implements OnInit {
                 this.abCoord= "230,270,130,140";
                 this.pecCoord= "230,140,130,90";
                 this.throatCoord= "210,70,150,89";
+                this.backCoord= "230,250,130,90";
                 this.InitiatePlatformIfReady();
               }
 
-  ngOnInit() {
+   ionViewWillEnter() {
+    imageMapResize();
     this.api.obtenerUsuarios().subscribe((res: any) =>{
 
       this.usuarios = res;
       this.usuarios = this.calculusClass.orderByFirstLetter(this.usuarios);
     })
 
+    this.api.getZones().subscribe(res =>{
+      
+      return this.zone_options = res;
+      
+     //console.log(this.compuestos);
+   }, error =>{
+     this.toast.error('Hubo un error al conseguir la información del catálogo de zonas, favor de recargar la página', 'Error');
+   })
     
     this.api.getAllSymptoms().subscribe(res =>{
       //console.log(res);
       this.allSymptoms = res;
       this.sintomas = this.allSymptoms.filter(sintoma => sintoma['compuesto']==false);
       for( var zona of this.zone_options){
-        let zone_sints = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']==zona);
-        this.sintomasZona.push({zone: zona, sintomas: zone_sints});
-        this.zoneSelection.push({zone: zona, sintomas: []});
+        let zone_sints = this.sintomas.filter(sintoma => sintoma['compuesto']==false && sintoma['body_zone']==zona.body_zone);
+        this.sintomasZona.push({zone: zona.body_zone, sintomas: zone_sints});
+        this.zoneSelection.push({zone: zona.body_zone, sintomas: []});
       }
     })
     
-  }
-
-  ionViewWillEnter() {
-    imageMapResize();
   }
 
   InitiatePlatformIfReady() {

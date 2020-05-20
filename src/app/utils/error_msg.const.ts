@@ -65,8 +65,4 @@ export class ErrorMsg{
           {message: 'Si presenta alguno de estos sintomas es sumamente necesario el acudir con un especialista con el fin de tratar dicho sintoma, por lo regular requieren estudios'}
         
       }
-
-      public static Zone_options = {
-        'options' : ["Cabeza","Abdomen","Corporal","Pecho","Garganta y Cuello"]
-      }
 }

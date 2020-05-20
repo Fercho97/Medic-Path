@@ -50,6 +50,8 @@ const checkUserName = apiUrl + 'usuarios/checkUsername/';
 
 const checkEmail = apiUrl + 'usuarios/checkEmail/';
 
+const zonasList = apiUrl + 'sintomas/zones/list';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -61,7 +63,6 @@ export class ApiService {
 
 
   historyList(user : any){
-
     if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Offline){
       return from(this.getLocalData('historiales'));
     }else{
@@ -362,6 +363,24 @@ checkEmail(email : any){
   })
 }
 
+getZones() {
+  if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Offline){
+    return from(this.getLocalData('zonas'));
+  }else{
+  const headers = new HttpHeaders({'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
+  //console.log(_urlListado);
+  return this.http.get(zonasList,
+      {
+        headers: headers,
+        observe : 'response'
+      },
+  ).pipe(map(res => res['body']['resultado']),
+        tap(res =>{
+          this.setLocalData('zonas', res);
+        }))
+  }
+}
+
 private setLocalData(key, data){
   this.storage.set(API_STORAGE_KEY+"-"+key,data);
 }
@@ -375,6 +394,7 @@ updateLocalDatabase(type){
   this.getAllSymptoms().subscribe();
   this.getDoctors('all').subscribe();
   this.getAllAilments().subscribe();
+  this.getZones().subscribe();
   if(type=="2"){
   this.obtenerUsuarios().subscribe();
   }
