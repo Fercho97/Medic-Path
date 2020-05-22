@@ -553,6 +553,7 @@ export class DiagnosticPage{
           this.sintomas[index].nivel_urgencia = calculatedUrgency;
           this.sintomas[index].reason = "Esto debido a que usted lo indico con una intensidad de " + this.painIndex;
           this.painIndex=1;
+          this.color = "secondary";
           if(this.preguntas.length>0){
             this.mostrarPregunta();
             }else if(this.fromSelected==true){

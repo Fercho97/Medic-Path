@@ -34,11 +34,11 @@
 
     <ion-card *ngFor="let new of roosterNews" class="items fromLeft">
       <ion-card-header>
-        <ion-card-subtitle>Es necesaria su retroalimentación para su consulta del día: </ion-card-subtitle>
+        <ion-card-subtitle>Tiene una consulta sin retroalimentación del día: </ion-card-subtitle>
         <ion-card-title>{{new.filter_date}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-button routerLink="/history-detail/{{new.hashId}}" size="small" color="primary" >Acceder</ion-button>
+        <ion-button routerLink="/history-detail/{{new.hashId}}" size="small" color="primary" >Ver</ion-button>
       </ion-card-content>
     </ion-card>
   </div>

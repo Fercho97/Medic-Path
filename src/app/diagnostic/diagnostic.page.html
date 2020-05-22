@@ -214,9 +214,11 @@
     <div *ngIf="user_recommendation.length>0">
         <div>
         <ion-item color="primary">Pacientes con síntomas similares a los suyos suelen asistir con:</ion-item>
-            <legend class="response">
+        <ion-item>    
+        <ion-label color="primary">
             {{user_recommendation[0].espe}}
-            </legend>
+        </ion-label>
+        </ion-item>
         </div>
     </div>
 </div>
