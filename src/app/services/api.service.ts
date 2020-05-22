@@ -20,7 +20,7 @@ const _urlNotifications = apiUrl + 'historial/notification/withoutFeedback/';
 
 const _url = apiUrl + 'consulta/getReglas';
 
-const _allSymptoms = apiUrl + "sintomas/sintlist";
+const _allSymptoms = apiUrl + "sintomas/sintsForDiagnostic";
 
 const _allAilments = apiUrl + "padecimientos/allPads";
 
