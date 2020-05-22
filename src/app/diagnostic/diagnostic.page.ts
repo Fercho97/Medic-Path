@@ -199,7 +199,7 @@ export class DiagnosticPage{
             //console.log("Esta en la memoria?" + almacenado)
             if(almacenado===false){
             this.atomosCondicion.push(new Atomo(element.desc,element.estado,element.obj,element.padecimiento,element.sintoma));
-            let question = this.questionGen(element.desc); 
+            let question = this.questionGen(element.desc,element.sintoma); 
             if(question!=null){
               this.preguntas.push(question);
             }else{
@@ -450,7 +450,7 @@ export class DiagnosticPage{
 
     avoidUnnecesaryQuestions(){
       this.memoriaDeTrabajo.atomosAfirmados.forEach(sintoma =>{
-        let multiOption = this.checkMultipleTypes(sintoma.desc);
+        let multiOption = this.checkMultipleTypes(sintoma.sintoma);
 
         if(multiOption.length>1){
           multiOption.forEach(option =>{
@@ -491,21 +491,24 @@ export class DiagnosticPage{
             })
            }
       
-           questionGen(sint: any){
-      
-            let hasCertainQuestion = questions.QUESTIONS[sint.toLowerCase()];
-            let multiOption = this.checkMultipleTypes(sint);
+           questionGen(sint: any, id: any) {
+            var hasCertainQuestion = questions.QUESTIONS[sint.toLowerCase()];
             if(hasCertainQuestion!=undefined){
               return hasCertainQuestion[0];
-            }
-            else if(multiOption.length>1){
-              hasCertainQuestion = this.generateMultiOptionQuestion(multiOption,sint);
-              return hasCertainQuestion;
-            }
-            else{
+            }else{
+            let sintoma = this.sintomas.find((item) => item["idSint"].toString() === id);
+            
+            let containsQuestion = JSON.parse(sintoma.question);
+            let multiOption = this.checkMultipleTypes(id);
+            if (containsQuestion != undefined && multiOption.length==1) {
+              return containsQuestion;
+            } else if (multiOption.length > 1) {
+              containsQuestion = this.generateMultiOptionQuestion(multiOption, sint);
+              return containsQuestion;
+            } else {
               return null;
             }
-            
+          }
           }
       
            numericAnswer(){
@@ -534,9 +537,9 @@ export class DiagnosticPage{
             let sympIndex = this.sintomas.findIndex(item => item['idSint'].toString() === symp.toString());
             if(atomSymp.nivel_urgencia==0.4 || atomSymp.nivel_urgencia==0.6){
               let question = "";
-              let hasSpecificQuestion = questions.SPECIFIC_NUMERIC_QUESTION[atomSymp.nombre_sint.toLowerCase()];
+              let hasSpecificQuestion = atomSymp.index_question;
               if(hasSpecificQuestion!=null){
-                question = hasSpecificQuestion[0].message;
+                question = hasSpecificQuestion;
               }else{
                 question = 'Del 1 al 10 que rango de molestia le causa el tener ' + atomSymp.nombre_sint
               }
@@ -580,7 +583,7 @@ export class DiagnosticPage{
         }
 
         checkMultipleTypes(sint:any){
-          let sintoma = this.sintomas.find(symp => symp['nombre_sint']==sint);
+          let sintoma = this.sintomas.find(symp => symp['idSint']==sint);
           let sameSynts = this.sintomas.filter(symp => symp['categoria_sint']==sintoma.categoria_sint && symp['keyWord'].toLowerCase()==sintoma.keyWord.toLowerCase());
           return sameSynts;
         }

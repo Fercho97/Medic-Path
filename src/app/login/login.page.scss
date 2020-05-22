@@ -1,10 +1,24 @@
 .round-button{
-    display: inline-block;
-    font-size: 12px;  
+    max-width: 200px;
+    margin: 0 auto;
 }
 
 .imgcent{
     display: block;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  @media(max-width: 425px){
+    .round-button{
+        font-size: 12px;
+    }
+  }
+
+  @media(max-width: 375px){
+    .round-button{
+        font-size: 9px;
+        max-width: 150px;
+    }
+
   }

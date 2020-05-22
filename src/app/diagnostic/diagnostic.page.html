@@ -22,7 +22,7 @@
         </ion-card-content>
         <div *ngIf="sintomasShow.length>0">
             <label >Mis síntomas seleccionados:</label>
-            <div style="overflow-y: auto; height: 100px;">
+            <div style="overflow-y: auto; height: 200px;">
                 <ion-item *ngFor="let sintoma of sintomasShow">
                     <ion-label>{{sintoma.name}}</ion-label>
                     <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(sintoma.descripcion)"></ion-icon>
