@@ -13,3 +13,17 @@ ion-title{
     text-align: center;
     transform: translateX(-50%);
    }
+
+
+.roundInput{
+    --border-color: var(--ion-color-medium-shade);
+    --border-radius: 3px;
+    --border-width: 1px;
+    --box-shadow: 2px gray;
+    --highlight-height:0;
+    --background: #f8f9fa;
+}
+
+.gradient{
+    --background: linear-gradient(rgb(56, 128, 255) 0%, rgb(225, 232, 243) 13.5%, rgb(255, 255, 255) 100%) !important;
+}

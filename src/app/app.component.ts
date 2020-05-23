@@ -9,6 +9,8 @@ import { OfflineRequestsManager } from './services/offline-manager.service';
 import { ApiService } from './services/api.service';
 import {Router} from '@angular/router';
 import { CurrentUserService } from './services/current-user.service';
+import { MenuController } from '@ionic/angular';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -26,7 +28,8 @@ export class AppComponent {
     private alertCtr : AlertController, 
     private storage : Storage,
     private api : ApiService,
-    private session : CurrentUserService
+    private session : CurrentUserService,
+    private menuCtr : MenuController
   ) {
     this.initializeApp();
   }
@@ -97,4 +100,14 @@ export class AppComponent {
       this.isDoctor=true;
     }
   }
+
+  enableSwipe(){
+    this.menuCtr.swipeGesture(true);
+  }
+
+  disableSwipe(){
+    this.menuCtr.swipeGesture(false);
+  }
+
+
 }

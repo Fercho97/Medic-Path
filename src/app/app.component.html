@@ -1,5 +1,6 @@
 <ion-app>
-  <ion-menu contentId="content" color="primary" side="end" swipeGesture="false">
+  <ion-menu contentId="content" color="primary" side="end" swipeGesture="false" 
+     (ionDidOpen)="enableSwipe()" (ionDidClose)="disableSwipe()">
     <ion-header>
       <ion-toolbar>
         <ion-title color="primary">Menú</ion-title>

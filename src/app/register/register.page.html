@@ -1,20 +1,20 @@
 <ion-header>
-  <ion-toolbar color="tertiary">
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-button  routerLink="" ><ion-icon name="arrow-back"></ion-icon></ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Registro</ion-title>
+    <ion-title class="ion-text-center">Formulario de registro</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding class="form-content">
+<ion-content class="form-content gradient">
   <form [formGroup]="datos_registro" (ngSubmit)="registry()">
     <ion-grid>
       <ion-row color="primary" class="ion-justify-content-center">
       <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
       <div class="ion-padding">
           <ion-item>
-              <ion-label color="tertiary" position="floating">Nickname</ion-label>
+              <ion-label color="primary" position="floating">Nickname</ion-label>
               <ion-input type="text" formControlName="nickname" ></ion-input>
           </ion-item>
 
@@ -25,9 +25,9 @@
               </div>
             </ng-container>
           </div>
-
+          <br>
           <ion-item>
-              <ion-label color="tertiary" position="floating">Nombre(s)</ion-label>
+              <ion-label color="primary" position="floating">Nombre(s)</ion-label>
               <ion-input formControlName="nombres" type="text" ></ion-input>
           </ion-item>
 
@@ -38,9 +38,11 @@
                 </div>
               </ng-container>
           </div>
+        
+        <br>
 
         <ion-item>
-            <ion-label color="tertiary" position="floating">Apellido(s)</ion-label>
+            <ion-label color="primary" position="floating">Apellido(s)</ion-label>
           <ion-input formControlName="apellidos" type="text" ></ion-input>
         </ion-item>
         
@@ -52,10 +54,12 @@
             </ng-container>
         </div>
 
+        <br>
+
         <ion-item >
-            <ion-label color="tertiary" position="floating">Correo</ion-label>
+            <ion-label color="primary" position="floating">Correo</ion-label>
             <ion-input formControlName="email" type="email" ></ion-input>
-            <ion-icon name="mail" color="tertiary" slot="end"></ion-icon>
+            <ion-icon name="mail" color="primary" slot="end"></ion-icon>
         </ion-item>
 
         <div class="validation-errors">
@@ -66,11 +70,13 @@
             </ng-container>
         </div>
 
+        <br>
+
       <div formGroupName="password_validations">
         <ion-item >
-            <ion-label color="tertiary" position="floating">Contraseña</ion-label>
+            <ion-label color="primary" position="floating">Contraseña</ion-label>
             <ion-input formControlName="password" type="password" ></ion-input>
-            <ion-icon name="key" color="tertiary" slot="end"></ion-icon>
+            <ion-icon name="key" color="primary" slot="end"></ion-icon>
         </ion-item>
 
         <div class="validation-errors">
@@ -81,11 +87,11 @@
               </div>
             </ng-container>
         </div>
-
+      <br>
       <ion-item>
-          <ion-label color="tertiary" position="floating">Repetir Contraseña</ion-label>
+          <ion-label color="primary" position="floating">Repetir Contraseña</ion-label>
           <ion-input formControlName="passwordVerif" type="password" ></ion-input>
-          <ion-icon name="key" color="tertiary" slot="end"></ion-icon>
+          <ion-icon name="key" color="primary" slot="end"></ion-icon>
       </ion-item>
       
       <div class="validation-errors">
@@ -106,25 +112,25 @@
           </div>
         </ng-container>
     </div>
-
+      <br>
       <ion-radio-group formControlName="genero">
-          <ion-label color="tertiary">Sexo</ion-label>
+          <ion-label color="primary">Sexo</ion-label>
           <ion-item>
-              <ion-label color="tertiary">Hombre</ion-label>
+              <ion-label color="primary">Hombre</ion-label>
               <ion-radio name="genero" color="primary"
               value="Hombre"></ion-radio>
           </ion-item>
           <ion-item>
-              <ion-label color="tertiary">Mujer</ion-label>
+              <ion-label color="primary">Mujer</ion-label>
               <ion-radio name="genero" color="danger"
               value="Mujer"></ion-radio>
           </ion-item>
         </ion-radio-group>
-
+        <br>
         <ion-item>
-          <ion-label color="tertiary" position="floating">Fecha Nacimiento</ion-label>
+          <ion-label color="primary" position="floating">Fecha Nacimiento</ion-label>
           <ion-input formControlName="fecha_nacimiento" type="date"></ion-input>
-          <ion-icon name="calendar" color="tertiary" slot="end"></ion-icon>
+          <ion-icon name="calendar" color="primary" slot="end"></ion-icon>
         </ion-item>
 
         <div class="validation-errors">
