@@ -18,6 +18,10 @@ ion-title{
     transform: translateX(-50%);
    }
 
+   ion-list{
+    padding-top: 0px !important;
+  }
+  
 @media(max-width: 370px){
     .back{
         font-size: 11px;
