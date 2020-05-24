@@ -81,7 +81,10 @@ export class GuidedDiagnosticPage{
               private histServ : HistoryOfflineManagerService, private alertServ : AlertsManagerService,
               private platform : Platform, private modalContr : ModalController, private loadServ : LoadingService) { 
                 this.numeric = new FormGroup({
-                  temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
+                  temp: new FormControl('', [Validators.required,
+                                             Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$'),
+                                             Validators.max(40),
+                                             Validators.min(35),]) 
                 });
 
                 this.headCoord="210,10,150,70";
@@ -189,7 +192,7 @@ export class GuidedDiagnosticPage{
             if(question!=null){
               this.preguntas.push(question);
             }else{
-            this.preguntas.push({message: "¿Su paciente tiene o ha tenido " + element.desc + " ?", type: "boolean"});
+            this.preguntas.push({message: "¿Su paciente tiene o ha tenido " + element.desc + "?", type: "boolean"});
             }
              this.descs.push(element.sintoma);
             }
@@ -209,7 +212,7 @@ export class GuidedDiagnosticPage{
     mostrarPregunta(){
       this.question = this.preguntas.pop();
       //console.log(this.question);
-      if(this.question.type==='boolean' || this.question.type==='numeric'){
+      if(this.question.type==='boolean' || this.question.type==='numeric' || this.question.type==="selection"){
       let id = this.descs.pop();
       //console.log(id);
       
@@ -517,18 +520,19 @@ export class GuidedDiagnosticPage{
       }
 
       scaleAnswer(index : any){
-    let atomSymp = this.allSymptoms[index];
-    let calculatedUrgency = (atomSymp.nivel_urgencia*this.painIndex)/4;
-    this.allSymptoms[index].nivel_urgencia = calculatedUrgency;
-    this.allSymptoms[index].reason = "Esto debido a que usted lo indico con una intensidad de " + this.painIndex;
-    this.painIndex=1;
-    if(this.preguntas.length>0){
-      this.mostrarPregunta();
-      }else if(this.fromSelected==true){
-        this.iniciarDiagnostico();
-      }else{
-      this.analize();
-      }
+        let atomSymp = this.allSymptoms[index];
+        let calculatedUrgency = (atomSymp.nivel_urgencia*this.painIndex)/4;
+        this.allSymptoms[index].nivel_urgencia = calculatedUrgency;
+        this.allSymptoms[index].reason = "Esto debido a que usted lo indico con una intensidad de " + this.painIndex;
+        this.painIndex=1;
+        this.color = "secondary";
+        if(this.preguntas.length>0){
+          this.mostrarPregunta();
+        }else if(this.fromSelected==true){
+          this.iniciarDiagnostico();
+        }else{
+          this.analize();
+        }
       }
 
         rangeDynamic(){

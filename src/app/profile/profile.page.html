@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="success">
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
         <ion-button routerLink="/landing" class="back"><ion-icon name="arrow-back"></ion-icon>Inicio</ion-button>
       </ion-buttons>
@@ -17,16 +17,16 @@
         <img class="ion-justify-content-center ion-align-items-center" style="width:300px;height:200px;" src="{{url}}" />
         </div>    
     <ion-item>
-        <ion-label color="success">Imagen</ion-label>
+        <ion-label color="primary">Imagen</ion-label>
         <ion-input name="picture" type="file" formControlName="picture" accept="image/jpeg" (change)="createFormData($event)"></ion-input>
     </ion-item>
     <ion-item [hidden]="!hasImage" class="ion-text-center">
       <ion-label>
-        <ion-button size="medium" color="success" fill="outline" expand="block" (click)="guardarImg()">Guardar Imagen</ion-button>
+        <ion-button size="medium" color="primary" fill="outline" expand="block" (click)="guardarImg()">Guardar Imagen</ion-button>
       </ion-label>
     </ion-item>
     <ion-item>
-        <ion-label color="success">Nickname</ion-label>
+        <ion-label color="primary">Nickname</ion-label>
         <ion-input name="nickname" type="text" formControlName="nickname" value="{{usuario.nickname}}" disabled="{{soloVista}}" (keyup)="check()" ></ion-input>
     </ion-item>
 
@@ -40,44 +40,44 @@
       </div>
       
     <ion-item>
-        <ion-label color="success">Nombre(s)</ion-label>
+        <ion-label color="primary">Nombre(s)</ion-label>
         <ion-input name="nombres" type="text" value="{{usuario.nombres}}" disabled></ion-input>
     </ion-item>
 
     <ion-item>
-        <ion-label color="success">Apellidos(s)</ion-label>
+        <ion-label color="primary">Apellidos(s)</ion-label>
         <ion-input name="apellidos" type="text" value="{{usuario.apellidos}}" disabled></ion-input>
     </ion-item>
 
     <ion-item>
-        <ion-label color="success">Email</ion-label>
+        <ion-label color="primary">Email</ion-label>
         <ion-input type="text" value="{{usuario.email}}" disabled></ion-input>
     </ion-item>
 
     <ion-item>
-        <ion-label color="success">Fecha Nacimiento</ion-label>
+        <ion-label color="primary">Fecha Nacimiento</ion-label>
         <ion-input type="text" value="{{usuario.fecha_nacimiento}}" disabled></ion-input>
     </ion-item>
 
     <ion-item>
-        <ion-label color="success">Sexo</ion-label>
+        <ion-label color="primary">Sexo</ion-label>
         <ion-input type="text" value="{{usuario.sexo}}" disabled></ion-input>
     </ion-item>
    
     <div class="ion-padding">
-      <ion-button disabled="{{!soloVista}}" fill="outline" size="medium" color="success" expand="block" (click)="comenzarEdicion()">Editar</ion-button>
+      <ion-button disabled="{{!soloVista}}" fill="outline" size="medium" color="primary" expand="block" (click)="comenzarEdicion()">Editar</ion-button>
     </div>
 
     <div  class="ion-padding" [hidden]="soloVista">
-      <ion-button size="medium" color="success" fill="outline" expand="block" type="submit" [disabled]="datos_perfil.invalid">Guardar</ion-button>
+      <ion-button size="medium" color="primary" fill="outline" expand="block" type="submit" [disabled]="datos_perfil.invalid">Guardar</ion-button>
     </div>
 
     <div  class="ion-padding" [hidden]="soloVista">
-        <ion-button size="medium" color="success" fill="outline" expand="block" (click)="cancelar()">Cancelar</ion-button>
+        <ion-button size="medium" color="primary" fill="outline" expand="block" (click)="cancelar()">Cancelar</ion-button>
     </div>
 
     <div class="ion-padding">
-        <ion-button size="medium" color="success" fill="outline" expand="block" routerLink="/pass-change">Cambiar contraseña</ion-button>
+        <ion-button size="medium" color="primary" fill="outline" expand="block" routerLink="/pass-change">Cambiar contraseña</ion-button>
     </div>
     </form>
 </ion-content>

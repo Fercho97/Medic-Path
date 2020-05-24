@@ -16,6 +16,7 @@ export class DirectoryPage implements OnInit {
   tipo = "all";
   hasEspe = false;
   public searchControl : FormControl;
+  public waiting : any = false;
   medicosFilter: any;
   searching=false;
   constructor(private route : ActivatedRoute, private direcServ : DirectoryService, 
@@ -30,10 +31,12 @@ export class DirectoryPage implements OnInit {
       this.hasEspe = true;
     }
     //console.log(this.tipo);
+    this.waiting=true;
     this.api.getDoctors(this.tipo).subscribe((res: any) =>{
       //console.log(res);
       this.medicos = res;
       //console.log(this.medicos);
+      this.waiting=false;
       this.medicosFilter = this.medicos;
       this.loadServ.dismiss();
     });

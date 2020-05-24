@@ -85,3 +85,11 @@
   --ion-color-base: var(--ion-color-dark-blue);
   --ion-color-contrast: var(--ion-color-dark-blue-contrast);
 }
+
+ion-loading.custom-loading{
+  .loading-wrapper{
+    --background:transparent;
+    box-shadow:none !important;
+    --spinner-color: darkblue;
+  }
+}

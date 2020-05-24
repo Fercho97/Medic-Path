@@ -8,6 +8,33 @@ ion-title{
     transform: translateX(-50%);
    }
 
+span{
+    color: blue
+}
+
+.title{
+    color:blue;
+    margin-left: 15px;
+}
+
+.range{
+  --border-width:0px;
+  --border-color:transparent;
+}
+
+.explain{
+    font-size:25px;
+}
+
+.list-md.list-inset ion-item:first-child{
+    --border-width: 0px;
+}
+
+.error-message{
+    color: red;
+    font-size: 15px; 
+}
+
 @media(max-width: 370px){
     .back{
         font-size: 11px;

@@ -30,7 +30,17 @@ ion-title{
   .list-md.list-inset ion-item:first-child{
       --border-width: 0px;
   }
-  
+
+  .error-message{
+    color: red;
+    font-size: 15px
+  }
+
+  .title{
+    color:blue;
+    margin-left: 15px;
+  }
+
 @media(max-width: 430px){
     .start{
         font-size:12px;

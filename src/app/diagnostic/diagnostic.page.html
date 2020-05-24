@@ -22,7 +22,7 @@
               <ion-button class="start" fill="outline" color="secondary" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnóstico</ion-button>
         </ion-card-content>
         <div *ngIf="sintomasShow.length>0">
-            <label >Mis síntomas seleccionados:</label>
+            <ion-label class="title">Mis síntomas seleccionados:</ion-label>
             <div style="overflow-y: auto; height: 150px;">
                 <ion-item *ngFor="let sintoma of sintomasShow">
                     <ion-label>{{sintoma.name}}</ion-label>
@@ -101,20 +101,20 @@
             </div>
             <div *ngIf="question.type === 'numeric'">
                 <form [formGroup]="numeric" (ngSubmit)="numericAnswer()">
-                    <ion-item>
+                    <ion-item class="ion-no-padding">
                         <ion-input  formControlName="temp" type="text"></ion-input>
-                      </ion-item>
+                    </ion-item>
                             <div class="validation-errors">
                             <ng-container *ngFor="let validation of errores_Diag.temp">
-                                <div class="form-control-feedback" *ngIf="numeric.get('temp').hasError(validation.type) 
+                                <div class="error-message" *ngIf="numeric.get('temp').hasError(validation.type) 
                                 && (numeric.get('temp').dirty || numeric.get('temp').touched)">
-                                <i class="fas fa-exclamation-circle"></i> {{validation.message}}
+                                <ion-icon name="alert"></ion-icon> {{validation.message}}
                                 </div>
                             </ng-container>
                         </div>
     
                     <ion-button type="submit" class="btn boton" fill="outline" [disabled]="!numeric.valid">
-                            Enviar
+                            Continuar
                     </ion-button>
                 </form>
             </div>

@@ -82,7 +82,10 @@ export class DiagnosticPage{
               private alertServ : AlertsManagerService, private modalContr : ModalController, 
               private diagServ : DiagnosticService, private platform : Platform, private loadServ : LoadingService) { 
     this.numeric = new FormGroup({
-      temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
+      temp: new FormControl('', [Validators.required,
+                                 Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$'),
+                                 Validators.max(40),
+                                 Validators.min(35),]) 
     });
     this.headCoord="210,10,150,68";
     this.abCoord= "230,270,130,140";
@@ -221,7 +224,7 @@ export class DiagnosticPage{
     mostrarPregunta(){
       this.question = this.preguntas.pop();
       //console.log(this.question);
-      if(this.question.type==='boolean' || this.question.type==='numeric'){
+      if(this.question.type==='boolean' || this.question.type==='numeric' || this.question.type==="selection"){
       let id = this.descs.pop();
       //console.log(id);
       

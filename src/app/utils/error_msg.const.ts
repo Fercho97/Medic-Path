@@ -45,6 +45,8 @@ export class ErrorMsg{
         'temp' : [
           {type: 'required', message: 'Es necesario ingresar su temperatura'},
           {type: 'pattern', message: 'Ingrese una cantidad válida'},
+          {type: "max", message: "La cantidad que usted ingreso no es válida"},
+          {type: "min", message: "La cantidad que usted ingreso no es válida"}
         ]
       }
 

@@ -37,6 +37,10 @@ ion-title{
     padding-top: 0px !important;
   }
 
+  .list-md.list-inset ion-item:first-child{
+    --border-width: 0px;
+  }
+
    @media(max-width: 370px){
     .back{
         font-size: 11px;

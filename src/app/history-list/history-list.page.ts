@@ -17,6 +17,7 @@ export class HistoryListPage{
   historialesFromDb =[] as any;
   historiales: any;
   searching=false;
+  public waiting: any = false;
   public loading;
   public loaded = false;
   constructor(private loadServ : LoadingService, private api : ApiService, private sessionServ : CurrentUserService ) {
@@ -27,10 +28,12 @@ export class HistoryListPage{
     let hash = await this.sessionServ.obtainSessionHash();
     //console.log(hash);
     this.loadServ.present();
+    this.waiting=true;
     //console.log(this.id);
     this.api.historyList(hash).subscribe( (res: any) =>{
       //console.log(res);
       this.historialesFromDb = res;
+      this.waiting=false;
       this.historiales = this.historialesFromDb;
       this.loadServ.dismiss();
     },

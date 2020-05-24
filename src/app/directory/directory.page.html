@@ -11,7 +11,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="outer-content">
+<ion-content>
     <ion-searchbar [formControl]="searchControl" 
     placeholder="Ingrese el nombre del médico"
     (ionChange)="searchInput()"></ion-searchbar>
@@ -37,5 +37,5 @@
      
       </ion-item-sliding>
   </ion-list>
-  <h2 *ngIf="medicos.length==0">No hay médicos en el sistema</h2>
+  <h2 *ngIf="medicos.length==0&&waiting==false">No hay médicos en el sistema</h2>
 </ion-content>
