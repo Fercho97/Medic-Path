@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ErrorMsg } from '../utils/error_msg.const';
+import { LoadingService } from "../services/loading.service";
 @Component({
   selector: 'app-pass-reset',
   templateUrl: './pass-reset.page.html',
@@ -16,7 +17,8 @@ export class PassResetPage implements OnInit {
   reset : FormGroup;
   mensajes_error = ErrorMsg.ERROR_MSG_REGISTER;
   
-  constructor(private recServ : ResetService, private toastr : ToastrService, private router : Router) {
+  constructor(private recServ : ResetService, private toastr : ToastrService, private router : Router,
+              private loadServ : LoadingService) {
 
     this.reset = new FormGroup({
       email: new FormControl('', [
@@ -32,12 +34,15 @@ export class PassResetPage implements OnInit {
   sendReset(){
     this.values = new HttpParams()
     .set('email', this.reset.value.email);
-
+    this.loadServ.present();
     this.recServ.resetRequest(this.values).subscribe((res :any) =>{
+      this.loadServ.dismiss();
       this.toastr.info("Si la dirección que indico se encuentra registrada en el sistema se le enviará un correo", "Enviado");
       this.router.navigate(['']);
     }, error =>{
       //console.log(error);
+      this.loadServ.dismiss();
+      this.toastr.error("Sucedió un error al procesar su petición", "Error");
       this.router.navigate(['']);
     })
     
