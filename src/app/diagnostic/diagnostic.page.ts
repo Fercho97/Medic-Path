@@ -23,11 +23,12 @@ import { Platform } from '@ionic/angular';
 moment.locale('es');
 import  imageMapResize  from 'image-map-resizer'
 import bcrypt from 'bcryptjs';
+import { LoadingService } from "../services/loading.service";
 @Component({
   selector: 'app-diagnostic',
   templateUrl: './diagnostic.page.html',
   styleUrls: ['./diagnostic.page.scss'],
-  providers: [HistoryOfflineManagerService, ApiService, NetworkService,CurrentUserService, DiagnosticService]
+  providers: [HistoryOfflineManagerService, ApiService, NetworkService,CurrentUserService, DiagnosticService, LoadingService]
 })
 export class DiagnosticPage{
 
@@ -79,7 +80,7 @@ export class DiagnosticPage{
               private router : Router, private nav : NavController,
               private api : ApiService, private network : NetworkService, private session : CurrentUserService,
               private alertServ : AlertsManagerService, private modalContr : ModalController, 
-              private diagServ : DiagnosticService, private platform : Platform) { 
+              private diagServ : DiagnosticService, private platform : Platform, private loadServ : LoadingService) { 
     this.numeric = new FormGroup({
       temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
     });
@@ -94,7 +95,7 @@ export class DiagnosticPage{
 
   ionViewWillEnter() {
     imageMapResize();
-
+    this.loadServ.present();
     this.api.getZones().subscribe(res =>{
       
       return this.zone_options = res;
@@ -116,8 +117,8 @@ export class DiagnosticPage{
 
     this.api.withFeedback().subscribe((res:any) =>{
       this.compare_historiales =res.body.resultado;
-      
     })
+    this.loadServ.dismiss();
   }
 
  /** ionViewWillEnter() {

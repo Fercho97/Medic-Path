@@ -21,11 +21,12 @@ import { Platform } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
 import { Catalogos } from '../utils/catalogos.const';
+import { LoadingService } from "../services/loading.service";
 @Component({
   selector: 'app-guided-diagnostic',
   templateUrl: './guided-diagnostic.page.html',
   styleUrls: ['./guided-diagnostic.page.scss'],
-  providers: [DiagnosticService]
+  providers: [DiagnosticService, LoadingService]
 })
 export class GuidedDiagnosticPage{
 
@@ -78,7 +79,7 @@ export class GuidedDiagnosticPage{
   constructor(private diagServ : DiagnosticService, private toast : ToastrService,
               private router : Router, private api : ApiService, private network : NetworkService,
               private histServ : HistoryOfflineManagerService, private alertServ : AlertsManagerService,
-              private platform : Platform, private modalContr : ModalController) { 
+              private platform : Platform, private modalContr : ModalController, private loadServ : LoadingService) { 
                 this.numeric = new FormGroup({
                   temp: new FormControl('', [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]) 
                 });
@@ -93,6 +94,7 @@ export class GuidedDiagnosticPage{
 
    ionViewWillEnter() {
     imageMapResize();
+    this.loadServ.present();
     this.api.obtenerUsuarios().subscribe((res: any) =>{
 
       this.usuarios = res;
@@ -100,9 +102,7 @@ export class GuidedDiagnosticPage{
     })
 
     this.api.getZones().subscribe(res =>{
-      
       return this.zone_options = res;
-      
      //console.log(this.compuestos);
    }, error =>{
      this.toast.error('Hubo un error al conseguir la información del catálogo de zonas, favor de recargar la página', 'Error');
@@ -119,6 +119,7 @@ export class GuidedDiagnosticPage{
       }
     })
     
+    this.loadServ.dismiss();
   }
 
   InitiatePlatformIfReady() {
