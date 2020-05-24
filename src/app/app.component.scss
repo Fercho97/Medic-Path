@@ -1,0 +1,22 @@
+.active-link {
+    --background: var(--ion-color-dark-blue);
+    --color:white;
+  }
+
+ion-item{
+    --background: var(--ion-color-primary);
+    --color: #0f4570;
+}
+
+ion-list{
+    padding-top: 0px !important;
+}
+
+ion-item.active-link > ion-icon{
+    color: white
+  }
+
+ion-icon{
+    --color:rgb(228, 198, 198);
+}
+
