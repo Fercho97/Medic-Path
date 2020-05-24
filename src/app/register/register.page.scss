@@ -24,6 +24,12 @@ ion-title{
     --background: #f8f9fa;
 }
 
-.gradient{
-    --background: linear-gradient(rgb(56, 128, 255) 0%, rgb(225, 232, 243) 13.5%, rgb(255, 255, 255) 100%) !important;
+ion-item.item-has-focus > ion-label{
+    color: var(--ion-color-dark-blue) !important;
+  }
+
+@media(max-width:320px){
+    ion-title{
+        font-size:15px;
+    }
 }

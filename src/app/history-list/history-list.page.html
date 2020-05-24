@@ -15,11 +15,11 @@
   placeholder="Ingrese el mes, año o día de su consulta"
   (ionChange)="searchInput()"></ion-searchbar>
   <div *ngIf="searching" class="loading">
-      <ion-spinner></ion-spinner>
+      <ion-spinner name="circles" color="dark-blue"></ion-spinner>
   </div>  
   <ion-list *ngIf="historialesFromDb.length>0">
   <ion-item-sliding *ngFor="let hist of historiales">
-        <ion-item class="item item-block item-md">
+        <ion-item class="item item-block item-md fromLeft">
             <ion-label><h3 class="ion-text-wrap">Consulta del día {{hist.fecha_consulta}}</h3>
               <ion-label ><ion-text color="primary">Sintomas:</ion-text></ion-label>
                 <ng-container *ngFor="let sint of hist.detalles.split(','); let i=index">
@@ -38,5 +38,5 @@
        
         </ion-item-sliding>
       </ion-list>
-      <h2 *ngIf="historialesFromDb.length==0">Su historial de consultas esta limpio, favor de realizar una consulta</h2>
+      <h2 *ngIf="historialesFromDb.length==0">No tiene consultas registradas</h2>
 </ion-content>

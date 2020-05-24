@@ -14,6 +14,9 @@
 <ion-content>
   <div *ngIf="isDoctor">
     <h4 text-center>Ultimas actualizaciones</h4>
+    <div *ngIf="searching" class="loading">
+      <ion-spinner name="circles" color="dark-blue"></ion-spinner>
+    </div> 
     <p class="ion-text-center" text-center *ngIf="symptomsNew.length==0">Por el momento no se ha actualizado nada en la base de conocimiento</p>
     <ion-card *ngFor="let sintoma of symptomsNew" class="items fromLeft">
       <ion-card-header>
@@ -30,7 +33,10 @@
   </div>
   <div *ngIf="!isDoctor" class="ion-text-center">
     <h4>Notificaciones</h4>
-    <p *ngIf="roosterNews.length==0">Por el momento no tiene notificaciones</p>
+    <div *ngIf="searching" class="loading">
+      <ion-spinner name="circles" color="dark-blue"></ion-spinner>
+    </div> 
+    <p *ngIf="roosterNews.length==0&&searching=='false'">Por el momento no tiene notificaciones</p>
 
     <ion-card *ngFor="let new of roosterNews" class="items fromLeft">
       <ion-card-header>
@@ -38,7 +44,7 @@
         <ion-card-title>{{new.filter_date}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-button routerLink="/history-detail/{{new.hashId}}" size="small" color="primary" >Ver</ion-button>
+        <ion-button class="view" routerLink="/history-detail/{{new.hashId}}" size="small" color="dark-blue" fill="outline">Ver</ion-button>
       </ion-card-content>
     </ion-card>
   </div>

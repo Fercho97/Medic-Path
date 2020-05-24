@@ -21,7 +21,7 @@ export class HistoryDetailPage {
   niveles = "";
   public nivelesInfo = ErrorMsg.LEVEL_EXPLAIN;
   public recomendaciones : any = [];
-  public seleccionado = "";
+  public seleccionado = null;
   public hasOneSelected = false;
   constructor(private api : ApiService, private route : ActivatedRoute,
               private alertServ : AlertsManagerService, private toast : ToastrService,
@@ -61,7 +61,6 @@ export class HistoryDetailPage {
   }
 
   actualizar(){
-
     let values = new HttpParams()
       .set('seleccion', this.seleccionado)
     this.api.actualizacionEspecialista(this.historial.hashId, values).subscribe( (res: any) =>{

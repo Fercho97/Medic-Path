@@ -9,6 +9,18 @@
     margin-right: auto;
   }
 
+  ion-item.item-has-focus > ion-label{
+    color: var(--ion-color-dark-blue) !important;
+  }
+
+  ion-item{
+    --highlight-invalid:blue;
+  }
+
+  .round-button{
+    text-transform: none;
+  }
+
   @media(max-width: 425px){
     .round-button{
         font-size: 12px;
@@ -17,7 +29,7 @@
 
   @media(max-width: 375px){
     .round-button{
-        font-size: 9px;
+        font-size: 11px;
         max-width: 150px;
     }
 

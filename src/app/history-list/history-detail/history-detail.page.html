@@ -35,9 +35,9 @@
     </div>
       <div *ngIf="niveles!=''">
         <div *ngIf="niveles.Medio.length>0">
-        <ion-item color="medium">Síntomas destacados  <ion-icon name="help-circle" slot="end" (click)="showInfo('medio')"></ion-icon></ion-item>
+        <ion-item color="success">Síntomas destacados  <ion-icon name="help-circle" slot="end" (click)="showInfo('medio')"></ion-icon></ion-item>
         <ion-list inset=true>
-            <ion-item *ngFor="let niv of niveles.Medio" text-wrap>
+            <ion-item *ngFor="let niv of niveles.Medio">
                 <ion-label *ngIf="niv.reason=='' || niv.reason==undefined" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
                 <ion-label *ngIf="niv.reason!='' && niv.reason!=undefined" class="ion-text-wrap">{{niv.sintoma}} - {{niv.reason}}</ion-label>
                 <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(niv.descripcion)"></ion-icon>
@@ -45,9 +45,9 @@
         </ion-list>
       </div>
       <div *ngIf="niveles.Ninguno.length>0">
-        <ion-item color="medium">Síntomas sin urgencia  <ion-icon name="help-circle" slot="end" (click)="showInfo('ninguno')"></ion-icon></ion-item>
+        <ion-item color="secondary">Síntomas sin urgencia  <ion-icon name="help-circle" slot="end" (click)="showInfo('ninguno')"></ion-icon></ion-item>
         <ion-list inset=true>
-            <ion-item *ngFor="let niv of niveles.Ninguno" text-wrap>
+            <ion-item *ngFor="let niv of niveles.Ninguno">
                 <ion-label *ngIf="niv.reason=='' || niv.reason==undefined" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
                 <ion-label *ngIf="niv.reason!='' && niv.reason!=undefined" class="ion-text-wrap">{{niv.sintoma}} - {{niv.reason}}</ion-label>
                 <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(niv.descripcion)"></ion-icon>
@@ -55,9 +55,9 @@
         </ion-list>
       </div>
       <div *ngIf="niveles.Bajo.length>0">
-        <ion-item color="medium">Síntomas de baja urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('bajo')"></ion-icon></ion-item>
+        <ion-item color="primary">Síntomas de baja urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('bajo')"></ion-icon></ion-item>
         <ion-list inset=true>
-                <ion-item *ngFor="let niv of niveles.Bajo" text-wrap>
+                <ion-item *ngFor="let niv of niveles.Bajo">
                     <ion-label *ngIf="niv.reason=='' || niv.reason==undefined" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
                     <ion-label *ngIf="niv.reason!='' && niv.reason!=undefined" class="ion-text-wrap">{{niv.sintoma}} - {{niv.reason}}</ion-label>
                     <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(niv.descripcion)"></ion-icon>
@@ -65,9 +65,9 @@
         </ion-list>
       </div>
       <div *ngIf="niveles.Alto.length>0">
-        <ion-item color="medium">Síntomas de alta urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('alto')"></ion-icon></ion-item>
+        <ion-item color="warning">Síntomas de alta urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('alto')"></ion-icon></ion-item>
         <ion-list inset=true>
-            <ion-item *ngFor="let niv of niveles.Alto" text-wrap>
+            <ion-item *ngFor="let niv of niveles.Alto">
                 <ion-label *ngIf="niv.reason=='' || niv.reason==undefined" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
                 <ion-label *ngIf="niv.reason!='' && niv.reason!=undefined" class="ion-text-wrap">{{niv.sintoma}} - {{niv.reason}}</ion-label>
                 <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(niv.descripcion)"></ion-icon>
@@ -75,9 +75,9 @@
         </ion-list>
       </div>
       <div *ngIf="niveles.Severo.length>0">
-        <ion-item color="medium">Síntomas de severidad <ion-icon name="help-circle" slot="end" (click)="showInfo('severo')"></ion-icon></ion-item>
+        <ion-item color="danger">Síntomas de severidad <ion-icon name="help-circle" slot="end" (click)="showInfo('severo')"></ion-icon></ion-item>
         <ion-list inset=true>
-            <ion-item *ngFor="let niv of niveles.Severo" text-wrap>
+            <ion-item *ngFor="let niv of niveles.Severo">
                 <ion-label *ngIf="niv.reason=='' || niv.reason==undefined" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
                 <ion-label *ngIf="niv.reason!='' && niv.reason!=undefined" class="ion-text-wrap">{{niv.sintoma}} - {{niv.reason}}</ion-label>
                 <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(niv.descripcion)"></ion-icon>
@@ -93,10 +93,10 @@
             <ion-select-option *ngFor="let recomendacion of recomendaciones" [value]="recomendacion.espe">{{recomendacion.espe}}</ion-select-option>
           </ion-select>
     
-          <ion-button type="button" *ngIf="seleccionado!='' || hasOneSelected==false" class="secondary" (click)="actualizar()">Guardar</ion-button>
+          <ion-button type="button" fill="outline" extend="full" *ngIf="seleccionado!=null && hasOneSelected==false" class="secondary" (click)="actualizar()">Guardar</ion-button>
         </div> 
         <div *ngIf="hasOneSelected==true">
-          <ion-label class="title">Especialista consultado</ion-label>
+          <ion-label color="primary">Especialista consultado</ion-label>
           <ion-input type="text"  value="{{seleccionado}}" disabled ></ion-input>
         </div> 
     </ion-card-content>

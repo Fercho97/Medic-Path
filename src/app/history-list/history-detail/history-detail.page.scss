@@ -12,10 +12,9 @@ ion-title{
     height: 100%;
     text-align: center;
     transform: translateX(-50%);
+    font-size:17px;
    }
 
-   @media(max-width: 590px){
-    ion-title{
-        font-size: 10px
-    }
-}
+   ion-input{
+       color:black;
+   }

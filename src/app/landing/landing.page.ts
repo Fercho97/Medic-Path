@@ -18,6 +18,7 @@ export class LandingPage {
   isDoctor : boolean;
   symptomsNew : any = [];
   roosterNews: any = [];
+  searching=false;
   constructor(private router : Router, private alertCtr : AlertController, 
               private session : CurrentUserService, private storage : Storage,
               private offline : OfflineRequestsManager, private api : ApiService,
@@ -32,15 +33,17 @@ export class LandingPage {
   
     if(userType=="2"){
       this.isDoctor=true;
-      
+      this.searching=true;
       this.api.getLastSymptoms().subscribe((res:any) =>{
+        this.searching=false;
         this.symptomsNew = res;
       });
     }else{
       let id = await this.session.obtainSessionId();
       //console.log(id);
+      this.searching=true;
       this.api.getNotifications(id).subscribe((res:any) =>{
-        
+        this.searching=false;
         this.roosterNews = res;
       })
     }

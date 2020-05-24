@@ -6,8 +6,27 @@ ion-title{
     height: 100%;
     text-align: center;
     transform: translateX(-50%);
-    font-size:12px;
+    font-size:15px;
    }
+
+   ion-item.item-has-focus > ion-label{
+    color: var(--ion-color-dark-blue) !important;
+  }
+
+  ion-button{
+      text-transform: none;
+  }
+
+  .error-message{
+    color: red;
+    font-size: 15px;
+  }
+
+  @media(max-width: 425px){
+    ion-title{
+        font-size: 14px;
+    }
+  }
 
    @media(max-width: 370px){
     .back{

@@ -128,4 +128,7 @@ export class RegisterPage implements OnInit {
     }
   }
 
+  ionViewWillLeave(){
+    this.datos_registro.reset();
+  }
 }

@@ -2,6 +2,12 @@
     color:blue;
 }
 
+.loading{
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+}
+
 .fromLeft{
     animation-name: fromLeft;
     -webkit-animation-name: fromLeft;
@@ -21,7 +27,9 @@
     100%{transform: translateX(0%)}
   }
 
-
+.view{
+  text-transform: none;
+}
 @media(max-width: 370px){
 
     ion-title{

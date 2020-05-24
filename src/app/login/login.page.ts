@@ -37,8 +37,8 @@ export class LoginPage {
     this.api.checkLogin(this.values).subscribe( (res : any) =>{
       
     if(res.body.message=="Verificacion"){
-      this.toast.info('Su cuenta aun no se encuentra verificada, favor de verificarla mediante su correo.', 'Cuenta sin verificar');
       this.loadServ.dismiss();
+      this.toast.info('Su cuenta aun no se encuentra verificada, favor de verificarla mediante su correo.', 'Cuenta sin verificar');
     }else{
       this.loadServ.dismiss();
       window.localStorage.setItem('username',res.body.usuario.nickname);
@@ -53,6 +53,7 @@ export class LoginPage {
     }
   }, error =>{
       //console.log("Error", error.error.message);
+      this.loadServ.dismiss();
       this.toast.error(error.error.message, 'Error');
   })
   }else{
