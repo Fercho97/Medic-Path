@@ -52,6 +52,10 @@ const checkEmail = apiUrl + 'usuarios/checkEmail/';
 
 const zonasList = apiUrl + 'sintomas/zones/list';
 
+const urlEditar = apiUrl + 'usuarios/update/';
+
+const urlCambioImagen = apiUrl + 'usuarios/cambiarImagen/';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -379,6 +383,26 @@ getZones() {
           this.setLocalData('zonas', res);
         }))
   }
+}
+
+updateUser(hash : any,valores : FormData){
+  const headers = new HttpHeaders({'X-Requested-With':'XMLHttpRequest'});
+  return this.http.put(urlEditar + encodeURIComponent(hash),
+      valores,
+      {
+          headers: headers,
+          observe : 'response' 
+      }
+  )
+}
+
+updateProfilePic(hash : any,imagen : FormData){
+  return this.http.put(urlCambioImagen + encodeURIComponent(hash),
+      imagen,
+      {
+          observe : 'response' 
+      }
+  )
 }
 
 private setLocalData(key, data){

@@ -81,7 +81,7 @@ export class ProfilePage implements OnInit{
     //console.log(this.datos_perfil.value);
     this.loadServ.present();
     this.formData.append('nickname', this.datos_perfil.value.nickname);
-        this.profileServ.updateUser(this.hash, this.formData).subscribe( (res: any) =>{
+        this.api.updateUser(this.hash, this.formData).subscribe( (res: any) =>{
           this.soloVista=true;
           window.localStorage.setItem('username',this.datos_perfil.value.nickname);
           if(res.body.message=="No hubo cambios"){
@@ -108,7 +108,7 @@ export class ProfilePage implements OnInit{
 
   guardarImg(){
         this.loadServ.present();
-        this.profileServ.updateProfilePic(this.hash, this.formDataImg).subscribe( (res: any) =>{
+        this.api.updateProfilePic(this.hash, this.formDataImg).subscribe( (res: any) =>{
           this.formDataImg = new FormData();
           this.loadServ.dismiss();
           window.location.reload();

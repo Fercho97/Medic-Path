@@ -23,7 +23,7 @@
         </ion-card-content>
         <div *ngIf="sintomasShow.length>0">
             <label >Mis síntomas seleccionados:</label>
-            <div style="overflow-y: auto; height: 200px;">
+            <div style="overflow-y: auto; height: 150px;">
                 <ion-item *ngFor="let sintoma of sintomasShow">
                     <ion-label>{{sintoma.name}}</ion-label>
                     <ion-icon name="help-circle" slot="end" (click)="alertServ.infoAlert(sintoma.descripcion)"></ion-icon>
@@ -69,26 +69,40 @@
 <div [hidden]="!hasPregunta">
     <ion-card>
         <ion-card-header>
-          <ion-card-subtitle>Sus síntomas: {{breadcrumb}}</ion-card-subtitle>
-          <ion-card-subtitle *ngIf="!hasResult && question.type==='boolean'">Descripción: {{descripcion}}</ion-card-subtitle>
+          <ion-card-subtitle><span>Sus síntomas:</span> {{breadcrumb}}</ion-card-subtitle>
+          <ion-card-subtitle *ngIf="!hasResult && question.type==='boolean'" class="ion-text-justify"><span>Descripción:</span> {{descripcion}}</ion-card-subtitle>
           <ion-card-title>{{question.message}}</ion-card-title>
          </ion-card-header>
         <ion-card-content>
             <div *ngIf="question.type === 'boolean'">
-            <ion-button size="medium" slot="end" expand="block" color="success" [hidden]="hasResult" (click)="responder('Si')">Si</ion-button>
-            
-            <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>
+                <ion-grid>
+                    <ion-row>
+                    <ion-col col-6>
+                        <ion-button size="medium" expand="block" color="danger" [hidden]="hasResult" (click)="responder('No')">No</ion-button>
+                    </ion-col>
+                    <ion-col col-6>
+                        <ion-button size="medium" expand="block" color="success" [hidden]="hasResult" (click)="responder('Si')">Si</ion-button>
+                    </ion-col>
+                    </ion-row>
+                </ion-grid>
             </div>
 
             <div *ngIf="question.type === 'option'">
-                <ion-button size="medium" slot="end" expand="block" color="success" [hidden]="hasResult" (click)="optionAnswer(question.options,question.normal,question.atoms,'Si')">Si</ion-button>
-            
-                <ion-button size="medium" slot="start" expand="block" color="danger" [hidden]="hasResult" (click)="optionAnswer(question.options,question.normal,question.atoms,'No')">No</ion-button>
+                 <ion-grid>
+                     <ion-row>
+                      <ion-col col-6>
+                        <ion-button size="medium" expand="block" color="danger" [hidden]="hasResult" (click)="optionAnswer(question.options,question.normal,question.atoms,'No')">No</ion-button>
+                      </ion-col>
+                      <ion-col col-6>
+                        <ion-button size="medium" expand="block" color="success" [hidden]="hasResult" (click)="optionAnswer(question.options,question.normal,question.atoms,'Si')">Si</ion-button>
+                      </ion-col>
+                    </ion-row>
+                 </ion-grid>   
             </div>
             <div *ngIf="question.type === 'numeric'">
                 <form [formGroup]="numeric" (ngSubmit)="numericAnswer()">
                     <ion-item>
-                        <ion-input  formControlName="temp" type="text" placeholder="Temperatura corporal"></ion-input>
+                        <ion-input  formControlName="temp" type="text"></ion-input>
                       </ion-item>
                             <div class="validation-errors">
                             <ng-container *ngFor="let validation of errores_Diag.temp">
@@ -99,29 +113,33 @@
                             </ng-container>
                         </div>
     
-                    <ion-button type="submit" class="btn btn-outline-primary boton" [disabled]="!numeric.valid">
+                    <ion-button type="submit" class="btn boton" fill="outline" [disabled]="!numeric.valid">
                             Enviar
                     </ion-button>
                 </form>
             </div>
 
             <div *ngIf="question.type === 'scale'">
-                <ion-item>
+                <ion-item class="range">
                     <ion-range [color]="color" min="1" max="10" pin [(ngModel)]="painIndex" (ionChange)="rangeDynamic()" snaps="true"></ion-range>
                     </ion-item>
-                <ion-button class="btn btn-outline-primary boton" (click)="scaleAnswer(question.index)">
-                            Enviar
+                <ion-button class="btn boton" expand="block" fill="outline" (click)="scaleAnswer(question.index)">
+                            Continuar
                 </ion-button>
             </div>
             <br>
 
             <div *ngIf="question.type === 'selection'">
                 <div *ngFor="let boton of question.buttons">
-                    <ion-button size="medium" slot="start" expand="block" color="primary" (click)=selectedOption(boton.value)>{{boton.message}}</ion-button>
-                    <i class="far fa-question-circle" title="{{boton.desc}}"></i>
+                    <ion-item class="ion-text-center range">
+                    <ion-label>
+                        <ion-button size="medium" fill="outline" color="primary" (click)=selectedOption(boton.value)>{{boton.message}}</ion-button>
+                    </ion-label>
+                    <ion-icon class="explain" name="help-circle" (click)="alertServ.infoAlert(boton.desc)" ></ion-icon>
+                    </ion-item>
                 </div>
             </div>
-            <ion-button routerLink="/history-list" replaceUrl="true" expand="block"  size="medium" color="primary" [hidden]="!hasResult" >Continuar</ion-button>
+            <ion-button routerLink="/history-list" replaceUrl="true" expand="block" fill="outline" size="medium" color="primary" [hidden]="!hasResult" >Continuar</ion-button>
 
         </ion-card-content>
       </ion-card>
@@ -138,7 +156,7 @@
 
     <div>
         <div *ngIf="niveles.Medio.length>0">
-            <ion-item color="medium">Síntomas destacados  <ion-icon name="help-circle" slot="end" (click)="showInfo('medio')"></ion-icon></ion-item>
+            <ion-item color="success">Síntomas destacados  <ion-icon name="help-circle" slot="end" (click)="showInfo('medio')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Medio">
                     <ion-label *ngIf="niv.reason==''" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
@@ -147,7 +165,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Ninguno.length>0">
-            <ion-item color="medium">Síntomas sin urgencia  <ion-icon name="help-circle" slot="end" (click)="showInfo('ninguno')"></ion-icon></ion-item>
+            <ion-item color="secondary">Síntomas sin urgencia  <ion-icon name="help-circle" slot="end" (click)="showInfo('ninguno')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Ninguno">
                     <ion-label *ngIf="niv.reason==''" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
@@ -156,7 +174,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Bajo.length>0">
-            <ion-item color="medium">Síntomas de baja urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('bajo')"></ion-icon></ion-item>
+            <ion-item color="primary">Síntomas de baja urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('bajo')"></ion-icon></ion-item>
             <ion-list inset=true>
                     <ion-item *ngFor="let niv of niveles.Bajo">
                       <ion-label *ngIf="niv.reason==''" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
@@ -165,7 +183,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Alto.length>0">
-            <ion-item color="medium">Síntomas de alta urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('alto')"></ion-icon></ion-item>
+            <ion-item color="warning">Síntomas de alta urgencia <ion-icon name="help-circle" slot="end" (click)="showInfo('alto')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Alto">
                     <ion-label *ngIf="niv.reason==''" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
@@ -174,7 +192,7 @@
             </ion-list>
           </div>
           <div *ngIf="niveles.Severo.length>0">
-            <ion-item color="medium">Síntomas de severidad <ion-icon name="help-circle" slot="end" (click)="showInfo('severo')"></ion-icon></ion-item>
+            <ion-item color="danger">Síntomas de severidad <ion-icon name="help-circle" slot="end" (click)="showInfo('severo')"></ion-icon></ion-item>
             <ion-list inset=true>
                 <ion-item *ngFor="let niv of niveles.Severo">
                     <ion-label *ngIf="niv.reason==''" class="ion-text-wrap">{{niv.sintoma}}</ion-label>
@@ -195,7 +213,7 @@
     <div>
     <ion-item color="primary">Conforme sus síntomas le recomendamos asistir con:</ion-item>
     <ion-list>
-        <ion-item>
+        <ion-item class="range">
             <ion-label color="primary">
             {{doc_recomendacion[0].espe}}
             </ion-label>
@@ -204,7 +222,7 @@
     </div>
     <div *ngIf="doc_recomendacion.length>1">
         <ion-item color="primary">o bien con un:</ion-item>
-        <ion-item>
+        <ion-item class="range">
             <ion-label color="primary">
             {{doc_recomendacion[1].espe}}
             </ion-label>
@@ -215,7 +233,7 @@
     <div *ngIf="user_recommendation.length>0">
         <div>
         <ion-item color="primary">Pacientes con síntomas similares a los suyos suelen asistir con:</ion-item>
-        <ion-item>    
+        <ion-item class="range">    
         <ion-label color="primary">
             {{user_recommendation[0].espe}}
         </ion-label>
