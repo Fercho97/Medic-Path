@@ -572,10 +572,10 @@ export class DiagnosticPage{
           if(this.painIndex> 1 && this.painIndex<3){
             this.color="primary";
           }
-          else if(this.painIndex> 3 && this.painIndex<6){
+          else if(this.painIndex>= 3 && this.painIndex<5){
             this.color="success";
           }
-          else if(this.painIndex> 6 && this.painIndex<8){
+          else if(this.painIndex>= 5 && this.painIndex<8){
             this.color="warning";
           }
           else if(this.painIndex>= 8 && this.painIndex<=10){
