@@ -28,8 +28,8 @@
               </ion-select>
           <ion-card-content>
             <!---<ion-button color="medium" *ngIf="selectedUser" (click)="iniciarDiagnostico()"  expand="block" slot="end">Iniciar diagnóstico desde 0</ion-button>--->
-            <ion-label *ngIf="selectedUser" class="ion-text-justify">Seleccione el área en donde el paciente tenga la mayor cantidad de molestia y seleccione los síntomas que detecte</ion-label>
-            <ion-button color="success" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnóstico</ion-button>
+            <ion-label *ngIf="selectedUser" class="ion-text-justify">Seleccione el área en donde el paciente tenga la mayor cantidad de molestia y seleccione los síntomas que detecte, puede cambiar la imagen deslizando hacia la derecha</ion-label>
+            <ion-button fill="outline" color="secondary" *ngIf="sintomasSeleccionados.length>0" (click)="fromSintomasIniciales()"  expand="block" slot="end">Iniciar diagnóstico</ion-button>
           </ion-card-content>
           <div *ngIf="sintomasShow.length>0">
             <ion-label>Síntomas seleccionados:</ion-label>
@@ -129,7 +129,7 @@
                     </div>
                 </div>
             <br>
-            <ion-button *ngIf='isDoctor' (click)="goBack()" routerLink="/landing" expand="block"  size="medium" color="medium" [hidden]="!hasResult" >Finalizar</ion-button>
+            <ion-button *ngIf='isDoctor' (click)="goBack()" routerLink="/landing" expand="block"  size="medium" color="primary" [hidden]="!hasResult" >Finalizar</ion-button>
 
         </ion-card-content>
       </ion-card>
