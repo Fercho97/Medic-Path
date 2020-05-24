@@ -16,7 +16,7 @@
     placeholder="Ingrese el nombre del médico"
     (ionChange)="searchInput()"></ion-searchbar>
     <div *ngIf="searching" class="loading">
-        <ion-spinner></ion-spinner>
+        <ion-spinner name="circles" color="dark-blue"></ion-spinner>
     </div>  
   <ion-list *ngIf="medicos.length>0">
     <ion-item-sliding *ngFor="let medico of medicosFilter">

@@ -14,6 +14,10 @@ ion-title{
     transform: translateX(-50%);
    }
 
+   ion-item.item-has-focus > ion-label{
+    color: var(--ion-color-dark-blue) !important;
+  }
+  
 @media(max-width: 370px){
     .back{
         font-size: 10px;
