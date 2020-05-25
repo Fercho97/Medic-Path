@@ -19,7 +19,7 @@
   </div>  
   <ion-list *ngIf="historialesFromDb.length>0">
   <ion-item-sliding *ngFor="let hist of historiales">
-        <ion-item class="item item-block item-md fromLeft">
+        <ion-item class="item item-block item-md fromRight">
             <ion-label><h3 class="ion-text-wrap">Consulta del día {{hist.fecha_consulta}}</h3>
               <ion-label ><ion-text color="primary">Sintomas:</ion-text></ion-label>
                 <ng-container *ngFor="let sint of hist.detalles.split(','); let i=index">

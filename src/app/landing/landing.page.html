@@ -18,7 +18,7 @@
       <ion-spinner name="circles" color="dark-blue"></ion-spinner>
     </div> 
     <p class="ion-text-center" text-center *ngIf="symptomsNew.length==0&&searching=='false'">Por el momento no se ha actualizado nada en la base de conocimiento</p>
-    <ion-card *ngFor="let sintoma of symptomsNew" class="items fromLeft">
+    <ion-card *ngFor="let sintoma of symptomsNew" class="items fromRight">
       <ion-card-header>
         <ion-card-subtitle *ngIf="sintoma.hasOwnProperty('nombre_sint')">Sintoma registrado</ion-card-subtitle>
         <ion-card-subtitle *ngIf="sintoma.hasOwnProperty('nombre_pad')">Padecimiento registrado</ion-card-subtitle>
@@ -38,7 +38,7 @@
     </div> 
     <p *ngIf="roosterNews.length==0&&searching=='false'">Por el momento no tiene notificaciones</p>
 
-    <ion-card *ngFor="let new of roosterNews" class="items fromLeft">
+    <ion-card *ngFor="let new of roosterNews" class="items fromRight">
       <ion-card-header>
         <ion-card-subtitle>Tiene una consulta sin retroalimentación del día: </ion-card-subtitle>
         <ion-card-title>{{new.filter_date}}</ion-card-title>

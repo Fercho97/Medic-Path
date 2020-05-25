@@ -20,7 +20,7 @@
     </div>  
   <ion-list *ngIf="medicos.length>0">
     <ion-item-sliding *ngFor="let medico of medicosFilter">
-      <ion-item class="item item-block item-md">
+      <ion-item class="item item-block item-md fromRight">
           <ion-label><h2 class="ion-text-wrap">Doctor {{medico.nombres}}</h2>
                      <h2 class="ion-text-wrap">       {{medico.apellidos}}</h2>
                                             <p><span class="title ion-text-wrap">Teléfono:</span> {{medico.telefono}}</p>

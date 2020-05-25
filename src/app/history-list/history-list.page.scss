@@ -14,9 +14,9 @@ ion-title{
     transform: translateX(-50%);
    }
 
-   .fromLeft{
-    animation-name: fromLeft;
-    -webkit-animation-name: fromLeft;
+   .fromRight{
+    animation-name: fromRight;
+    -webkit-animation-name: fromRight;
     animation-duration: 1s;
     -webkit-animation-duration: 1s;
     animation-timing-function: ease-in-out;
@@ -24,7 +24,7 @@ ion-title{
     visibility: visible !important;
   }
   
-  @keyframes fromLeft{
+  @keyframes fromRight{
     0%{transform: translateX(150%);}
     50%{transform: translateX(-8%);}
     65%{transform: translateX(4%);}
