@@ -204,7 +204,7 @@
   <ul *ngIf="sintomasExtras.length>0  && idResultado==''">
     <h2>Sin embargo conforme los síntomas que indico notamos que concuerdan con las siguientes enfermedades con un porcentaje: </h2>
     <li *ngFor="let sints of sintomasExtras">
-      {{sints.padecimiento + " " + sints.porcentaje}} 
+      {{sints.padecimiento + " " + sints.porcentaje}}%
       <p><ion-progress-bar color="primary" value="{{sints.showPorcentaje}}"></ion-progress-bar></p>
     </li>
 </ul>

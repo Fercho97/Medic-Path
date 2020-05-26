@@ -292,10 +292,20 @@ export class GuidedDiagnosticPage{
         }
       }else{
         if(this.sintomasExtras[0].porcentaje>=75){
+          if(this.sintomasExtras.length>1){
+            if(this.sintomasExtras[0].porcentaje == this.sintomasExtras[1].porcentaje){
+              this.question = {
+                message: 
+                "No se encontró un resultado único, esto debido a los síntomas que presenta el paciente, ya que tienen un mismo rango de similitud entre " + this.sintomasExtras[0].padecimiento +
+                " y " + this.sintomasExtras[1].padecimiento
+              }
+            }
+          }else{
           this.question={message: "No se encontro un resultado en especifico, sin embargo por similitud de síntomas, encontramos que su paciente presenta un porcentaje elevado de tener " + this.sintomasExtras[0].padecimiento + " por lo tanto se guarda para observación"}
           this.idResultado=this.sintomasExtras[0].id;
           let comment = "Se guardo para observación ya que presento una similitud de sintomatología del " + this.sintomasExtras[0].porcentaje + " porciento con el resultado mostrado";
           this.guardar(comment);
+        }
         }else{
           this.question={message: "Lo sentimos, no se ha podido encontrar un padecimiento en especifico conforme los síntomas de su paciente"};
         }

@@ -301,6 +301,15 @@ export class DiagnosticPage{
         }
       }else{
         if(this.sintomasExtras[0].porcentaje>=75){
+          if(this.sintomasExtras.length>1){
+            if(this.sintomasExtras[0].porcentaje == this.sintomasExtras[1].porcentaje){
+              this.question = {
+                message: 
+                "No se encontró un resultado único, esto debido a que usted presenta síntomas que tienen un mismo rango de similitud entre " + this.sintomasExtras[0].padecimiento +
+                " y " + this.sintomasExtras[1].padecimiento + " por lo tanto le recomendamos asistir con un médico para poder saber con exactitud que es lo que tiene."
+              }
+            }
+          }else{
           this.question={message: "No se encontro un resultado en especifico, sin embargo por similitud de síntomas, encontramos que usted presenta un porcentaje elevado de tener " + this.sintomasExtras[0].padecimiento + " por lo tanto se guarda para observación"}
           this.idResultado=this.sintomasExtras[0].id;
           let comment = "Se guardo para observación ya que presento una similitud de sintomatología del " + this.sintomasExtras[0].porcentaje + " porciento con el resultado mostrado";
@@ -320,6 +329,7 @@ export class DiagnosticPage{
           var user = await this.session.obtainSessionId();
           this.guardar(details,detailsIds,user,comment);
           this.user_recommendation = this.calculusClass.userFeedbackRecommendation(this.compare_historiales,detailsIds,user,this.idResultado);
+        }
         }else{
           this.question={message: "Lo sentimos, no se ha podido encontrar un padecimiento en especifico conforme sus síntomas"};
         }
@@ -358,7 +368,7 @@ export class DiagnosticPage{
 
     async showWhy(){
       //console.log(this.reglaEvaluar.partesConclusion[0].desc)
-      this.question={message: "Usted padece de : " + this.reglaEvaluar.partesConclusion[0].desc }
+      this.question={message: "El sistema detecto que usted puede padecer de : " + this.reglaEvaluar.partesConclusion[0].desc }
       this.hasResult=true;
       this.idResultado=this.reglaEvaluar.partesConclusion[0].padecimiento;
      
