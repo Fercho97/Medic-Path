@@ -146,6 +146,21 @@
                         </ion-item>
                     </div>
                 </div>
+
+                <div *ngIf="question.type === 'indecision'">
+                    <div *ngFor="let boton of question.data">
+                        <ion-item class="ion-text-center range">
+                            <ion-label>
+                                <ion-button size="medium" fill="outline" color="primary" (click)=selectedResult(boton.id,boton.padecimiento)>{{boton.padecimiento}}</ion-button>
+                            </ion-label>
+                        </ion-item>
+                    </div>
+                    <ion-item class="ion-text-center range">
+                        <ion-label>
+                            <ion-button size="medium" fill="outline" color="primary" (click)=selectedResult(null,null)>Niguno de los anteriores</ion-button>
+                        </ion-label> 
+                    </ion-item>
+                </div>
             <br>
             <ion-button *ngIf='isDoctor' (click)="goBack()" routerLink="/landing" expand="block" fill="outline" size="medium" color="primary" [hidden]="!hasResult" >Finalizar</ion-button>
 
