@@ -292,7 +292,7 @@ export class DiagnosticPage{
       if(this.memoriaDeTrabajo.atomosAfirmados.length!=0){
         this.doc_recomendacion = this.calculusClass.calculateRecommendation(this.memoriaDeTrabajo,this.sintomas);
       }
-      this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo, 40);
+      this.sintomasExtras = this.calculusClass.calculateCloseness(this.conocimientoEvaluado,this.baseConocimiento,this.memoriaDeTrabajo, 50);
       if(this.sintomasExtras.length==0){
         if(this.memoriaDeTrabajo.atomosAfirmados.length<=3){
           this.question={message: "Conforme la cantidad de síntomas que presenta no es posible llegar a una enfermedad en especifico, sin embargo es necesario que acuda con un médico si los sigue presentando o bien si estos empeoran"}
