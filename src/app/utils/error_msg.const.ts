@@ -52,19 +52,19 @@ export class ErrorMsg{
 
       public static LEVEL_EXPLAIN = {
         'ninguno' :
-        {message: 'Sintomas que por si solos no presentan peligro alguno a menos que se descuiden por bastante tiempo o bien las afectaciones percibidas hacia la personas sean en exceso'}
+          {message: 'Síntomas que por si solos no presentan peligro alguno a menos que se descuiden por bastante tiempo o bien las afectaciones percibidas hacia la personas sean bastantes'}
         ,
         'bajo' : 
-          {message: 'Sintomas cuya persistencia por más de 3 días será necesario el checar con un médico'} 
+          {message: 'Síntomas cuya persistencia por más de 3 días será necesario el checar con un médico'} 
         ,
         'medio' : 
-          {message: 'Sintomas que pueden afectar su vida diaria debido a sus efectos'}
+          {message: 'Síntomas que pueden afectar su vida diaria debido a sus efectos o intensidad'}
         ,
         'alto' : 
-          {message: 'Sintomas que por su naturaleza o bien su persistencia se recomienda encarecidamente acudir con un médico'}
+          {message: 'Síntomas que por su naturaleza o bien su persistencia se recomienda encarecidamente acudir con un médico para tratarlos'}
         ,
         'severo' : 
-          {message: 'Si presenta alguno de estos sintomas es sumamente necesario el acudir con un especialista con el fin de tratar dicho sintoma, por lo regular requieren estudios'}
+          {message: 'Para estos síntomas es sumamente necesario el acudir con un especialista con el fin de tratarlos'}
         
       }
 }
