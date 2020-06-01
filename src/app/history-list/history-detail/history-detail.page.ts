@@ -37,7 +37,7 @@ export class HistoryDetailPage {
         this.niveles = JSON.parse(this.historial.detalles_especificos);
       }
       if(this.historial.url_imagen_pad!= null){
-      this.url = this.historial.url_imagen_pad.replace('http','https');
+      this.url = this.historial.url_imagen_pad;
       }
       if(this.historial.recomendaciones_especialista!=null){
         this.recomendaciones = JSON.parse(this.historial.recomendaciones_especialista);

@@ -52,7 +52,7 @@ export class ProfilePage implements OnInit{
       this.usuario = res;
       this.originalValue = res.nickname;
       if(this.usuario.imagen_perfil!=null && this.usuario.imagen_perfil!=""){
-        this.url = this.usuario.imagen_perfil.replace('http','https');
+        this.url = this.usuario.imagen_perfil;
       }
       this.datos_perfil.controls['nickname'].setValue(this.usuario.nickname, {onlySelf : true});
     },
