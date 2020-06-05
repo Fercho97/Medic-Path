@@ -33,29 +33,31 @@
         </div>
             <div>
                 <div>
-                <ion-slides>
-                 <ion-slide>
-                    <img src="/assets/frontbody.png" usemap="#mapname" class="imgcent" width="100%">
-                 </ion-slide>
-                 <ion-slide>
-                    <img src="/assets/backbody.png" usemap="#backside" class="imgcent" width="100%">
-                 </ion-slide>
+                    <ion-slides>
+                        <ion-slide>
+                           <img src="/assets/frontbody.png" usemap="#mapname" class="imgcent" width="100%">
+                           <map name="mapname" id="map_ID">
+                            <area class="point" shape="rect" [coords]="headCoord" (click)="selectSintomas('Cabeza')" title="Cabeza">
+                            <area class="point" shape="rect" [coords]="throatCoord" (click)="selectSintomas('Garganta y Cuello')" title="Garganta y Cuello">
+                            <area class="point" shape="rect" [coords]="pecCoord" (click)="selectSintomas('Pecho')" title="Pecho">
+                            <area class="point" shape="rect" [coords]="abCoord" (click)="selectSintomas('Abdomen')" title="Abdomen">
+                            </map>
+                        </ion-slide>
+                        <ion-slide>
+                           <img src="/assets/backbody.png" usemap="#mapback" class="imgcent" width="100%">
+                           <map name="mapback">
+                            <area class="point" shape="rect" [coords]="headCoord" (click)="selectSintomas('Cabeza')" title="Cabeza">
+                            <area class="point" shape="rect" [coords]="throatCoord" (click)="selectSintomas('Garganta y Cuello')" title="Garganta y Cuello">
+                            
+                            <area class="point" shape="rect" [coords]="backCoord" (click)="selectSintomas('Espalda')" title="Espalda">
+                        </map>
+                        </ion-slide>
+                       
+                       </ion-slides>
                 
-                </ion-slides>
-                <map name="mapname" id="map_ID">
-                    <area class="point" shape="rect" [coords]="headCoord" (click)="selectSintomas('Cabeza')" title="Cabeza">
-                    <area class="point" shape="rect" [coords]="throatCoord" (click)="selectSintomas('Garganta y Cuello')" title="Garganta y Cuello">
-                    <area class="point" shape="rect" [coords]="pecCoord" (click)="selectSintomas('Pecho')" title="Pecho">
-                    <area class="point" shape="rect" [coords]="abCoord" (click)="selectSintomas('Abdomen')" title="Abdomen">
-                </map>
 
-                <map name="backside" id="map_ID">
-                    <area class="point" shape="rect" [coords]="headCoord" (click)="selectSintomas('Cabeza')" title="Cabeza">
-                    <area class="point" shape="rect" [coords]="throatCoord" (click)="selectSintomas('Garganta y Cuello')" title="Garganta y Cuello">
-                    <area class="point" shape="rect" [coords]="backCoord" (click)="selectSintomas('Espalda')" title="Espalda">
-                </map>
+                
             </div>
-            
             </div>
 
         <ion-button color="error" *ngIf="isSelection" (click)="cancel()"  expand="block" slot="end">Cancelar</ion-button>

@@ -32,6 +32,7 @@ export class HistoryDetailPage {
     this.api.getHistory(this.route.snapshot.params.id).subscribe( (res: any) =>{
       //console.log(res);
       this.historial = res;
+      if(this.historial!=null){
       this.sintomas = res.detalles.split(",").filter(item => item);
       if(this.historial.detalles_especificos!=null){
         this.niveles = JSON.parse(this.historial.detalles_especificos);
@@ -46,6 +47,8 @@ export class HistoryDetailPage {
       if(this.historial.especialista_seleccionado!=null){
         this.seleccionado = this.historial.especialista_seleccionado;
         this.hasOneSelected=true;
+      }}else{
+        this.toast.error("No ha sido posible el acceder a la información de esta consulta de manera local", 'Error');
       }
       //console.log(res.body);
     },
