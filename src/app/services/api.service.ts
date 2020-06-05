@@ -315,9 +315,9 @@ logout(token : any){
    .set('token', token)
    if(this.networkServ.getCurrentNetworkStatus() == ConnectionStatus.Offline){
 
-    return from(this.offlineManager.storeRequest(urlLogout, 'POST', values.toString()));
+    return from(this.offlineManager.storeRequest(urlLogout, 'PUT', values.toString()));
   }else{
-   return this.http.post(urlLogout,
+   return this.http.put(urlLogout,
        values.toString(),
        {
          headers: new HttpHeaders()
@@ -413,12 +413,14 @@ private getLocalData(key){
   return this.storage.get(API_STORAGE_KEY+"-"+key);
 }
 
-updateLocalDatabase(type){
+async updateLocalDatabase(type){
   this.consulta('any').subscribe();
   this.getAllSymptoms().subscribe();
   this.getDoctors('all').subscribe();
   this.getAllAilments().subscribe();
   this.getZones().subscribe();
+  let hash = await this.userServ.obtainSessionHash();
+  this.historyList(hash).subscribe();
   if(type=="2"){
   this.obtenerUsuarios().subscribe();
   }

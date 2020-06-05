@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Observable, from, of , forkJoin } from 'rxjs';
-import { switchMap, finalize} from  'rxjs/operators';
+import { switchMap, finalize, delay} from  'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 
@@ -30,7 +30,7 @@ export class OfflineRequestsManager{
                 return this.sendRequest(storeObj).pipe(
                     finalize(() =>{
                         let toasty = this.toast.create({
-                            message: 'Se ha sincronizado la información con el servidor con éxito',
+                            message: 'Se ha sincronizado la información válida con el servidor',
                             duration: 4000,
                             position: 'bottom'
                         });
@@ -50,7 +50,7 @@ export class OfflineRequestsManager{
     storeRequest(url,type,data){
         let toasty = this.toast.create({
             message: 'La información ha sido almacenada de forma local, se sincronizara en cuanto exista conexión a internet',
-            duration: 8000,
+            duration: 5000,
             position: 'bottom'
         });
         toasty.then(toast => toast.present());
@@ -85,7 +85,7 @@ export class OfflineRequestsManager{
         for(let op of operations){
             //console.log(op.data);
             let oneObs = this.http.request(op.type,op.url, {body:op.data,headers: new HttpHeaders()
-                .set('Content-Type', 'application/x-www-form-urlencoded')});
+                .set('Content-Type', 'application/x-www-form-urlencoded')}).pipe(delay(2000));
             //console.log(oneObs);
             obs.push(oneObs);
 
