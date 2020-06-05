@@ -55,31 +55,61 @@ export class CurrentUserService {
 
   obtainSessionHash(){
     return this.storage.get(STORAGE_USR_KEY).then(session =>{
-      return session.user_hash;
+      if(session!=null){
+        return session.user_hash;
+      }else{
+        return null;
+      }
     })
   }
 
   obtainSessionId(){
     return this.storage.get(STORAGE_USR_KEY).then(session =>{
-      return session.id;
+      if(session!=null){
+        return session.id;
+      }else{
+        return null;
+      }
     })
   }
 
   obtainSessionUsername(){
     return this.storage.get(STORAGE_USR_KEY).then(session =>{
-      return session.nickname;
+      if(session!=null){
+        return session.nickname;
+      }else{
+        return null;
+      }
     })
   }
 
   obtainSessionNames(){
     return this.storage.get(STORAGE_USR_KEY).then(session =>{
+      if(session!=null){
       return session.nombres;
+      }else{
+        return null;
+      }
     })
   }
 
   obtainSessionUserType(){
     return this.storage.get(STORAGE_USR_KEY).then(session =>{
+      if(session!=null){
       return session.tipo;
+      }else{
+        return null;
+      }
+    })
+  }
+
+  obtainSessionToken(){
+    return this.storage.get(STORAGE_USR_KEY).then(session =>{
+      if(session!=null){
+      return session.sessionToken;
+      }else{
+        return null;
+      }
     })
   }
 }
