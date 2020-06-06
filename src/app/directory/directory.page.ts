@@ -57,4 +57,8 @@ export class DirectoryPage implements OnInit {
   searchInput(){
     this.searching=true;
   }
+
+  ionViewWillLeave(){
+    this.searchControl.reset();
+  }
 }

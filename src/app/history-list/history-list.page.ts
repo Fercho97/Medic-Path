@@ -58,4 +58,8 @@ export class HistoryListPage{
   searchInput(){
     this.searching=true;
   }
+
+  ionViewWillLeave(){
+    this.searchControl.reset();
+  }
 }
