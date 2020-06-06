@@ -30,9 +30,13 @@ export class OfflineRequestsManager{
                 let storeObj = JSON.parse(storedOperations);
                 if(storeObj && storeObj.length>0){
                 await this.sendRequest(storeObj,0).then(res =>{
+                    let msg = "Se ha sincronizado toda la información con éxito";
+                    if(res > 0){
+                        msg = "Se han sincronizado los datos, sin embargo se detectaron errores, favor de verificar que la información este presente";
+                    }
                         let toasty = this.toast.create({
-                            message: 'Se ha sincronizado la información válida con el servidor',
-                            duration: 4000,
+                            message: msg,
+                            duration: 5000,
                             position: 'bottom'
                         });
                         toasty.then(toast => toast.present());
@@ -85,14 +89,18 @@ export class OfflineRequestsManager{
         
         //console.log(operations.length);
         //console.log(index);
+        let errorCount = 0;
         for await (let op of operations){
             
             //console.log(op);
-            const headers = new HttpHeaders({'Content-Type':'application/x-www-form-urlencoded', 'authorization':op.token,'mobile': 'true'});
-            await this.http.request(op.type,op.url, {body:op.data,headers: headers,observe: 'response'}).toPromise();
+            const headers = new HttpHeaders({'Content-Type':'application/x-www-form-urlencoded', 'authorization':op.token, 'mobile': 'true'});
+            await this.http.request(op.type,op.url, {body:op.data,headers: headers,observe: 'response'}).toPromise().catch(why =>{
+                //console.log(why);
+                errorCount = errorCount+1;
+            });
             
         }
-            return of(true);
+            return errorCount;
         
     }
 }
