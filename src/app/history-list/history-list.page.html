@@ -21,7 +21,7 @@
   <ion-item-sliding *ngFor="let hist of historiales">
         <ion-item class="item item-block item-md fromRight">
             <ion-label><h3 class="ion-text-wrap">Consulta del día {{hist.fecha_consulta}}</h3>
-              <ion-label ><ion-text color="primary">Sintomas:</ion-text></ion-label>
+              <ion-label ><ion-text color="primary">Síntomas:</ion-text></ion-label>
                 <ng-container *ngFor="let sint of hist.detalles.split(','); let i=index">
                   <p *ngIf="i<3">{{sint}}</p>
                   <p *ngIf="i==4">...</p>
@@ -38,5 +38,5 @@
        
         </ion-item-sliding>
       </ion-list>
-      <h2 *ngIf="historialesFromDb.length==0&&waiting==false">No tiene consultas registradas</h2>
+      <h2 *ngIf="historialesFromDb.length==0&&waiting==false">No tiene consultas en su historial</h2>
 </ion-content>
