@@ -60,6 +60,6 @@ export class HistoryListPage{
   }
 
   ionViewWillLeave(){
-    this.searchControl.reset();
+    this.searchControl.setValue('');
   }
 }

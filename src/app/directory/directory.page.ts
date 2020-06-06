@@ -59,6 +59,6 @@ export class DirectoryPage implements OnInit {
   }
 
   ionViewWillLeave(){
-    this.searchControl.reset();
+    this.searchControl.setValue('');
   }
 }
