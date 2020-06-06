@@ -17,7 +17,7 @@ export class ProfileService{
 
     getUser(hash : any){
         const headers = new HttpHeaders({'Content-Type':'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest'});
-        console.log(headers);
+        //console.log(headers);
         return this._http.get(this._urlIndividual + encodeURIComponent(hash),
             {
               headers: headers,

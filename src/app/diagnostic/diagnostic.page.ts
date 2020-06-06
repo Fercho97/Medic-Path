@@ -129,7 +129,6 @@ export class DiagnosticPage{
      let width = window.innerWidth;
     console.log(width);
     if(width>=320 && width<375){
-      console.log("abr");
       this.headCoord = "150,10,110,50";
       this.abCoord = "180,160,90,110";
     }else if(width>=375 && width<425){
