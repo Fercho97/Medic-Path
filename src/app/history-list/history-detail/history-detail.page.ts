@@ -64,6 +64,9 @@ export class HistoryDetailPage {
   }
 
   actualizar(){
+    if(this.seleccionado=='ninguno'){
+      this.seleccionado='';
+    }
     let values = new HttpParams()
       .set('seleccion', this.seleccionado)
     this.api.actualizacionEspecialista(this.historial.hashId, values).subscribe( (res: any) =>{
