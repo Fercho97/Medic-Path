@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpParams} from '@angular/common/http';
 import { NetworkService, ConnectionStatus } from '../../services/network.service';
 import { HistoryOfflineManagerService } from '../../services/history-offline-manager.service';
+import { LoadingService } from "../../services/loading.service";
 @Component({
   selector: 'app-history-detail',
   templateUrl: './history-detail.page.html',
@@ -25,7 +26,8 @@ export class HistoryDetailPage {
   public hasOneSelected = false;
   constructor(private api : ApiService, private route : ActivatedRoute,
               private alertServ : AlertsManagerService, private toast : ToastrService,
-              private network : NetworkService,private histServ : HistoryOfflineManagerService) { }
+              private network : NetworkService,private histServ : HistoryOfflineManagerService,
+              private loadServ : LoadingService) { }
 
   ionViewWillEnter() {
     //console.log(this.nivelesInfo)
@@ -64,6 +66,7 @@ export class HistoryDetailPage {
   }
 
   actualizar(){
+    this.loadServ.present();
     if(this.seleccionado=='ninguno'){
       this.seleccionado='';
     }
@@ -73,6 +76,7 @@ export class HistoryDetailPage {
       if(this.network.getCurrentNetworkStatus() == ConnectionStatus.Online){
         this.toast.success('Gracias por su retroalimentación!', 'Guardado exitoso!'); 
       }
+      this.loadServ.dismiss();
         this.histServ.addFeedback(this.historial.hashId, this.seleccionado);
         this.histServ.removeFromLocalNotifications(this.historial.hashId);
         this.hasOneSelected=true;
@@ -80,6 +84,7 @@ export class HistoryDetailPage {
       
   }, error =>{
       //console.log("Error", error.error);
+      this.loadServ.dismiss();
       this.toast.error(error.error.message, 'Error');
   }
     );
