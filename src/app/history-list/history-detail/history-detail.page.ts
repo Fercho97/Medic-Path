@@ -17,7 +17,7 @@ import { LoadingService } from "../../services/loading.service";
 })
 export class HistoryDetailPage {
   historial = {} as any;
-  public url : string = "/assets/default-image.jpg";
+  public url : string = "";
   sintomas = [] as any;
   niveles = "";
   public nivelesInfo = ErrorMsg.LEVEL_EXPLAIN;
@@ -39,9 +39,13 @@ export class HistoryDetailPage {
       if(this.historial.detalles_especificos!=null){
         this.niveles = JSON.parse(this.historial.detalles_especificos);
       }
-      if(this.historial.url_imagen_pad!= null){
-      this.url = this.historial.url_imagen_pad;
+      
+      if(res.url_imagen_pad== null || res.url_imagen_pad== "" || this.network.getCurrentNetworkStatus() == ConnectionStatus.Offline){
+        this.url = "/assets/default-image.jpg";
+      }else{
+        this.url = res.url_imagen_pad;
       }
+
       if(this.historial.recomendaciones_especialista!=null){
         this.recomendaciones = JSON.parse(this.historial.recomendaciones_especialista);
       }
