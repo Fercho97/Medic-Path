@@ -618,7 +618,9 @@ export class DiagnosticPage{
          let resultado = this.calculusClass.getDifferencesBetweenNames(nombres,sint);
    
          let diferencias = resultado[0];
-   
+         if(options[0].keyWord='Dificultad Baño'){
+          resultado[1]='Dificultad para ir al baño'
+        }
          return {message: '¿Ha tenido ' + resultado[1] +"?", type: 'option', options: diferencias, normal: resultado[1], atoms: nombres}
         }
    

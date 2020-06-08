@@ -119,6 +119,9 @@ export class questions {
         ],
         'dolor abdominal' : [
           {message: '¿En que parte del abdomen presenta dolor?'}
+        ],
+        'dificultad para ir al baño' : [
+          {message: '¿Que dificultad ha tenido para ir al baño?'}
         ]
       }
 

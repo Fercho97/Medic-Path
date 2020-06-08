@@ -88,7 +88,7 @@
         <div *ngIf="recomendaciones!='' && hasOneSelected==false">
           <ion-label color="primary">Especialista consultado</ion-label>
           <br>
-          <ion-label>En caso de ya haber asistido con un médico favor de elegir el especialista que le haya apoyado, o bien en caso de no haber asistido con algún médico puede seleccionar Omitir</ion-label>
+          <ion-label>En caso de haber asistido con un médico favor de elegir la especialidad que le haya apoyado o bien en caso de no haber asistido con algún médico puede seleccionar Omitir</ion-label>
           <ion-select placeholder="Seleccione una Especialidad" [(ngModel)] = "seleccionado" class="form-control">
             <ion-select-option *ngFor="let recomendacion of recomendaciones" [value]="recomendacion.espe">{{recomendacion.espe}}</ion-select-option>
             <ion-select-option value="ninguno">Omitir</ion-select-option>
