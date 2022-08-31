@@ -36,7 +36,7 @@
     "core-js": "^2.5.4",
     "image-map-resizer": "^1.0.10",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.28",
+    "moment-timezone": "^0.5.35",
     "ngx-toastr": "^11.2.0",
     "rxjs": "~6.5.1",
     "serialize-javascript": "^2.1.2",
